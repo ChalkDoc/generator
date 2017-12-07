@@ -5,4 +5,7 @@
   .navbar {
     background-color: rgb(30, 49,85);
   }
-  
+
+  .parameter-condition{
+    display: none;
+  }
