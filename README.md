@@ -22,6 +22,37 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
+## Installation and Setup
+* Clone this repository
+* Run `npm install`
+* Run `ng serve`
+* If you get the error:
+
+```
+Versions of @angular/compiler-cli and typescript could not be determined.
+The most common reason for this is a broken npm install.
+
+Please make sure your package.json contains both @angular/compiler-cli and typescript in
+devDependencies, then delete node_modules and package-lock.json (if you have one) and
+run npm install again.
+```
+
+> run `npm install --dev` and `ng serve`
+
+* If you get the error:
+```
+Your global Angular CLI version (1.6.0) is greater than your local
+version (1.5.5). The local Angular CLI version is used.
+```
+> run 
+```
+npm uninstall --save-dev angular-cli
+```
+followed by
+```
+npm install --save-dev @angular/cli@latest
+```
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

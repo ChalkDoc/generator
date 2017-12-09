@@ -1,5 +1,8 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import * as $ from 'jquery';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map'
+
 
 // declare var $: any;    //declaring jQuery
  declare var Guppy: any;   //declaring Guppy
@@ -15,10 +18,24 @@ export class AppComponent implements OnInit, AfterViewChecked {
   guppyBox: any;
   parameterDiv: any;
   variables: any[];
-
+  constructor(private http: Http) {
+         // // Make the HTTP request:
+         // this.http.get('http://localhost:4200/assets/symbols.json')
+         //          .subscribe((data) => {
+         //            console.log(data)
+         //           });
+                   // with map
+           // this.http.get("http://localhost:4200/assets/symbols.json")
+           //     .map((data) => {
+           //       return data.json();
+           //     })
+           //     .subscribe((success) => {
+           //       this.symbols = success;
+           //       console.log(this.symbols);
+           //     });
+                 }
   ngOnInit() {
-    Guppy.init_symbols(['https://cdn.rawgit.com/daniel3735928559/guppy/24d744fd/sym/symbols.json']);
-
+     Guppy.init_symbols(['/assets/symbols.json']);
     // Hard coding the variables array untill the parsing problem is resolved(for quadratic equation)
     let jsonUserInput = ["=",[["+",[["+",[["*",[["var",["a"]],["exponential",[["var",["x"]],["val",[2]]]]]],["*",[["var",["b"]],["var",["x"]]]]]],["var",["c"]]]],["val",[0]]]];
     let stringifiedUserInput = jsonUserInput.toString();
@@ -43,7 +60,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
   output(type) {
 
     console.log(type);
-    let content = Guppy.instances['equationBox'].backend.get_content(type);
+    let content = Guppy.instances['equationBox'].backend.get_content('ast');
+    content = JSON.stringify(content);
    	console.log(content);
     // try {
     //   let content = Guppy.instances['equationBox'].backend.get_content(type);
