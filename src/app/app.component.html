@@ -13,19 +13,61 @@
           ></div>
           <!-- for the button -->
           <button class="btn btn-danger" (click)="output('eqns')">
-            <i class="fa fa-calculator fa-2x" aria-hidden="true"></i>
+            <i class="fa fa-sign-in" aria-hidden="true"></i>
+            <!-- <i class="fa fa-calculator fa-2x" aria-hidden="true"></i> -->
           </button>
         </div>
          <h6 style="color:#ccc; display: inline;">Type any Equation/Expression Imaginable and click the calcultor button.</h6>
         <!-- To input conditions for the variables of the equeation/expression -->
         <br><br>
         <div class="form-control parameter-condition">
-
+          <div class="row">
+            <div class="col-md-6">
+              <p>Number of problems:</p>
+            </div>
+            <div class="col-md-6">
+              <input type="number" min="1" class="form-control">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">Variable</div>
+            <div class="col-md-2">Int</div>
+            <div class="col-md-2">Dec</div>
+            <div class="col-md-2">Dec. point</div>
+            <div class="col-md-2">Min</div>
+            <div class="col-md-2">Max</div>
+          </div>
+          <div class="row" *ngFor="let v of variables">
+            <div class="col-md-2">{{v.name}}</div>
+            <div class="col-md-2">
+              <input type="radio"/>
+            </div>
+            <div class="col-md-2">
+              <input type="radio"/>
+            </div>
+            <div class="col-md-2">
+              <input type="number" min="0" class="form-control"/>
+            </div>
+            <div class="col-md-2">
+              <input type="number" min="1" class="form-control"/>
+            </div>
+            <div class="col-md-2">
+              <input type="number" min="1" class="form-control"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <br>
+              <button class="btn btn-success" style="width: 100%;" (click) = 'generate()'>
+                <i class="fa fa-paper-plane-o" aria-hidden="true"> Generate</i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="col-md-8">
-      <!-- <div class="row"><div class="col-md-2"> <h1> <p>Variable</p> </div> <div class="col-md-1"> int </div> <div class="col-md-2"> dec </div> <div class="col-md-2"> dec point </div> <div class="col-md-2">  min </div> <div class="col-md-2"> max </div> </div> -->
+
     </div>
   </div>
 </div>

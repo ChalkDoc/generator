@@ -1,7 +1,9 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import * as $ from 'jquery';
 import { Http } from '@angular/http';
-import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/map';
+
+import { Variable } from './variable';
 
 
 // declare var $: any;    //declaring jQuery
@@ -17,7 +19,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
   title = 'app';
   guppyBox: any;
   parameterDiv: any;
-  variables: any[];
+  variables: any[] = [];
   userInputInJsonFormat: any;
 
   constructor(private http: Http) {
@@ -53,15 +55,23 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   /* this is to get the content of the guppy box,
   it also converts the mathematical equation/expression into the desired format type(latex, asciimath, text, ast, eqns, function, xml)*/
-  output(type) {
+
+  output (type){
     try {
       let content = Guppy.instances['equationBox'].backend.get_content(type);
         let stringifiedUserInput = content.toString();
-        this.variables = this.extractVariables(content.toString());
-        // to display the variables
+        let extractedVars = this.extractVariables(content.toString());
+        extractedVars = extractedVars.sort();
+        console.log(extractedVars);
+        /* creating variable instance and pushing each variable instance into the variables array*/
+        for (let i = 0; i < extractedVars.length; i++) {
+          let varName:string = extractedVars[i];
+          let newVar = new Variable(varName);
+          this.variables.push(newVar);
+        }
+        console.log(this.variables);
         this.parameterDiv = $('.parameter-condition');
-          this.parameterDiv.show();
-          this.parameterDiv.html(' <h6 style="color:#ccc; display: inline;">These are the variables: </h6> <h3> ' + this.variables.sort().join(',') + '</h3');
+     this.parameterDiv.show();
     }catch (e) {
       alert('Parsing error!' + e);
       }
@@ -79,5 +89,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
       }
     }
     return variableArr;
+  }
+
+  generate(){
+    $('.col-md-8').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
   }
 }
