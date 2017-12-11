@@ -12,12 +12,15 @@
           <div class="form-control equation-container" id="equationBox"
           ></div>
           <!-- for the button -->
+          <button class="btn btn-default" (click)="onScreenKeyboard()">
+            <i class="fa fa-calculator" aria-hidden="true">OSK</i>
+          </button>
           <button class="btn btn-danger" (click)="output('eqns')">
-            <i class="fa fa-sign-in" aria-hidden="true"></i>
+            <i class="fa fa-sign-in" aria-hidden="true"> Proceed</i>
             <!-- <i class="fa fa-calculator fa-2x" aria-hidden="true"></i> -->
           </button>
         </div>
-         <h6 style="color:#ccc; display: inline;">Type any Equation/Expression Imaginable and click the calcultor button.</h6>
+         <h6 style="color:#ccc; display: inline;">Type any Equation/Expression Imaginable and click proceed.</h6>
         <!-- To input conditions for the variables of the equeation/expression -->
         <form #variableForm = "ngForm" (submit) = "onSubmit(variableForm.value)">
           <br><br>
@@ -42,12 +45,14 @@
               <div class="col-md-2">
                 <p>{{v.name}}</p>
               </div>
-              <!-- <div class="col-md-2">
-                <input type="radio" name="int" ngModel/>
-              </div> -->
               <div class="col-md-4">
-                <input type="radio" name="data-type{{v.name}}" ngModel [checked] value="int" /> Int
-                <input type="radio" name="data-type{{v.name}}" ngModel value="dec"/> Dec
+                <select ngModel name="data-type{{v.name}}" required #nameRef = "ngModel" *ngFor="let dt of ['Int', 'Dec']; let i = index">
+                  <option>int</option>
+                  <option>Dec</option>
+                </select>
+                <!-- <div [hidden]="nameRef.valid || nameRef.pristine" class="alert alert-danger">
+                  Required!
+                </div> -->
               </div>
               <div class="col-md-2">
                 <input type="number" min="0" class="form-control" name="decPoint{{v.name}}" ngModel = 2/>

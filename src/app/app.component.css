@@ -2,10 +2,30 @@
     padding-top: 80px;
   }
 
-  .navbar {
+.navbar {
     background-color: rgb(30, 49,85);
   }
 
-  .parameter-condition{
+.parameter-condition{
     display: none;
   }
+input.ng-invalid{
+  border: 1px solid red;
+
+}
+input.ng-pristine{
+  border: 1px solid red;
+}
+/*input.ng-untouched{
+  border: 1px solid red;
+}*/
+select.ng-invalid{
+  border: 1px solid red;
+
+}
+select.ng-pristine{
+  border: 1px solid red;
+}
+/*select.ng-untouched{
+  border: 1px solid red;
+}*/

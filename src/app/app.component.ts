@@ -9,6 +9,7 @@ import { Variable } from './variable';
 
 // declare var $: any;    //declaring jQuery
  declare var Guppy: any;   //declaring Guppy
+ declare var GuppyOSK: any;
 
 @Component({
   selector: 'app-root',
@@ -97,5 +98,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
   onSubmit(formValue) {
     console.log(formValue)
+  }
+
+  onScreenKeyboard() {
+    var OSK = new GuppyOSK({"goto_tab":"qwerty"});
   }
 }
