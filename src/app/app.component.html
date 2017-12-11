@@ -6,7 +6,7 @@
 
 <div class="custom-container container-fluid">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="form-group">
         <div class="input-group">
           <div class="form-control equation-container" id="equationBox"
@@ -19,54 +19,59 @@
         </div>
          <h6 style="color:#ccc; display: inline;">Type any Equation/Expression Imaginable and click the calcultor button.</h6>
         <!-- To input conditions for the variables of the equeation/expression -->
-        <br><br>
-        <div class="form-control parameter-condition">
-          <div class="row">
-            <div class="col-md-6">
-              <p>Number of problems:</p>
+        <form #variableForm = "ngForm" (submit) = "onSubmit(variableForm.value)">
+          <br><br>
+          <div class="parameter-condition">
+            <div class="row">
+              <div class="col-md-6">
+                <p>Number of problems:</p>
+              </div>
+              <div class="col-md-6">
+                <input type="number" min="1" class="form-control" ngModel name="numberOfProblems">
+              </div>
             </div>
-            <div class="col-md-6">
-              <input type="number" min="1" class="form-control">
+            <div class="row">
+              <div class="col-md-2">Variable</div>
+              <!-- <div class="col-md-2">Int</div> -->
+              <div class="col-md-4">Data type</div>
+              <div class="col-md-2">Dec. point</div>
+              <div class="col-md-2">Min</div>
+              <div class="col-md-2">Max</div>
+            </div>
+            <div class="row" *ngFor="let v of variables">
+              <div class="col-md-2">
+                <p>{{v.name}}</p>
+              </div>
+              <!-- <div class="col-md-2">
+                <input type="radio" name="int" ngModel/>
+              </div> -->
+              <div class="col-md-4">
+                <input type="radio" name="data-type{{v.name}}" ngModel [checked] value="int" /> Int
+                <input type="radio" name="data-type{{v.name}}" ngModel value="dec"/> Dec
+              </div>
+              <div class="col-md-2">
+                <input type="number" min="0" class="form-control" name="decPoint{{v.name}}" ngModel = 2/>
+              </div>
+              <div class="col-md-2">
+                <input type="number" min="1" class="form-control" name="min{{v.name}}" ngModel/>
+              </div>
+              <div class="col-md-2">
+                <input type="number" min="1" class="form-control" name="max{{v.name}}" ngModel/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <br>
+                <button type="submit" class="btn btn-success" style="width: 100%;" (click) = 'generate()'>
+                  <i class="fa fa-paper-plane-o" aria-hidden="true"> Generate</i>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-2">Variable</div>
-            <div class="col-md-2">Int</div>
-            <div class="col-md-2">Dec</div>
-            <div class="col-md-2">Dec. point</div>
-            <div class="col-md-2">Min</div>
-            <div class="col-md-2">Max</div>
-          </div>
-          <div class="row" *ngFor="let v of variables">
-            <div class="col-md-2">{{v.name}}</div>
-            <div class="col-md-2">
-              <input type="radio"/>
-            </div>
-            <div class="col-md-2">
-              <input type="radio"/>
-            </div>
-            <div class="col-md-2">
-              <input type="number" min="0" class="form-control"/>
-            </div>
-            <div class="col-md-2">
-              <input type="number" min="1" class="form-control"/>
-            </div>
-            <div class="col-md-2">
-              <input type="number" min="1" class="form-control"/>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <br>
-              <button class="btn btn-success" style="width: 100%;" (click) = 'generate()'>
-                <i class="fa fa-paper-plane-o" aria-hidden="true"> Generate</i>
-              </button>
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-7">
 
     </div>
   </div>

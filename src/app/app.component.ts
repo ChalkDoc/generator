@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import * as $ from 'jquery';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { FormsModule } from '@angular/forms';
 
 import { Variable } from './variable';
 
@@ -92,6 +93,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   generate(){
-    $('.col-md-8').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
+    $('.col-md-7').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
+  }
+  onSubmit(formValue) {
+    console.log(formValue)
   }
 }
