@@ -1,3 +1,7 @@
 export class Variable {
-	constructor(public name: string, public isInt: boolean = false, public isDec: boolean = false, public decPoint: number = 0, public min: number = 0, public max: number = 10){}
+	constructor(
+		public name: string,
+		public dataType: string = "Dec",
+		public decPoint: number = 2, public min: number = 0,
+		public max: number = 10){}
 }

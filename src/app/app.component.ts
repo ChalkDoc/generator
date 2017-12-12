@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked} from '@angular/core';
 import * as $ from 'jquery';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -21,8 +21,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
   title = 'app';
   guppyBox: any;
   parameterDiv: any;
-  variables: any[] = [];
+  variables: Variable[] = [];
   userInputInJsonFormat: any;
+
 
   constructor(private http: Http) {
          // // Make the HTTP request:
@@ -42,7 +43,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
                  }
 
   ngOnInit() {
-     Guppy.init_symbols(['/assets/symbols.json']);
+    Guppy.init_symbols(['/assets/symbols.json']);
   }
 
   ngAfterViewChecked() {
@@ -73,9 +74,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
         }
         console.log(this.variables);
         this.parameterDiv = $('.parameter-condition');
-     this.parameterDiv.show();
-    }catch (e) {
-      alert('Parsing error!' + e);
+        this.parameterDiv.show();
+    } catch (e) {
+        alert('Parsing error!' + e);
       }
     }
 
@@ -93,14 +94,26 @@ export class AppComponent implements OnInit, AfterViewChecked {
     return variableArr;
   }
 
-  generate(){
-    $('.col-md-7').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
-  }
   onSubmit(formValue) {
-    console.log(formValue)
+    $('.col-md-7').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
+    /* this logic updates the variables array using the data obtained from the form*/
+    let formVariables = this.toArray(formValue.variables);
+    for (let i = 0, j = 0; i < this.variables.length; i++) {
+     this.variables[i].dataType = formVariables[j][1];
+     this.variables[i].decPoint = formVariables[j+1][1];
+     this.variables[i].min = formVariables[j+2][1];
+     this.variables[i].max = formVariables[j+3][1];
+    j+= 4;
+    }
+    console.log(formVariables)
+    console.log(this.variables)
   }
-
-  onScreenKeyboard() {
-    var OSK = new GuppyOSK({"goto_tab":"qwerty"});
+  /* this method converts object into an array of object*/
+  toArray(obj){
+    let formVariables = Object.keys(obj).map(function(key){
+      return [String(key),obj[key]]
+    });
+    return formVariables;
   }
+ 
 }
