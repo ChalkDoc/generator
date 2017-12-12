@@ -6,10 +6,20 @@ import { FormsModule } from '@angular/forms';
 
 import { Variable } from './variable';
 
+import * as nerdamer from 'nerdamer';
+require('./../../node_modules/nerdamer/Solve.js');
+require('./../../node_modules/nerdamer/Algebra.js');
+require('./../../node_modules/nerdamer/Calculus.js');
+require('./../../node_modules/nerdamer/Extra.js');
+
 
 // declare var $: any;    //declaring jQuery
  declare var Guppy: any;   //declaring Guppy
  declare var GuppyOSK: any;
+ declare var nerdamer: any;
+
+ var answer = nerdamer.solve("x^2=25", "x");
+ console.log(answer.toString());
 
 @Component({
   selector: 'app-root',
