@@ -11,11 +11,13 @@
   }
 input.ng-invalid{
   border: 1px solid red;
-
 }
-input.ng-pristine{
+input.ng-valid{
+  border: 1px solid green;
+}
+/*input.ng-pristine{
   border: 1px solid red;
-}
+}*/
 /*input.ng-untouched{
   border: 1px solid red;
 }*/
@@ -23,9 +25,12 @@ select.ng-invalid{
   border: 1px solid red;
 
 }
-select.ng-pristine{
-  border: 1px solid red;
+select.ng-valid{
+  border: 1px solid green;
 }
+/*select.ng-pristine{
+  border: 1px solid red;
+}*/
 /*select.ng-untouched{
   border: 1px solid red;
 }*/
