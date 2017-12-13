@@ -54,7 +54,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     Guppy.init_symbols(['/assets/symbols.json']);
 
-    var answer = nerdamer.solve("x^2=25", "x").toString();
+    var answer = nerdamer.solve("x^2=240", "x").toString();
     console.log(answer);
     let formattedAnswer = this.extractAnswer(answer);
     console.log(formattedAnswer);
@@ -94,9 +94,28 @@ export class AppComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  convertToNumber(input) {
+  /*this method turns the individual string element into a number */
+  convertToNumber(input, figsAfterDecimal) {
     let output = parseInt(input);
-    return output;
+    let calculation = input.split('/');
+    if (calculation.length > 1) {
+      calculation[0] = parseInt(calculation[0]);
+      calculation[1] = parseInt(calculation[1]);
+      output = calculation[0]/calculation[1];
+    }
+
+    /*find the final number of digit numbers in answer */
+    let stringoutput = output.toString();
+    
+    let totaldigits = stringoutput.split('.')[0].length;
+    if (stringoutput[0] == '-') {  
+      totaldigits += figsAfterDecimal - 1;  //for a negative number.
+    }
+    else {
+      totaldigits += figsAfterDecimal;  //for a positive number.
+    }
+  
+    return output.toPrecision(totaldigits);
   }
 
   /*this method takes a nerdamer answer string and returns an array of numbers.*/
@@ -109,7 +128,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     }
 
     for (let i = 0; i < result.length; i++) {
-      result[i] = this.convertToNumber(result[i]);
+      result[i] = this.convertToNumber(result[i], 2);
     }
 
     return result;
