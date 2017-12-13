@@ -18,6 +18,7 @@ require('./../../node_modules/nerdamer/Extra.js');
  declare var GuppyOSK: any;
  declare var nerdamer: any;
 
+ let answer = nerdamer.solve('x^2 = 25', 'x');
 
 @Component({
   selector: 'app-root',
@@ -93,6 +94,11 @@ export class AppComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  convertToNumber(input) {
+    let output = parseInt(input);
+    return output;
+  }
+
   /*this method takes a nerdamer answer string and returns an array of numbers.*/
   extractAnswer(answer) {
     let result = answer.split('[');
@@ -100,6 +106,10 @@ export class AppComponent implements OnInit, AfterViewChecked {
     if (result[0] == '') {
       result = result[1].split(']');
       result = result[0].split(',');
+    }
+
+    for (let i = 0; i < result.length; i++) {
+      result[i] = this.convertToNumber(result[i]);
     }
 
     return result;
