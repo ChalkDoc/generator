@@ -49,24 +49,34 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     Guppy.init_symbols(['/assets/symbols.json']);
-    let valuesArray = this.findValues('x^2=25', 'x', 2);
+    let valuesArray = this.findValues('x^3 + x^2 + 5=-25', 'x', 2);
     console.log(valuesArray);
+  }
+
+  formatComplex(input) {
+
   }
 
   findValues(equation, variable, decimalPlaces) {
     let result = nerdamer.solve(equation, variable).toString();
     let answerValues = nerdamer(result);
+    console.log(answerValues);
     let answerArray = [];
     let expressionValue;
 
     for (let i = 0; i < answerValues.symbol.elements.length; i++) {
       let expressionValue = answerValues.symbol.elements[i].value;
-      if (expressionValue === '#') {
+      console.log(expressionValue);
+      if (expressionValue === '#'|| expressionValue === 'i') {
         let numerator = answerValues.symbol.elements[i].multiplier.num.value; 
         let denominator = answerValues.symbol.elements[i].multiplier.den.value;
         expressionValue = numerator/denominator;
+        expressionValue = expressionValue.toFixed(decimalPlaces);
       }
-      answerArray.push(expressionValue.toFixed(decimalPlaces));
+      else {
+        expressionValue = nerdamer(expressionValue).text('decimals');
+      }
+      answerArray.push(expressionValue);
     }
     return answerArray;
   }
