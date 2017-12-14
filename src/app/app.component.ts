@@ -66,7 +66,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
         let denominator = answerValues.symbol.elements[i].multiplier.den.value;
         expressionValue = numerator/denominator;
       }
-      answerArray.push(expressionValue);
+      answerArray.push(expressionValue.toFixed(decimalPlaces));
     }
     return answerArray;
   }
