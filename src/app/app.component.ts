@@ -1,4 +1,3 @@
-mike;
 import { Component, OnInit, AfterViewChecked} from '@angular/core';
 import * as $ from 'jquery';
 import { Http } from '@angular/http';

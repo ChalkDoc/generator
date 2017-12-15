@@ -22,7 +22,8 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../src/assets/css/guppy.min.css"
+        "../src/assets/css/guppy.min.css",
+        "../bower_components/bootstrap/dist/css/bootstrap.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

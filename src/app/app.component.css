@@ -13,7 +13,7 @@ input.ng-invalid{
   border: 1px solid red;
 }
 input.ng-valid{
-  border: 1px solid green;
+  border: 1px solid black;
 }
 /*input.ng-pristine{
   border: 1px solid red;
@@ -26,7 +26,7 @@ select.ng-invalid{
 
 }
 select.ng-valid{
-  border: 1px solid green;
+  border: 1px solid black;
 }
 /*select.ng-pristine{
   border: 1px solid red;

@@ -1,0 +1,23 @@
+{
+  "name": "generator",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Michel Woldemedihin <mwoldemedihin@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ChalkDoc/generator",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "4.0.0-alpha.6"
+  },
+  "resolutions": {
+    "bootstrap": "4.0.0-alpha.6"
+  }
+}
