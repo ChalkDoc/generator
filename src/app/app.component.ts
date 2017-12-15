@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
       let expressionValue = answerValues.symbol.elements[i].value;
       console.log(expressionValue);
       if (expressionValue === '#'|| expressionValue === 'i') {
-        let numerator = answerValues.symbol.elements[i].multiplier.num.value; 
+        let numerator = answerValues.symbol.elements[i].multiplier.num.value;
         let denominator = answerValues.symbol.elements[i].multiplier.den.value;
         expressionValue = numerator/denominator;
         expressionValue = expressionValue.toFixed(decimalPlaces);
@@ -141,15 +141,15 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   //   /*find the final number of digit numbers in answer */
   //   let stringoutput = output.toString();
-    
+
   //   let totaldigits = stringoutput.split('.')[0].length;
-  //   if (stringoutput[0] == '-') {  
+  //   if (stringoutput[0] == '-') {
   //     totaldigits += figsAfterDecimal - 1;  //for a negative number.
   //   }
   //   else {
   //     totaldigits += figsAfterDecimal;  //for a positive number.
   //   }
-  
+
   //   return output.toPrecision(totaldigits);
   // }
 
