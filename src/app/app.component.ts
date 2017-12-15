@@ -22,6 +22,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
   guppyBox: any;
   parameterDiv: any;
   variables: Variable[] = [];
+  numberOfProblems: number;
   userInputInJsonFormat: any;
 
 
@@ -95,18 +96,22 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   onSubmit(formValue) {
-    $('.col-md-7').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
-    /* this logic updates the variables array using the data obtained from the form*/
-    let formVariables = this.toArray(formValue.variables);
+    $('.col-md-8').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
+    /* this logic updates the variables array value using the data obtained from the form */
+    this.numberOfProblems = formValue.numberOfProblems;
+    let formVariables = this.toArray(formValue.variables); //converting object into array
     for (let i = 0, j = 0; i < this.variables.length; i++) {
-     this.variables[i].dataType = formVariables[j][1];
-     this.variables[i].decPoint = formVariables[j+1][1];
-     this.variables[i].min = formVariables[j+2][1];
-     this.variables[i].max = formVariables[j+3][1];
-    j+= 4;
+     // this.variables[i].dataType = formVariables[j][1];
+     this.variables[i].decPoint = formVariables[j][1];
+     this.variables[i].min = formVariables[j+1][1];
+     this.variables[i].max = formVariables[j+2][1];
+    j+= 3;
     }
-    console.log(formVariables)
-    console.log(this.variables)
+
+    console.log(formValue);
+    console.log(formVariables);
+    console.log(this.variables);
+    console.log(this.numberOfProblems);
   }
   /* this method converts object into an array of object*/
   toArray(obj){
@@ -115,5 +120,5 @@ export class AppComponent implements OnInit, AfterViewChecked {
     });
     return formVariables;
   }
- 
+
 }
