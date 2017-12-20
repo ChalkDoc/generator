@@ -8,10 +8,9 @@ import './../../../node_modules/nerdamer/Extra.js';
 declare var nerdamer: any;
 
 @Injectable()
-export class GenertorService {
+export class GeneratorService {
 
   constructor() { }
-
 
   findValues(equation, variable, decimalPlaces) {
     let result = nerdamer.solve(equation, variable).toString();
@@ -35,6 +34,58 @@ export class GenertorService {
       answerArray.push(expressionValue);
     }
     return answerArray;
+  }
+
+  generatePermutations() {
+    let temp = [];
+    let parametersArray = [
+      {name: 'a', min: 1, max: 5},
+      {name: 'b', min: 1, max: 5},
+      {name: 'c', min: 1, max: 5},
+      {name: 'x', min: 1, max: 5},
+      {name: 'y', min: 2, max: 7}
+    ];
+
+    let arrayOfSets = [];
+    let answerArray = [];
+    let numberOfVariables = parametersArray.length;
+
+    var totalPermutations = 1;
+    for (var i = 0; i < numberOfVariables; i++) {
+    	var range = parametersArray[i].max - parametersArray[i].min + 1;
+    	totalPermutations *= range;
+      console.log(totalPermutations);
+    }
+
+
+    for (var i = 0; i < numberOfVariables; i++) {
+    	temp[i] = parametersArray[i].min;
+    }
+
+    for (var index = 0; index < totalPermutations; index++) {
+    	var arrayValues = [];
+
+      for (var i = 0; i < numberOfVariables; i++) {
+      	arrayValues[i] = temp[i];
+      }
+
+      if (temp[numberOfVariables - 1] <= parametersArray[numberOfVariables - 1].max) {
+        temp[numberOfVariables - 1]++;
+      }
+      else {
+        for (var i = numberOfVariables - 1; i >= 0; i--) {
+          if (temp[i] > parametersArray[i].max) {
+    				temp[i] = parametersArray[i].min;
+          	temp[i - 1]++;
+          }
+          arrayValues[i] = temp[i];
+        }
+        temp[numberOfVariables - 1]++;
+      }
+
+      answerArray.push(arrayValues);
+    }
+  }
 
   //problemsToGenerate should be an int, arrayOfCombinations is assumed to be an array of arrays
   /* solveForMin and solveForMax are the minimum and maximum allowed values for the variable to be solved for */

@@ -22,4 +22,5 @@ export class AppComponent implements OnInit {
     // let valuesArray = this._generatorServic.findValues('x^3 + x^2 + 5=-25', 'x', 2);
     // console.log(valuesArray);
   }
+
 }
