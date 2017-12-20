@@ -25,6 +25,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Installation and Setup
 * Clone this repository
 * Run `npm install`
+* Run `bower install`
 * Run `ng serve`
 * If you get the error:
 
@@ -44,7 +45,7 @@ run npm install again.
 Your global Angular CLI version (1.6.0) is greater than your local
 version (1.5.5). The local Angular CLI version is used.
 ```
-> run 
+> run
 ```
 npm uninstall --save-dev angular-cli
 ```
