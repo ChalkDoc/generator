@@ -1,0 +1,27 @@
+.parameter-condition{
+    display: none;
+  }
+input.ng-invalid{
+  border: 1px solid red;
+}
+input.ng-valid{
+  border: 1px solid black;
+}
+/*input.ng-pristine{
+  border: 1px solid red;
+}*/
+/*input.ng-untouched{
+  border: 1px solid red;
+}*/
+select.ng-invalid{
+  border: 1px solid red;
+}
+select.ng-valid{
+  border: 1px solid black;
+}
+/*select.ng-pristine{
+  border: 1px solid red;
+}*/
+/*select.ng-untouched{
+  border: 1px solid red;
+}*/

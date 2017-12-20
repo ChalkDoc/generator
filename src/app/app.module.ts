@@ -6,10 +6,12 @@ import { routing } from './app.routing';
 import { AppComponent } from './app.component';
 
 import { HttpModule } from '@angular/http';
+import { EquationComponent } from './equation/equation.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EquationComponent
   ],
   imports: [
     BrowserModule,

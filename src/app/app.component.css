@@ -1,40 +1,10 @@
 .custom-container {
-    padding-top: 80px;
-  }
+  padding-top: 80px;
+}
 
 .navbar {
-    background-color: rgb(30, 49,85);
-  }
-
-.parameter-condition{
-    display: none;
-  }
-input.ng-invalid{
-  border: 1px solid red;
+  background-color: rgb(30, 49,85);
 }
-input.ng-valid{
-  border: 1px solid black;
-}
-/*input.ng-pristine{
-  border: 1px solid red;
-}*/
-/*input.ng-untouched{
-  border: 1px solid red;
-}*/
-select.ng-invalid{
-  border: 1px solid red;
-
-}
-select.ng-valid{
-  border: 1px solid black;
-}
-/*select.ng-pristine{
-  border: 1px solid red;
-}*/
-/*select.ng-untouched{
-  border: 1px solid red;
-}*/
-
 .footer {
   position: fixed;
   left: 0;
@@ -45,4 +15,10 @@ select.ng-valid{
   text-align: center;
   height: 10%;
   padding: 10px;
+}
+#generate {
+  width: 100%;
+  color: #fff;
+  background-color: #253e6a;
+  border-color: #253e6a;
 }

@@ -3,81 +3,8 @@
   <a class="navbar-brand" href="#">Generator</a>
 </nav>
 
-
-
-
-
-  <router-outlet></router-outlet>
-
-
-<div class="custom-container container-fluid">
-  <div class="row">
-    <div class="col-md-4">
-      <div class="form-group">
-        <div class="input-group">
-          <div class="form-control equation-container" id="equationBox"
-          ></div>
-          <button class="btn btn-danger" (click)="output('eqns')">
-            <i class="fa fa-sign-in" aria-hidden="true"> Proceed</i>
-          </button>
-        </div>
-         <h6 style="color:#ccc; display: inline;">Type any Equation/Expression Imaginable and click proceed.</h6>
-        <!-- To input conditions for the variables of the equeation/expression -->
-        <form #variableForm = "ngForm" (ngSubmit) = "onSubmit(variableForm.value)">
-          <br><br>
-          <div class="parameter-condition">
-            <div class="row">
-              <div class="col-md-6">
-                <p>Number of problems:</p>
-              </div>
-              <div class="col-md-6">
-                <input type="number" min="1" class="form-control" ngModel name="numberOfProblems" required>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-2">Variable(s)</div>
-              <!-- <div class="col-md-2">Int</div> -->
-              <div class="col-md-4">Dec. point</div>
-              <div class="col-md-3">Min</div>
-              <div class="col-md-3">Max</div>
-            </div>
-            <div class="row" *ngFor="let v of variables" ngModelGroup="variables">
-
-                <div class="col-md-2">
-                  <p>{{v.name}}</p>
-                </div>
-                <!--<div [hidden]="nameRef.valid || nameRef.pristine" class="alert alert-danger">
-                    Required!
-                  </div>
-                </div> -->
-                <div class="col-md-4">
-                  <input type="number" min="0" class="form-control" name="decPoint{{v.name}}" [(ngModel)] = "v.decPoint" required/>
-                </div>
-                <div class="col-md-3">
-                  <input type="number" min="1" class="form-control" name="min{{v.name}}" ngModel required/>
-                </div>
-                <div class="col-md-3">
-                  <input type="number" min="1" class="form-control" name="max{{v.name}}" [(ngModel)] = "v.max" required/>
-                </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <br>
-                <button type="submit" class="btn btn-success" style="width: 100%;" [disabled] = "!variableForm.form.valid">
-                  <i class="fa fa-paper-plane-o" aria-hidden="true"> Generate</i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div class="col-md-8">
-
-    </div>
-  </div>
+<app-equation></app-equation>
+  <!-- <router-outlet></router-outlet> -->
+<div class="footer">
+  <h6 style="color:#ccc; display: inline;"> © 2017 ChalkDoc   </h6>
 </div>
-
-  <div class="footer">
-    <h6 style="color:#ccc; display: inline;"> © 2017 ChalkDoc   </h6>
-  </div>
