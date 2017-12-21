@@ -21,6 +21,20 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // let valuesArray = this._generatorService.findValues('x^3 + x^2 + 5=-25', 'x', 2);
     // console.log(valuesArray);
+    let parameters = [
+      {name: 'a'},
+      {name: 'b'},
+      {name: 'c'},
+      {name: 'd'},
+      {name: 'e'}
+    ];
+
+    let test = [1, 2, 3, 4, 5];
+
+    let equation = 'a + b + c + d + e';
+
+    // let newValue = calculateLastVariable(parameters, test, equation);
+    // console.log(newValue);
   }
 
 }
