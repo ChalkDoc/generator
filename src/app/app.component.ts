@@ -51,20 +51,22 @@ export class AppComponent implements OnInit {
 
     let testSet = [1, 1, 1, 1, 1];
 
-    object.push('{');
+    // for (let i = 0; i < parametersArray.length; i++) {
+    //   object[i].name = testSet[i];
+    // }
     for (let i = 0; i < parametersArray.length; i++) {
       var fantastic = parametersArray[i].name + ': ' + '\'' + testSet[i] + '\'';
       object.push(fantastic);
     }
-      object.push('}')
-      var finalString = object.join("\"");
-      console.log(finalString);
       console.log(object);
+      var finalString = object.join(", ");
+      console.log(finalString);
       //object.push(parametersArray[i].name + ': ' + '\"' + testSet[i] + '\"');
 
+      var hola = {'a': 1, 'b': 2, 'c': 3, 'x': 4, 'y': 5};
     var x = nerdamer('5*x+(x^2+2*x)*x+(x+2)');
     console.log(x.toString());
-    var x = nerdamer('a + b + c + x + y', object)
+    var x = nerdamer('a + b + c + x + y', hola)
     //the substitutions was called but the functions weren't called
     console.log(x.toString());
     // var x = nerdamer('(x^2+2*x)*x+1+x+cos(y)',
