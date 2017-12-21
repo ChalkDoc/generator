@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Variable } from '../variable';
 
 import './../../../node_modules/nerdamer/Solve.js';
 import './../../../node_modules/nerdamer/Algebra.js';
@@ -12,46 +13,11 @@ export class GeneratorService {
 
   constructor() { }
 
-  calculateLastVariable(parametersArray, testSet, equation) {
-    let variablesObject = [];
-
-    for (let i = 0; i < parametersArray.length; i++) {
-      variablesObject[parametersArray[i].name] = testSet[i];
-    }
-
-    let lastVariable = nerdamer(equation, variablesObject).toString();
-    console.log(lastVariable);
-
-    return lastVariable;
-  }
-
-  findValues(equation, variable, decimalPlaces) {
-    let result = nerdamer.solve(equation, variable).toString();
-    let answerValues = nerdamer(result);
-    console.log(answerValues);
-    let answerArray = [];
-    let expressionValue;
-
-    for (let i = 0; i < answerValues.symbol.elements.length; i++) {
-      let expressionValue = answerValues.symbol.elements[i].value;
-      console.log(expressionValue);
-      if (expressionValue === '#'|| expressionValue === 'i') {
-        let numerator = answerValues.symbol.elements[i].multiplier.num.value;
-        let denominator = answerValues.symbol.elements[i].multiplier.den.value;
-        expressionValue = numerator/denominator;
-        expressionValue = expressionValue.toFixed(decimalPlaces);
-      }
-      else {
-        expressionValue = nerdamer(expressionValue).text('decimals');
-      }
-      answerArray.push(expressionValue);
-    }
-    return answerArray;
-  }
 
   /** This method inputs parameters of variables with min and max values and
       generates sets that include all the permutations of these variables. **/
-  generatePermutations(parametersArray: any[]) {
+// IN PROGRESS FOR DECIMAL ROBERT
+  generatePermutations(parametersArray: Variable[]): any[] {
     let temp = []; // Stores running array of values for each index place.
     let answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
@@ -68,7 +34,7 @@ export class GeneratorService {
     	totalPermutations *= range;
       console.log(totalPermutations);
     }
-    totalPermutations = 1000;
+    //totalPermutations = 500000;
 
     // Intializes temp[] array with all the minimum parameters.
     for (var i = 0; i < numberOfVariables; i++) {
@@ -126,6 +92,44 @@ export class GeneratorService {
     return answerArray;
   }
 
+//IN PROGRESS KIM
+  calculateLastVariable(parametersArray, testSet, expression) {
+    let variablesObject = [];
+
+    for (let i = 0; i < parametersArray.length; i++) {
+      variablesObject[parametersArray[i].name] = testSet[i];
+    }
+
+    let lastVariable = nerdamer(expression, variablesObject).toString();
+    console.log(lastVariable);
+
+    return lastVariable;
+  }
+//IN PROGRESS KIM CHANGE TO 'SOLVE()'
+  solve(equation, variable, decimalPlaces) {
+    let result = nerdamer.solve(equation, variable).toString();
+    let answerValues = nerdamer(result);
+    console.log(answerValues);
+    let answerArray = [];
+    let expressionValue;
+
+    for (let i = 0; i < answerValues.symbol.elements.length; i++) {
+      let expressionValue = answerValues.symbol.elements[i].value;
+      console.log(expressionValue);
+      if (expressionValue === '#'|| expressionValue === 'i') {
+        let numerator = answerValues.symbol.elements[i].multiplier.num.value;
+        let denominator = answerValues.symbol.elements[i].multiplier.den.value;
+        expressionValue = numerator/denominator;
+        expressionValue = expressionValue.toFixed(decimalPlaces);
+      }
+      else {
+        expressionValue = nerdamer(expressionValue).text('decimals');
+      }
+      answerArray.push(expressionValue);
+    }
+    return answerArray;
+  }
+
   //problemsToGenerate should be an int, arrayOfCombinations is assumed to be an array of arrays
   /* solveForMin and solveForMax are the minimum and maximum allowed values for the variable to be solved for */
   checkValues(problemsToGenerate, arrayOfCombinations, solveForMin, solveForMax) {
@@ -154,5 +158,23 @@ export class GeneratorService {
     // eg: arrayOfCombinations= [1,1,1,1];
     //use nerdamer to determine and user specification to determine the validity
     return true;
+  }
+
+  generateValidResults(variables: Variable[]): any[] {
+    let result: any[] = [];
+    /* Returns array of permutation sets */
+    let permutationsList: any[] = this.generatePermutations(variables);
+
+    // Check each permutation set if it is valid set or not as per to the user's condition by taking random sets from the 'permutationsList'
+    // If the randomly selected set is valid then push it to the 'result' array
+
+    return result;
+  }
+
+  checkValues(randomSet: number[]): boolean{
+    let result: boolean = false;
+    
+
+    return result;
   }
 }

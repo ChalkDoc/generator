@@ -56,6 +56,7 @@ export class EquationComponent implements OnInit {
       alert('Parsing error!' + e);
     }
   }
+
   extractVariables(input) {
     let variableArr = [];
     let inputArr = input.split(',');
@@ -86,12 +87,15 @@ export class EquationComponent implements OnInit {
     // console.log(formVariables);
     console.log(this.variables);
     // console.log(this.numberOfProblems);
+    //let result = this._generatorService.generatePermutations(this.variables);
+    // console.log(result);
+    // this.generatedCombinations = result;
+    // console.log(this.generatedCombinations.toString());
 
-    let result = this._generatorService.generatePermutations(this.variables);
-    console.log(result);
-    this.generatedCombinations = result;
-    console.log(this.generatedCombinations.toString());
+    // validResults is a list of number sets that work.
+    let validResults = this._generatorService.generateValidResults(this.variables);
   }
+
   /* this method converts object into an array of object*/
   toArray(obj){
     let formVariables = Object.keys(obj).map(function(key){
