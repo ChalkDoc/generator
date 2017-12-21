@@ -12,6 +12,19 @@ export class GeneratorService {
 
   constructor() { }
 
+  calculateLastVariable(parametersArray, testSet, equation) {
+    let variablesObject = [];
+
+    for (let i = 0; i < parametersArray.length; i++) {
+      variablesObject[parametersArray[i].name] = testSet[i];
+    }
+
+    let lastVariable = nerdamer(equation, variablesObject).toString();
+    console.log(lastVariable);
+
+    return lastVariable;
+  }
+
   findValues(equation, variable, decimalPlaces) {
     let result = nerdamer.solve(equation, variable).toString();
     let answerValues = nerdamer(result);
