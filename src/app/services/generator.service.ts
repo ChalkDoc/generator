@@ -36,27 +36,18 @@ export class GeneratorService {
     return answerArray;
   }
 
-  generatePermutations() {
+  generatePermutations(parametersArray: any[]) {
     let temp = [];
-    let parametersArray = [
-      {name: 'a', min: 1, max: 5},
-      {name: 'b', min: 1, max: 5},
-      {name: 'c', min: 1, max: 5},
-      {name: 'x', min: 1, max: 5},
-      {name: 'y', min: 2, max: 7}
-    ];
-
     let arrayOfSets = [];
     let answerArray = [];
-    let numberOfVariables = parametersArray.length;
+    let numberOfVariables = parametersArray.length-1;
 
     var totalPermutations = 1;
     for (var i = 0; i < numberOfVariables; i++) {
     	var range = parametersArray[i].max - parametersArray[i].min + 1;
     	totalPermutations *= range;
-      console.log(totalPermutations);
+      //console.log(totalPermutations);
     }
-
 
     for (var i = 0; i < numberOfVariables; i++) {
     	temp[i] = parametersArray[i].min;
@@ -85,24 +76,36 @@ export class GeneratorService {
 
       answerArray.push(arrayValues);
     }
+    return answerArray;
   }
 
   //problemsToGenerate should be an int, arrayOfCombinations is assumed to be an array of arrays
   /* solveForMin and solveForMax are the minimum and maximum allowed values for the variable to be solved for */
-  checkValues(problemsToGenerate, arrayOCombinations, solveForMin, solveForMax) {
+  checkValues(problemsToGenerate, arrayOfCombinations, solveForMin, solveForMax) {
    	let validCombos = [];
     while (arrayOfCombinations.length > 0 && validCombos.length < problemsToGenerate) {
     	let i = Math.floor(Math.random() * arrayOfCombinations.length);
 
       /* problemSolver should take in an array of values, use the library to solve for the last variable, and output the value of that variable */
-      let x = problemSolver(arrayOfCombinations[i]);
+      // let x = problemSolver(arrayOfCombinations[i]);
 
-      if(x >= solveForMin && x <= solveForMax) {
-      	arrayOfCombinations[i].push(x);
-        validCombos.push(arrayOfCombinations[i]);
+      var currentCombination = arrayOfCombinations.pop();
+      if(this.isValid(currentCombination)) {
+        validCombos.push(currentCombination);
       }
-      arrayOfCombinations.splice(i, 1);
+
+      // if(x >= solveForMin && x <= solveForMax) {
+      // 	arrayOfCombinations[i].push(x);
+      //   validCombos.push(arrayOfCombinations[i]);
+      // }
+      // arrayOfCombinations.splice(i, 1);
     }
     return validCombos;
+  }
+
+  isValid(arrayOfCombinations: any[]) {
+    // eg: arrayOfCombinations= [1,1,1,1];
+    //use nerdamer to determine and user specification to determine the validity
+    return true;
   }
 }

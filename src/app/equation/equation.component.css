@@ -19,9 +19,16 @@ select.ng-invalid{
 select.ng-valid{
   border: 1px solid black;
 }
+.col-md-8{
+  display: none;
+}
 /*select.ng-pristine{
   border: 1px solid red;
 }*/
 /*select.ng-untouched{
   border: 1px solid red;
 }*/
+th, td{
+  padding: 10px;
+  border: 1px solid black;
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Variable } from '../variable';
+import { GeneratorService } from '../services/generator.service';
 
 import * as $ from 'jquery';
 declare var Guppy: any;   //declaring Guppy
@@ -13,10 +14,13 @@ export class EquationComponent implements OnInit {
   guppyBox: any;
   parameterDiv: any;
   variables: Variable[] = [];
+  generatedCombinations: any[] = [];
   numberOfProblems: number;
   userInputInJsonFormat: any;
   randomImgLink = "http://lorempixel.com/400/200";
   color = 'red';
+
+  constructor(private _generatorService: GeneratorService) { }
 
   ngOnInit() {
     Guppy.init_symbols(['/assets/symbols.json']);
@@ -64,9 +68,11 @@ export class EquationComponent implements OnInit {
     }
     return variableArr;
   }
+
   onSubmit(formValue) {
-    $('.col-md-8').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
+    // $('.col-md-8').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
     /* this logic updates the variables array value using the data obtained from the form */
+    $('.col-md-8').show();
     this.numberOfProblems = formValue.numberOfProblems;
     let formVariables = this.toArray(formValue.variables); //converting object into array
     for (let i = 0, j = 0; i < this.variables.length; i++) {
@@ -76,10 +82,15 @@ export class EquationComponent implements OnInit {
       j+= 3;
     }
 
-    console.log(formValue);
-    console.log(formVariables);
+    // console.log(formValue);
+    // console.log(formVariables);
     console.log(this.variables);
-    console.log(this.numberOfProblems);
+    // console.log(this.numberOfProblems);
+
+    let result = this._generatorService.generatePermutations(this.variables);
+    console.log(result);
+    this.generatedCombinations = result;
+    console.log(this.generatedCombinations.toString());
   }
   /* this method converts object into an array of object*/
   toArray(obj){

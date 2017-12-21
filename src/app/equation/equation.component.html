@@ -60,12 +60,39 @@
       </div>
     </div>
     <div class="col-md-8">
-      <img src="http://lorempixel.com/400/200">
+      <!-- <img src="http://lorempixel.com/400/200">
       <div [ngSwitch]="color">
-       <p *ngSwitchCase="'red'">This is red</p>
-       <p *ngSwitchCase="'blue'">This is blue</p>
-       <p *ngSwitchDefault>Invalid color</p>
-     </div>
+         <p *ngSwitchCase="'red'">This is red</p>
+         <p *ngSwitchCase="'blue'">This is blue</p>
+         <p *ngSwitchDefault>Invalid color</p>
+       </div> -->
+       <table >
+         <thead >
+           <ng-container>
+             <tr>
+               <th>a </th>
+               <th>b </th>
+               <th>c </th>
+               <th>x </th>
+      
+             </tr>
+             <!-- <tr *ngFor="let v of variables; let i = index">
+               <th>{{variables[0].name}} </th>
+               <th>{{variables[1].name}} </th>
+               <th>{{variables[2].name}} </th>
+               <th>{{variables[3].name}} </th>
+               <th>{{variables[4].name}} </th>
+             </tr> -->
+           </ng-container>
+         </thead>
+         <tbody>
+           <tr *ngFor="let gc of generatedCombinations; let i = index">
+             <td>{{gc[0]}}</td>
+             <td>{{gc[1]}}</td>
+             <td>{{gc[2]}}</td>
+           </tr>
+         </tbody>
+       </table>
     </div>
 
   </div>
