@@ -90,11 +90,11 @@ export class EquationComponent implements OnInit {
     console.log(this.variables);
     // console.log(this.numberOfProblems);
 
-    let result = this._generatorService.generatePermutations(this.variables);
-    console.log(result);
-    this.generatedCombinations = result;
+    // let result = this._generatorService.generatePermutations(this.variables);
+    // console.log(result);
+    // this.generatedCombinations = result;
 
-    // let result = this._generatorService.generateValidVariableCombination(this.variables, this.numberOfProblems, this.equation);
+    let result = this._generatorService.generateValidVariableCombination(this.variables, this.numberOfProblems, this.equation);
   }
   /* this method converts object into an array of object*/
   toArray(obj){

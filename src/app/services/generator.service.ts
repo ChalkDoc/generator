@@ -10,7 +10,7 @@ declare var nerdamer: any;
 
 @Injectable()
 export class GeneratorService {
-  
+
   constructor() { }
   /** This method inputs parameters of variables with min and max values and
       generates sets that include all the permutations of these variables. **/
@@ -106,7 +106,7 @@ export class GeneratorService {
 //IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
   solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
     //let result = nerdamer.solve(simplifiedEquation, variable).toString(); we dont need this part nw as the equation is already simplified.
-    let variablesObject = {a: 0, b: 0, c: 0}; // We must have a logic that takes the variables array and generate an object of this format; For now I am assuming that we are solving for 'ax^2 + bx +c = 0'
+    let variablesObject = {a: 0, b: 0, c: 0}; // We must have a logic that takes the variables array and generate an object of this format; For now I am assuming that we are solving for 'ax^2 + bx +c = 0' a,b,c,x [1,2,3]
     variablesObject.a = randomSet[0];
     variablesObject.b = randomSet[1];
     variablesObject.c = randomSet[2];
@@ -152,11 +152,12 @@ export class GeneratorService {
   // }
 
   generateValidVariableCombination(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    // From the 'permutationsList' generate a random set or just pop out a set and save it in 'randomSet' varialble
+    // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
     // Check if it is valid set or not as per to the user's condition
     // If it is valid then push it to the 'result' array
     let result: any[] = [];
     let permutationsList: any[] = this.generatePermutations(variables);
+
     let simplifiedEquation = nerdamer.solve(equation, variables[variables.length-1]); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'. here we are making an assumption that we are solving for the last variable. However, we may need some method to determine that
 
     let randomSet: number[] = permutationsList.pop();  // to be generated randomly from the permutationsList
@@ -170,10 +171,50 @@ export class GeneratorService {
   isValid(randomSet: number[], simplifiedEquation: string, variables: Variable[]): boolean{
     let result: boolean = false;
     let answerArray = this.solveForVariable(randomSet, simplifiedEquation, variables,);
-    // compare the 'answerArray' with the users specification
-    // check if value is an integer/decimal
-    // check if value is in range
-    // if it satisfies the user specification, then the 'randomSet' is valid, which means we return true;
+    if (this.compareResultWithUserSpecification(answerArray, variables)) {
+      result = true;
+    }
     return result;
   }
+
+  compareResultWithUserSpecification(value: any[], variables: Variable[]): boolean {
+    // check if value is an integer/decimal.
+    let position = parameters.length - 1;
+    if (parameters[position].decPoint > 0) {
+      if (Math.round(value) != value) {
+        return false;
+      }
+    }
+    // check if value is in range.
+    if (value < parameters[position].min || value > parameters[position].max) {
+      return false;
+    }
+    return true; // if parameters are met, function will return true.
+  }
+
+  calculateLastVariable(parametersArray: Variable[], testSet: number) {
+    let variablesObject = [];
+
+    for (let i = 0; i < parametersArray.length; i++) {
+      variablesObject[parametersArray[i].name] = testSet[i];
+    }
+    return variablesObject;
+  }
+
+  // createValidList(expression: string, variables: Variable[], permutationsList: any[], index: number): any[] {
+  //   let validList: any[] = [];
+  //   // Feed each testSet into an expression in order to evaluate answer.
+  //   for (let i = 0; i < index; i++) {
+  //     let randomIndex = Math.random() * permutationsList.length;
+  //     let testSet = permutationsList[randomIndex];
+  //     let lastVariable = this.calculateLastVariable(variables, testSet);
+  //     // Check validity of answer based on parameters (range and integer).
+  //     if (this.compareResultWithUserSpecification(lastVariable, variables)) {
+  //       testSet.push(lastVariable);  // Send valid array to valid list.
+  //       validList.push(testSet);
+  //     }
+  //   }
+  //
+  //   return validList;
+  // }
 }
