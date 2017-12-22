@@ -10,7 +10,7 @@ declare var nerdamer: any;
 
 @Injectable()
 export class GeneratorService {
-
+  
   constructor() { }
   /** This method inputs parameters of variables with min and max values and
       generates sets that include all the permutations of these variables. **/
@@ -57,7 +57,7 @@ export class GeneratorService {
       if (temp[numberOfVariables - 1] <= parametersArray[numberOfVariables - 1].max) {
         temp[numberOfVariables - 1]
         += 1/Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
-        //temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
+        // temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
       }
 
       /** Else takes care of the situation where elements other than the last
