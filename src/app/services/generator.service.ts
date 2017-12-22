@@ -92,21 +92,21 @@ export class GeneratorService {
     return answerArray;
   }
 
-//IN PROGRESS KIM
-  calculateLastVariable(parametersArray, testSet, expression) {
-    let variablesObject = [];
-
-    for (let i = 0; i < parametersArray.length; i++) {
-      variablesObject[parametersArray[i].name] = testSet[i];
-    }
-
-    let lastVariable = nerdamer(expression, variablesObject).toString();
-    console.log(lastVariable);
-
-    return lastVariable;
-  }
-//IN PROGRESS KIM CHANGE TO 'SOLVE()'
-  solve(equation, variable, decimalPlaces) {
+//IN PROGRESS KIM---possible refactoring
+  // calculateLastVariable(parametersArray, testSet, expression) {
+  //   let variablesObject = [];
+  //
+  //   for (let i = 0; i < parametersArray.length; i++) {
+  //     variablesObject[parametersArray[i].name] = testSet[i];
+  //   }
+  //
+  //   let lastVariable = nerdamer(expression, variablesObject).toString();
+  //   console.log(lastVariable);
+  //
+  //   return lastVariable;
+  // }
+//IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
+  solveForVariable(equation: string, variable: string, decimalPlaces: number): any[] {
     let result = nerdamer.solve(equation, variable).toString();
     let answerValues = nerdamer(result);
     console.log(answerValues);
@@ -132,27 +132,27 @@ export class GeneratorService {
 
   //problemsToGenerate should be an int, arrayOfCombinations is assumed to be an array of arrays
   /* solveForMin and solveForMax are the minimum and maximum allowed values for the variable to be solved for */
-  checkValues(problemsToGenerate, arrayOfCombinations, solveForMin, solveForMax) {
+  /*checkValues(problemsToGenerate, arrayOfCombinations, solveForMin, solveForMax) {
    	let validCombos = [];
     while (arrayOfCombinations.length > 0 && validCombos.length < problemsToGenerate) {
     	let i = Math.floor(Math.random() * arrayOfCombinations.length);
 
-      /* problemSolver should take in an array of values, use the library to solve for the last variable, and output the value of that variable */
-      // let x = problemSolver(arrayOfCombinations[i]);
+      // problemSolver should take in an array of values, use the library to solve for the last variable, and output the value of that variable
+      let x = problemSolver(arrayOfCombinations[i]);
 
       var currentCombination = arrayOfCombinations.pop();
       if(this.isValid(currentCombination)) {
         validCombos.push(currentCombination);
       }
 
-      // if(x >= solveForMin && x <= solveForMax) {
-      // 	arrayOfCombinations[i].push(x);
-      //   validCombos.push(arrayOfCombinations[i]);
-      // }
-      // arrayOfCombinations.splice(i, 1);
+      if(x >= solveForMin && x <= solveForMax) {
+      	arrayOfCombinations[i].push(x);
+        validCombos.push(arrayOfCombinations[i]);
+      }
+      arrayOfCombinations.splice(i, 1);
     }
     return validCombos;
-  }
+  } */
 
   isValid(arrayOfCombinations: any[]) {
     // eg: arrayOfCombinations= [1,1,1,1];
@@ -164,16 +164,41 @@ export class GeneratorService {
     let result: any[] = [];
     /* Returns array of permutation sets */
     let permutationsList: any[] = this.generatePermutations(variables);
-
+    // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
     // Check each permutation set if it is valid set or not as per to the user's condition by taking random sets from the 'permutationsList'
     // If the randomly selected set is valid then push it to the 'result' array
+    //
+    let randomSet: number[]= [1,1,1,2];// to be generated randomly from the permutationsList
+    let answerArray = this.solveForVariable(equation, variable, 1);
 
+
+    if (this.checkValues(randomSet)) {
+      result.push(randomSet);
+    }
     return result;
   }
 
-  checkValues(randomSet: number[]): boolean{
+  compareResultWithUserSpecification(value, parameters): boolean {
+    // check if value is an integer/decimal
+
+    // check if value is in range
+
+    // if value is an integer/decimal and in range, then return true.  Otherwise, false.
+    return true;
+  }
+
+  checkValues(randomSet: number[], numberOfProblemsToGenerate: number, variable: Variable): boolean{
     let result: boolean = false;
-    
+    // Put the logic that checks the validity of the 'randomSet'
+    // Determine which variable to calculate for
+    // call nerdamer.solve() to get the simplified form;
+    // call nerdamer(dimplified form of equation) to get the result
+    let equation: string = "ax^2+bx+c=0"; //
+
+    let answerArray = this.solveForVariable(equation, variable, 1);
+    result = this.compareResultWithUserSpecification(answerArray, variable);
+    // compare the 'answerArray' with the users specification --- we need to make a method
+    // if it satisfies the user specification, then the 'randomSet' is valid, which means we return true;
 
     return result;
   }
