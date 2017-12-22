@@ -166,12 +166,20 @@ export class GeneratorService {
   }
 
   compareResultWithUserSpecification(value, parameters): boolean {
-    // check if value is an integer/decimal
+    // check if value is an integer/decimal.
+    let position = parameters.length - 1;
+    if (parameters[position].decPoint > 0) {
+      if (Math.round(value) != value) {
+        return false;
+      }
+    }
 
-    // check if value is in range
-
-    // if value is an integer/decimal and in range, then return true.  Otherwise, false.
-    return true;
+    // check if value is in range.
+    if (value < parameters[position].min || value > parameters[position].max) {
+      return false;
+    }
+    
+    return true; // if parameters are met, function will return true.
   }
 
   checkValues(randomSet: number[], numberOfProblemsToGenerate: number, variable: Variable): boolean{
