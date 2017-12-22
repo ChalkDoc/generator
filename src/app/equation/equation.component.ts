@@ -13,8 +13,10 @@ declare var Guppy: any;   //declaring Guppy
 export class EquationComponent implements OnInit {
   guppyBox: any;
   parameterDiv: any;
+  equation: string;
   variables: Variable[] = [];
   generatedCombinations: any[] = [];
+  generatedValidCombinations: any[] = [];
   numberOfProblems: number;
   userInputInJsonFormat: any;
   // randomImgLink = "http://lorempixel.com/400/200";
@@ -39,6 +41,7 @@ export class EquationComponent implements OnInit {
   output (type){
     try {
       let content = Guppy.instances['equationBox'].backend.get_content(type);
+      this.equation = Guppy.instances['equationBox'].backend.get_content('text');
       let stringifiedUserInput = content.toString();
       let extractedVars = this.extractVariables(content.toString());
       extractedVars = extractedVars.sort();
@@ -87,9 +90,11 @@ export class EquationComponent implements OnInit {
     console.log(this.variables);
     // console.log(this.numberOfProblems);
 
-    let result = this._generatorService.generatePermutations(this.variables);
-    console.log(result);
-    this.generatedCombinations = result;
+    // let result = this._generatorService.generatePermutations(this.variables);
+    // console.log(result);
+    // this.generatedCombinations = result;
+
+    let result = this._generatorService.generateValidVariableCombination(this.variables, this.numberOfProblems, this.equation);
   }
   /* this method converts object into an array of object*/
   toArray(obj){
