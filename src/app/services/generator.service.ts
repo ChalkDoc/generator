@@ -88,7 +88,6 @@ export class GeneratorService {
 
       /* problemSolver should take in an array of values, use the library to solve for the last variable, and output the value of that variable */
       // let x = problemSolver(arrayOfCombinations[i]);
-
       var currentCombination = arrayOfCombinations.pop();
       if(this.isValid(currentCombination)) {
         validCombos.push(currentCombination);

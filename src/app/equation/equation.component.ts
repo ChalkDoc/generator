@@ -17,8 +17,8 @@ export class EquationComponent implements OnInit {
   generatedCombinations: any[] = [];
   numberOfProblems: number;
   userInputInJsonFormat: any;
-  randomImgLink = "http://lorempixel.com/400/200";
-  color = 'red';
+  // randomImgLink = "http://lorempixel.com/400/200";
+  // color = 'red';
 
   constructor(private _generatorService: GeneratorService) { }
 
@@ -90,7 +90,6 @@ export class EquationComponent implements OnInit {
     let result = this._generatorService.generatePermutations(this.variables);
     console.log(result);
     this.generatedCombinations = result;
-    console.log(this.generatedCombinations.toString());
   }
   /* this method converts object into an array of object*/
   toArray(obj){
