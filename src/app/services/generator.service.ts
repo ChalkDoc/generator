@@ -92,20 +92,25 @@ export class GeneratorService {
     return answerArray;
   }
 
-//IN PROGRESS KIM---possible refactoring
-  // calculateLastVariable(parametersArray, testSet, expression) {
-  //   let variablesObject = [];
-  //
-  //   for (let i = 0; i < parametersArray.length; i++) {
-  //     variablesObject[parametersArray[i].name] = testSet[i];
-  //   }
-  //
-  //   let lastVariable = nerdamer(expression, variablesObject).toString();
-  //   console.log(lastVariable);
-  //
-  //   return lastVariable;
-  // }
-//IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
+  calculateLastVariable(parametersArray, testSet, expression) {
+    let variablesObject = [];
+  
+    for (let i = 0; i < parametersArray.length; i++) {
+      variablesObject[parametersArray[i].name] = testSet[i];
+    }
+  
+    let lastVariable = nerdamer(expression, variablesObject).toString();
+    console.log(lastVariable);
+  
+    return lastVariable;
+  }
+
+  solveForExpression(equation, variable): string {
+    let result = nerdamer.solve(equation, variable).toString();
+    
+    return result;
+  }
+
   solveForVariable(equation: string, variable: string, decimalPlaces: number): any[] {
     let result = nerdamer.solve(equation, variable).toString();
     let answerValues = nerdamer(result);
@@ -160,24 +165,6 @@ export class GeneratorService {
     return true;
   }
 
-  generateValidResults(variables: Variable[]): any[] {
-    let result: any[] = [];
-    /* Returns array of permutation sets */
-    let permutationsList: any[] = this.generatePermutations(variables);
-    // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
-    // Check each permutation set if it is valid set or not as per to the user's condition by taking random sets from the 'permutationsList'
-    // If the randomly selected set is valid then push it to the 'result' array
-    //
-    let randomSet: number[]= [1,1,1,2];// to be generated randomly from the permutationsList
-    let answerArray = this.solveForVariable(equation, variable, 1);
-
-
-    if (this.checkValues(randomSet)) {
-      result.push(randomSet);
-    }
-    return result;
-  }
-
   compareResultWithUserSpecification(value, parameters): boolean {
     // check if value is an integer/decimal
 
@@ -195,11 +182,66 @@ export class GeneratorService {
     // call nerdamer(dimplified form of equation) to get the result
     let equation: string = "ax^2+bx+c=0"; //
 
-    let answerArray = this.solveForVariable(equation, variable, 1);
-    result = this.compareResultWithUserSpecification(answerArray, variable);
+    // let answerArray = this.solveForVariable(equation, variable, 1);
+    // result = this.compareResultWithUserSpecification(answerArray, variable);
     // compare the 'answerArray' with the users specification --- we need to make a method
     // if it satisfies the user specification, then the 'randomSet' is valid, which means we return true;
 
     return result;
   }
+
+  popFromList(list, index) {
+    list.splice(index, 1);
+  }
+
+  findRandomIndex(index: number): number {
+    return Math.random() * index;
+  }
+
+  createValidList(expression: string, variables: Variable[], permutationsList: any[], index: number): any[] {
+    let validList: any[] = [];
+  
+  // Feed each testSet into an expression in order to evaluate answer.
+    for (let i = 0; i < index; i++) {
+      let randomIndex = this.findRandomIndex(permutationsList.length);
+      let testSet = permutationsList[randomIndex];
+      let lastVariable = this.calculateLastVariable(variables, testSet, expression);
+      
+      // Check validity of answer based on parameters (range and integer).
+      if (this.compareResultWithUserSpecification(lastVariable, variables)) {
+        testSet.push(lastVariable);  // Send valid array to valid list.
+        validList.push(testSet);
+      }
+      
+      // Pop set out of permutations list.
+      this.popFromList(permutationsList, randomIndex);
+    }
+
+    return validList;
+  }
+
+  generateValidResults(equation: string, variables: Variable[], numberOfProblemsToGenerate: number): any[] {
+    let result: any[];
+
+    
+    // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
+    // Check each permutation set if it is valid set or not as per to the user's condition by taking random sets from the 'permutationsList'
+    // If the randomly selected set is valid then push it to the 'result' array
+    //
+    //let randomSet: number[]= [1,1,1,2];// to be generated randomly from the permutationsList
+
+    // Solve Equation for a variable to make an expression.
+    let variable = 'x';
+    let expression = this.solveForExpression(equation, variable);
+
+    /* Returns array of permutation sets.  Generate a random 
+        testSet based on parameters. (Subtract last variable.) */
+    let permutationsList: any[] = this.generatePermutations(variables);
+
+    // Go through process to find list of valid sets.
+    result = this.createValidList(expression, variables, permutationsList, numberOfProblemsToGenerate);
+
+    return result;
+  }
+
 }

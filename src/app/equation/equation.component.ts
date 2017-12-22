@@ -10,6 +10,7 @@ declare var Guppy: any;   //declaring Guppy
   templateUrl: './equation.component.html',
   styleUrls: ['./equation.component.css']
 })
+
 export class EquationComponent implements OnInit {
   guppyBox: any;
   parameterDiv: any;
@@ -19,6 +20,7 @@ export class EquationComponent implements OnInit {
   userInputInJsonFormat: any;
   randomImgLink = "http://lorempixel.com/400/200";
   color = 'red';
+  ourEquation: string;
 
   constructor(private _generatorService: GeneratorService) { }
 
@@ -40,6 +42,7 @@ export class EquationComponent implements OnInit {
     try {
       let content = Guppy.instances['equationBox'].backend.get_content(type);
       let stringifiedUserInput = content.toString();
+      //ourEquation = stringifiedUserInput;
       let extractedVars = this.extractVariables(content.toString());
       extractedVars = extractedVars.sort();
       console.log(extractedVars);
@@ -93,7 +96,9 @@ export class EquationComponent implements OnInit {
     // console.log(this.generatedCombinations.toString());
 
     // validResults is a list of number sets that work.
-    let validResults = this._generatorService.generateValidResults(this.variables);
+    let equation = 'ax^2 + bx + c = 0';
+    let numberOfProblems = 33;
+    let validResults = this._generatorService.generateValidResults(equation, this.variables, numberOfProblems);
   }
 
   /* this method converts object into an array of object*/
