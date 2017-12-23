@@ -2,6 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Variable } from '../variable';
 import { GeneratorService } from '../services/generator.service';
 
+import './../../../node_modules/nerdamer/Solve.js';
+import './../../../node_modules/nerdamer/Algebra.js';
+import './../../../node_modules/nerdamer/Calculus.js';
+import './../../../node_modules/nerdamer/Extra.js';
+
+declare var nerdamer: any;
+
 import * as $ from 'jquery';
 declare var Guppy: any;   //declaring Guppy
 
@@ -40,12 +47,9 @@ export class EquationComponent implements OnInit {
     it also converts the mathematical equation/expression into the desired format type(latex, asciimath, text, ast, eqns, function, xml)*/
   output (type){
     try {
-      let content = Guppy.instances['equationBox'].backend.get_content(type);
       this.equation = Guppy.instances['equationBox'].backend.get_content('text');
-      let stringifiedUserInput = content.toString();
-      let extractedVars = this.extractVariables(content.toString());
-      extractedVars = extractedVars.sort();
-      console.log(extractedVars);
+      let extractedVars = nerdamer(this.equation).variables().sort();
+      console.log("extractedVars: " + extractedVars);
       /* creating variable instance and pushing each variable instance into the variables array*/
       for (let i = 0; i < extractedVars.length; i++) {
         let varName:string = extractedVars[i];
@@ -58,18 +62,6 @@ export class EquationComponent implements OnInit {
     } catch (e) {
       alert('Parsing error!' + e);
     }
-  }
-  extractVariables(input) {
-    let variableArr = [];
-    let inputArr = input.split(',');
-    for (let i = 0; i < inputArr.length - 1; i++) {
-      if (inputArr[i] === 'var') {
-        if (variableArr.includes(inputArr[i + 1]) === false) {
-         variableArr.push(inputArr[i + 1]);
-        }
-      }
-    }
-    return variableArr;
   }
 
   onSubmit(formValue) {
@@ -85,11 +77,7 @@ export class EquationComponent implements OnInit {
       j+= 3;
     }
 
-    // console.log(formValue);
-    // console.log(formVariables);
     console.log(this.variables);
-    // console.log(this.numberOfProblems);
-
     let result = this._generatorService.generatePermutations(this.variables);
     console.log(result);
     this.generatedCombinations = result;
