@@ -113,23 +113,28 @@ export class GeneratorService {
 
     let answerValues = nerdamer(simplifiedEquation, variablesObject);
     console.log(answerValues);
-    let answerArray = [];
-    let expressionValue;
-
-    for (let i = 0; i < answerValues.symbol.elements.length; i++) {
-      let expressionValue = answerValues.symbol.elements[i].value;
-      console.log(expressionValue);
-      if (expressionValue === '#'|| expressionValue === 'i') {
-        let numerator = answerValues.symbol.elements[i].multiplier.num.value;
-        let denominator = answerValues.symbol.elements[i].multiplier.den.value;
-        expressionValue = numerator/denominator;
-        expressionValue = expressionValue.toFixed(variables[variables.length-1].decPoint);
+    let answerArray: any[] = [];
+    let expressionValue: string  = nerdamer(answerValues).text('decimal');
+    let expressionValueArray: string[] = expressionValue.split(/[\[,\]]/);
+    for (let i = 0; i < expressionValueArray.length; i++) {
+      if (expressionValueArray[i] !== "") {
+        answerArray.push(expressionValueArray[i]);  
       }
-      else {
-        expressionValue = nerdamer(expressionValue).text('decimals');
-      }
-      answerArray.push(expressionValue);
     }
+    // for (let i = 0; i < answerValues.symbol.elements.length; i++) {
+    //   let expressionValue = answerValues.symbol.elements[i].value;
+    //   console.log(expressionValue);
+    //   if (expressionValue === '#'|| expressionValue === 'i') {
+    //     let numerator = answerValues.symbol.elements[i].multiplier.num.value;
+    //     let denominator = answerValues.symbol.elements[i].multiplier.den.value;
+    //     expressionValue = numerator/denominator;
+    //     expressionValue = expressionValue.toFixed(variables[variables.length-1].decPoint);
+    //   }
+    //   else {
+    //     expressionValue = nerdamer(expressionValue).text('decimals');
+    //   }
+    //   answerArray.push(expressionValue);
+    // }
     return answerArray;
   }
 
