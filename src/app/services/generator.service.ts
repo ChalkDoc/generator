@@ -12,17 +12,17 @@ declare var nerdamer: any;
 export class GeneratorService {
 
   constructor() { }
-  /** This method inputs parameters of variables with min and max values and
-      generates sets that include all the permutations of these variables. **/
+  /* This method inputs parameters of variables with min and max values and
+    generates sets that include all the permutations of these variables. */
   // IN PROGRESS FOR DECIMAL ROBERT
   generatePermutations(parametersArray: Variable[]): any[] {
     let temp = []; // Stores running array of values for each index place.
     let answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
-    let numberOfVariables = parametersArray.length-1;
+    let numberOfVariables = parametersArray.length;
 
     /** For loop calculates the total number of permutations based on the range
-        of the input parameters.  **/
+      of the input parameters.  **/
     var totalPermutations = 1;
     for (var i = 0; i < numberOfVariables; i++) {
       /** Range includes subtracting minimum from maximum and adding 1 to
@@ -39,9 +39,9 @@ export class GeneratorService {
     	temp[i] = parametersArray[i].min;
     }
 
-    /** This method is run as a for loop through all the calculated
-        Permutations.  The index value is only used in order to track when
-        all sets are generated. **/
+    /* This method is run as a for loop through all the calculated
+      Permutations.  The index value is only used in order to track when
+      all sets are generated. */
     for (var index = 0; index < totalPermutations; index++) {
     	var arrayValues = [];  // This will be pushed to final answerArray.
 
@@ -50,10 +50,10 @@ export class GeneratorService {
       	arrayValues[i] = temp[i];
       }
 
-      /** If statement is true if the last element has not reached the maximum
-          value.  It causes the last element to increase to the next in
-          order. **/
-          // Gets temp ready for the next run.
+      /*If statement is true if the last element has not reached the maximum
+        value.  It causes the last element to increase to the next in
+        order. **/
+      // Gets temp ready for the next run.
       if (temp[numberOfVariables - 1] <= parametersArray[numberOfVariables - 1].max) {
         temp[numberOfVariables - 1]
         += 1/Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
@@ -90,7 +90,7 @@ export class GeneratorService {
     return answerArray;
   }
 
-//IN PROGRESS KIM---possible refactoring
+  //IN PROGRESS KIM---possible refactoring
   // calculateLastVariable(parametersArray, testSet, expression) {
   //   let variablesObject = [];
   //
@@ -179,16 +179,16 @@ export class GeneratorService {
 
   compareResultWithUserSpecification(value: any[], variables: Variable[]): boolean {
     // check if value is an integer/decimal.
-    let position = parameters.length - 1;
-    if (parameters[position].decPoint > 0) {
-      if (Math.round(value) != value) {
-        return false;
-      }
-    }
-    // check if value is in range.
-    if (value < parameters[position].min || value > parameters[position].max) {
-      return false;
-    }
+    // let position = parameters.length - 1;
+    // if (parameters[position].decPoint > 0) {
+    //   if (Math.round(value) != value) {
+    //     return false;
+    //   }
+    // }
+    // // check if value is in range.
+    // if (value < parameters[position].min || value > parameters[position].max) {
+    //   return false;
+    // }
     return true; // if parameters are met, function will return true.
   }
 
