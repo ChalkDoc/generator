@@ -173,6 +173,7 @@ export class GeneratorService {
     let simplifiedEquation = nerdamer.solve(equation, variableToSolve);
     return simplifiedEquation.toString();
   }
+
   isValid(randomSet: number[], simplifiedEquation: string, variables: Variable[]): boolean{
     let result: boolean = false;
     let answerArray = this.solveForVariable(randomSet, simplifiedEquation, variables,);
@@ -211,6 +212,7 @@ export class GeneratorService {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum and the minimum is inclusive
   }
+
   splicePermutationSetRandomly(permutationsList: any[]): number[] {
     let result: number[] = [];
     let splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length-1);
