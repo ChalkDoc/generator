@@ -158,16 +158,18 @@ export class GeneratorService {
     let result: any[] = [];
     let permutationsList: any[] = this.generatePermutations(variables);
 
-    let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length-1]); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'. here we are making an assumption that we are solving for the last variable. However, we may need some method to determine that
+    let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length-1].name); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
+    while (result.length === numberOfProblems || permutationsList.length === 0) {
+      let randomSet: number[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
 
-    let randomSet: number[] = permutationsList.pop();  // to be generated randomly from the permutationsList
-
-    if (this.isValid(randomSet, simplifiedEquation, variables)) {
-      result.push(randomSet);
+      if (this.isValid(randomSet, simplifiedEquation, variables)) {
+        result.push(randomSet);
+      }
     }
+
     return result;
   }
-  simplifyEquation(equation: string, variableToSolve: string): string[] {
+  simplifyEquation(equation: string, variableToSolve: string): string {
     let simplifiedEquation = nerdamer.solve(equation, variableToSolve);
     return simplifiedEquation.toString();
   }
@@ -204,6 +206,17 @@ export class GeneratorService {
     return variablesObject;
   }
 
+  getRandomIntInclusive(min: number, max: number): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum and the minimum is inclusive
+  }
+  splicePermutationSetRandomly(permutationsList: any[]): number[] {
+    let result: number[] = [];
+    let splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length-1);
+    result = permutationsList.splice(splicingIndex, 1);
+    return result;
+  }
   // createValidList(expression: string, variables: Variable[], permutationsList: any[], index: number): any[] {
   //   let validList: any[] = [];
   //   // Feed each testSet into an expression in order to evaluate answer.
