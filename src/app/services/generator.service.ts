@@ -158,7 +158,7 @@ export class GeneratorService {
     let result: any[] = [];
     let permutationsList: any[] = this.generatePermutations(variables);
 
-    let simplifiedEquation = nerdamer.solve(equation, variables[variables.length-1]); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'. here we are making an assumption that we are solving for the last variable. However, we may need some method to determine that
+    let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length-1]); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'. here we are making an assumption that we are solving for the last variable. However, we may need some method to determine that
 
     let randomSet: number[] = permutationsList.pop();  // to be generated randomly from the permutationsList
 
@@ -167,7 +167,10 @@ export class GeneratorService {
     }
     return result;
   }
-
+  simplifyEquation(equation: string, variableToSolve: string): string[] {
+    let simplifiedEquation = nerdamer.solve(equation, variableToSolve);
+    return simplifiedEquation.toString();
+  }
   isValid(randomSet: number[], simplifiedEquation: string, variables: Variable[]): boolean{
     let result: boolean = false;
     let answerArray = this.solveForVariable(randomSet, simplifiedEquation, variables,);

@@ -28,7 +28,7 @@ describe('GenertorService and all of its methods', () => {
     expect(generatedCombinations.length).toBe(625);
   });
 
-  it('the return value should contain [1,1,1,1] when calling generatePermutations(variables)', () => {
+  it('should contain [1,1,1,1] when calling generatePermutations(variables)', () => {
     let a = new Variable("a", 0, 1, 5);
     let b = new Variable("b", 0, 1, 5);
     let c = new Variable("c", 0, 1, 5);
@@ -49,7 +49,7 @@ describe('GenertorService and all of its methods', () => {
     expect(generatedCombinations.length).toBe(125);
   });
 
-  it('the return value should contain [1,1,1,1] when calling generatePermutations(variables)', () => {
+  it('should contain [1,1,1,1] when calling generatePermutations(variables)', () => {
     let a = new Variable("a", 0, 1, 5);
     let b = new Variable("b", 0, 1, 5);
     let c = new Variable("c", 0, 1, 5);
@@ -68,7 +68,7 @@ describe('GenertorService and all of its methods', () => {
     expect(generatedCombinations.length).toBe(25);
   });
 
-  it('the return value should contain [1,1] when calling generatePermutations(variables)', () => {
+  it('should contain [1,1] when calling generatePermutations(variables)', () => {
     let a = new Variable("a", 0, 1, 5);
     let b = new Variable("b", 0, 1, 5);
     let variables: Variable[] = [a, b];
@@ -86,12 +86,44 @@ describe('GenertorService and all of its methods', () => {
     expect(generatedCombinations.length).toBe(5);
   });
 
-  it('the return value should contain [1] when calling generatePermutations(variables)', () => {
+  it('should contain [1] when calling generatePermutations(variables)', () => {
     let a = new Variable("a", 0, 1, 5);
     let b = new Variable("b", 0, 1, 5);
     let variables: Variable[] = [a];
 
     let generatedCombinations = _generatorService.generatePermutations(variables);
     expect(generatedCombinations).toContain([1]);
+  });
+
+  it('should return "[-a]" when calling simplifyEquation(equation, variableToSolve)', () => {
+    let equation = "x + a = 0";
+    let variableToSolve = new Variable("x",  0, 0, 0);
+
+    let simplifiedEquation = _generatorService.simplifyEquation(equation, variableToSolve.name);
+    expect(simplifiedEquation.toString()).toBe('[-a]');
+  });
+
+  it('should return "[sqrt(-a), -sqrt(-a)]" when calling simplifyEquation(equation, variableToSolve)', () => {
+    let equation = "x^2 + a = 0";
+    let variableToSolve = new Variable("x",  0, 0, 0);
+
+    let simplifiedEquation = _generatorService.simplifyEquation(equation, variableToSolve.name);
+    expect(simplifiedEquation.toString()).toBe('[sqrt(-a),-sqrt(-a)]');
+  });
+
+  it('should return "[(-220328269/832788672)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((-138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3)]" when calling simplifyEquation(equation, variableToSolve)', () => {
+    let equation = "x^3 + a = 0";
+    let variableToSolve = new Variable("x",  0, 0, 0);
+
+    let simplifiedEquation = _generatorService.simplifyEquation(equation, variableToSolve.name);
+    expect(simplifiedEquation.toString()).toBe('[(-220328269/832788672)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((-138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3)]');
+  });
+
+  it('should return "[(1/2)*(-b+sqrt(-4*a*c+b^2))*a^(-1),(1/2)*(-b-sqrt(-4*a*c+b^2))*a^(-1)]" when calling simplifyEquation(equation, variableToSolve)', () => {
+    let equation = "a*x^2 + b*x + c = 0";
+    let variableToSolve = new Variable("x",  0, 0, 0);
+
+    let simplifiedEquation = _generatorService.simplifyEquation(equation, variableToSolve.name);
+    expect(simplifiedEquation.toString()).toBe('[(1/2)*(-b+sqrt(-4*a*c+b^2))*a^(-1),(1/2)*(-b-sqrt(-4*a*c+b^2))*a^(-1)]');
   });
 });
