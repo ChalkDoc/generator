@@ -258,6 +258,7 @@ export class GeneratorService {
     parameters.splice(index, 1);
   }  
 
+  // Determines how many solutions are created when solving for each variable.
   calculateComplexityFactor(variable, equation) {
     let count = this.solveForExpression(variable, equation).length;
    
@@ -281,6 +282,7 @@ export class GeneratorService {
     return index;
   }
 
+  // Method examines parameters to determine how many variables can be decimals.
   calculateTotalDecimals(parameters) {
     let decimals = 0;
     for (let i = 0; i < parameters.length; i++) {
@@ -292,6 +294,7 @@ export class GeneratorService {
     return decimals;
   }
 
+  // Determines solving course of action based on variables and decimals.
   solverDecisionTree(parameters) {
     let totalDecimals = this.calculateTotalDecimals(parameters);
 
