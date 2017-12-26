@@ -252,4 +252,58 @@ export class GeneratorService {
     return result;
   }
 
+  // This method moves the given variable parameters to the last variable position.
+  setLastVariable(index, parameters) {
+    parameters.push(parameters[index]);
+    parameters.splice(index, 1);
+  }  
+
+  calculateComplexityFactor(variable, equation) {
+    let count = this.solveForExpression(variable, equation).length;
+   
+    return count;
+  }
+
+  /** Determine the best variable for the computer to calculate. Perform nerdamer solve
+   * method on each variable in order to determine complexity. **/
+  determineCalculationVariable(parameters, equation) {
+    let complexityFactor = 1;
+    let index = 0;
+
+    for (let i; i < parameters.length; i++) {
+      let factor = this.calculateComplexityFactor(parameters[i].name, equation);
+
+      if (factor <= complexityFactor) {
+        index = i;
+      }
+    }
+
+    return index;
+  }
+
+  calculateTotalDecimals(parameters) {
+    let decimals = 0;
+    for (let i = 0; i < parameters.length; i++) {
+      if (parameters[i].decPoint > 1) {
+        decimals++;
+      }
+    }
+
+    return decimals;
+  }
+
+  solverDecisionTree(parameters) {
+    let totalDecimals = this.calculateTotalDecimals(parameters);
+
+    if (totalDecimals == 0) {
+      // All variables are to be integers.  Use permutations table.
+    }
+    else if (totalDecimals < parameters.length){
+      // Some variable parameters are decimals and some are integers.
+    }
+    else {
+      // All variable parameters are decimals.
+    }
+  }
+
 }
