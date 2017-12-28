@@ -92,12 +92,26 @@ export class GeneratorService {
     return answerArray;
   }
 
-  calculateLastVariable(parametersArray, testSet, expression) {
+  formVariablesObject(parameters: any[], set: number[]): any[] {
     let variablesObject = [];
-  
-    for (let i = 0; i < parametersArray.length; i++) {
-      variablesObject[parametersArray[i].name] = testSet[i];
-    }
+    
+      for (let i = 0; i < parameters.length; i++) {
+        variablesObject[parameters[i].name] = set[i];
+      }
+
+    return variablesObject;
+  }
+
+  convertProblemToLaTeX(parametersArray, equation, solutionSet): string {
+    let variablesObject = this.formVariablesObject(parametersArray, solutionSet);
+
+    let laTeXAnswer = nerdamer.convertToLaTeX(equation, variablesObject);
+
+    return laTeXAnswer;
+  }
+
+  calculateLastVariable(parametersArray, testSet, expression) {
+    let variablesObject = this.formVariablesObject(parametersArray, testSet);
   
     let lastVariable = nerdamer(expression, variablesObject).toString();
     console.log(lastVariable);
