@@ -85,7 +85,7 @@ export class EquationComponent implements OnInit {
     // let result = this._generatorService.generateValidVariableCombination(this.variables, this.numberOfProblems, this.equation);
   }
   /* this method converts object into an array of object*/
-  toArray(obj){
+  toArray(obj) {
     let formVariables = Object.keys(obj).map(function(key){
       return [String(key),obj[key]]
     });

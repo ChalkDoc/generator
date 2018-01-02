@@ -205,7 +205,7 @@ describe('GenertorService and all of its methods', () => {
   });
 
   it('should return 2*i and -2*i upon calling solveForVariable(randomSet, simplifiedEquation, variables)', () => {
-  const a = new Variable('a', 0, 1, 5);
+    const a = new Variable('a', 0, 1, 5);
     const b = new Variable('b', 0, 1, 5);
     const c = new Variable('c', 0, 1, 5);
     const x = new Variable('x', 0, -100, 100);
@@ -217,5 +217,23 @@ describe('GenertorService and all of its methods', () => {
     
     const result =  _generatorService.solveForVariable(randomSet, simplifiedEquation, variables);
     expect(result.toString()).toBe('2*i,-2*i');
+  });
+
+  it('should return [1, 0, 0, 5, -5] upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
+    const a = new Variable('a', 0, 1, 10);
+    const b = new Variable('b', 0, 1, 10);
+    const c = new Variable('c', 0, 1, 10);
+    const variables: Variable[] = [a, b, c];
+
+    const numberOfProblems = 1;
+    
+    const equation = 'a^2 + b^2 = c^2';
+    
+    const result =  _generatorService.generateValidVariableCombination(variables, numberOfProblems, equation);
+    console.log(result);
+    console.log(result[3]);
+    
+    //expect(result.toString()).toBe('1,0,0,5,-5');
+    expect(result[result.length-1].toString()).toBe('5,-5');
   });
 });

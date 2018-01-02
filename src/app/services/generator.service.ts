@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Variable } from '../variable';
 
+import './../../../node_modules/nerdamer/nerdamer.core.js';
 import './../../../node_modules/nerdamer/Solve.js';
 import './../../../node_modules/nerdamer/Algebra.js';
 import './../../../node_modules/nerdamer/Calculus.js';
@@ -32,7 +33,7 @@ export class GeneratorService {
     	totalPermutations *= range;
       console.log(totalPermutations);
     }
-    //totalPermutations = 500000;
+    // totalPermutations = 500000;
 
     // Intializes temp[] array with all the minimum parameters.
     for (let i = 0; i < numberOfVariables; i++) {
@@ -82,7 +83,7 @@ export class GeneratorService {
         // Adds to last element in array.
         temp[numberOfVariables - 1]
         += 1/Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
-        //temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
+        // temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
       }
       // For each index value, a set is pushed to the answerArray.
       answerArray.push(arrayValues);
@@ -92,22 +93,29 @@ export class GeneratorService {
 
   createVariableObject(randomSet: number[], variables: Variable[]): object {
     let variablesObject = {};
-
     for (var i = 0; i < variables.length-1; i++) {
       let ojectName = variables[i].name;
-      variablesObject[variables[i].name] = randomSet[i];
+      variablesObject[ojectName] = randomSet[i];
     }
     return variablesObject;
   }
-  //IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
+  // IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
   solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
     let answerArray: any[] = [];
+    
     let variablesObject = this.createVariableObject(randomSet, variables);
 
     let answer: string = nerdamer(simplifiedEquation, variablesObject);
     console.log(answer);
+    
     let decimalAnswer: string  = nerdamer(answer).text('decimal');
+    console.log('decimalAnswer');
+    console.log(decimalAnswer);
+    
+    
     let decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
+    console.log(decimalAnswer);
+    
     for (let i = 0; i < decimalAnswerArray.length; i++) {
       if (decimalAnswerArray[i] !== '') {
         answerArray.push(decimalAnswerArray[i]);
@@ -130,7 +138,7 @@ export class GeneratorService {
     return answerArray;
   }
 
-  //problemsToGenerate should be an int, arrayOfCombinations is assumed to be an array of arrays
+  // problemsToGenerate should be an int, arrayOfCombinations is assumed to be an array of arrays
   /* solveForMin and solveForMax are the minimum and maximum allowed values for the variable to be solved for */
   // checkValues(problemsToGenerate, arrayOfCombinations, solveForMin, solveForMax) {
   //  	let validCombos = [];
@@ -154,11 +162,27 @@ export class GeneratorService {
     // If it is valid then push it to the 'result' array
     let result: any[] = [];
     let permutationsList: any[] = this.generatePermutations(variables);
+    console.log('permutation list');
+    
+    console.log(permutationsList);
+    
 
     let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length-1].name); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
-    while (result.length === numberOfProblems || permutationsList.length === 0) {
-      let randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
-      let answerArray  = this.solveForVariable(randomSet, simplifiedEquation, variables);
+    simplifiedEquation = nerdamer(simplifiedEquation).text('decimal');
+    while (result.length !== numberOfProblems) {
+       let randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
+       console.log('randomset');
+       
+       console.log(randomSet);
+       
+       //let randomSet: any[] = [1, 1, 1];
+       console.log('answwer array b4');
+       
+      let answerArray  = this.solveForVariable(randomSet[0], simplifiedEquation, variables);
+      console.log('answwer array');
+      console.log(answerArray);
+      
+      
       if (this.compareResultWithUserSpecification(answerArray, variables)) {
         randomSet.push(answerArray);
         result.push(randomSet);
@@ -172,19 +196,42 @@ export class GeneratorService {
     return simplifiedEquation.toString();
   }
 
-  compareResultWithUserSpecification(value: any[], variables: Variable[]): boolean {
+  compareResultWithUserSpecification(values: any[], variables: Variable[]): boolean {
+    let inRange = false;
+    let sameDataType = false;
+    let lastVariable = variables[variables.length - 1]; // the last variable in the variables array. we are making an assumption that we are solving for the last variable
+
     // check if value is an integer/decimal.
-    // let position = parameters.length - 1;
-    // if (parameters[position].decPoint > 0) {
-    //   if (Math.round(value) != value) {
-    //     return false;
-    //   }
-    // }
-    // // check if value is in range.
-    // if (value < parameters[position].min || value > parameters[position].max) {
-    //   return false;
-    // }
-    return true; // if parameters are met, function will return true.
+    for (let i = 0; i < values.length; i++) {
+      const currentValue = values[i];
+
+    // check if value is an imaginary number
+    // I am assuming that we dont check for the range if it is imaginary
+      if (this.isImaginary(currentValue) && lastVariable.isImaginary) {
+        return true;
+      }
+
+      if (lastVariable.decPoint === 0) {
+        if (this.isInt(currentValue)) {
+          sameDataType = true;
+        }
+      } else if (lastVariable.decPoint > 0) {
+        if (lastVariable.decPoint === this.calculateDecimalPlaces(currentValue)) {
+          sameDataType = true;
+        }
+      }
+      // check if value is in range.
+      if (currentValue >= lastVariable.min || currentValue <= lastVariable.max) {
+        inRange = true;
+      }
+    }
+
+    // if parameters are met, function will return true.
+    if (inRange && sameDataType) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   calculateLastVariable(parametersArray: Variable[], testSet: number) {
@@ -199,17 +246,16 @@ export class GeneratorService {
   getRandomIntInclusive(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum and the minimum is inclusive
+    return Math.floor(Math.random() * (max - min + 1)) + min; // The maximum and the minimum is inclusive
   }
 
   splicePermutationSetRandomly(permutationsList: any[]): any[] {
-    let result: number[] = [];
     let splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length-1);
-    result = permutationsList.splice(splicingIndex, 1);
-    return result;
+    let result = permutationsList.splice(splicingIndex, 1); // it returns [[...]]
+    return result; 
   }
 
-  // createValidList(expression: string, variables: Variable[], permutationsList: any[], index: number): any[] {
+  // createValidList(expression: string, variables: Variable[], permutationsList: any[],        index: number): any[] {
   //   let validList: any[] = [];
   //   // Feed each testSet into an expression in order to evaluate answer.
   //   for (let i = 0; i < index; i++) {
@@ -232,5 +278,23 @@ export class GeneratorService {
       return [String(key), obj[key]];
     });
     return objArr;
+  }
+  isInt(input: number): boolean {
+    if (Math.floor(input) === input) {
+      return true;
+    }else {
+      return false;
+    }
+  }
+  isImaginary(input: string ) {
+    if (input.includes('i')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  calculateDecimalPlaces(input: number): number {
+    const inputArr = input.toString().split('.');
+    return inputArr[1].length;
   }
 }
