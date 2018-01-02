@@ -8,87 +8,156 @@ import './../../../node_modules/nerdamer/Extra.js';
 
 declare var nerdamer: any;
 
+var parameters = [{name: 'a'}, {name: 'b'}];
+var equation = 'a*x^2 + b*x =0';
+var set = [1, 2];
+console.log(parameters, equation, set);
+
+// var answer = convertProblemToLaTeX(parameters, equation, set);
+// console.log(answer);
+
 @Injectable()
 export class GeneratorService {
 
   constructor() { }
 
+  findRange(max: number, min: number, decPoint: number): number {
+    let range = (max - min) * (Math.pow(10, decPoint)) + 1;
+
+    return range;
+  }
+
+  /** For loop calculates the total number of permutations based on the range
+        of the input parameters.  **/
+  calculateTotalPermutations(parameters: Variable[], numOfVars: number): number {
+    let permutations = 1;
+
+    for (let i = 0; i< numOfVars; i++) {
+      /** Range includes subtracting minimum from maximu and adding 1
+       * to include both the minimum and maximum numbers. */
+      let range = this.findRange(parameters[i].max, parameters[i].min, parameters[i].decPoint);
+      permutations *= range;
+    }
+
+    return permutations;
+  }
+
+  // Method initializes temp[] array with all the minimum parameters
+  initializeTempArray(parameters: Variable[], numOfVars: number): number[] {
+    let temp = [];
+
+    for (let i = 0; i < numOfVars; i++) {
+      temp[i] = parameters[i].min;
+    }
+
+    return temp;
+  }
+
+  // Method sets arrayValues to previous temp[] values.
+  setArrayValuesToTemp(numOfVars: number, temp: number[]): number[] {
+    let arrayValues = [];
+    
+    for (let i = 0; i < numOfVars; i++) {
+      arrayValues[i] = temp[i];
+    }
+
+    return arrayValues;
+  }
+
+  // Adds to Element based on the number of decimal places desired.
+  incrementElement(decPoint: number): number {
+    let increment = 1/Math.pow(10, decPoint);
+
+    return increment;
+  }
+
+  /* This method contains the logic to count through the possible permutations
+    based on the given parameters. */
+  createAnswerArray(parameters: Variable[], temp: number[], arrayValues: number[], numOfVars: number): any[] {
+    let answerArray =[];
+    let lastElementIndex = numOfVars - 1;
+    /** If statement is true if the last element has not reached the maximum
+        value.  It causes the last element to increase to the next in order. **/
+    /** Else takes care of the situation where elements other than the last
+        one (right-most) need to be changed. Index i starts on the right-most 
+        element and works to the left.  If this addition brings the temp[i-1] to 
+        above the maximum, this will be taken care in the next iteration of the for loop.**/
+
+    // Gets temp ready for the next run.
+    if (temp[lastElementIndex] <= parameters[lastElementIndex].max) {
+      temp[lastElementIndex] += this.incrementElement(parameters[lastElementIndex].decPoint);
+    }
+    else {
+      for (var i = lastElementIndex; i >= 0; i--) {
+        // if current temp[i] value has reached the parameter maximum.
+        if (temp[i] > parameters[i].max) {
+          temp[i] = parameters[i].min; // current temp[i] set to minimum.
+          temp[i - 1] += this.incrementElement(parameters[i - 1].decPoint);
+
+          // temp[i-1] (one to the left) is added.
+        }
+        arrayValues[i] = temp[i];  // For loop ends with that temp[i] finalized in arrayValues.
+      }
+      // Adds to last element in array.
+      temp[lastElementIndex] += this.incrementElement(parameters[lastElementIndex].decPoint);
+    }
+    // For each index value, a set is pushed to the answerArray.
+    answerArray.push(arrayValues);
+
+    return answerArray;
+  }
 
   /** This method inputs parameters of variables with min and max values and
       generates sets that include all the permutations of these variables. **/
-// IN PROGRESS FOR DECIMAL ROBERT
   generatePermutations(parametersArray: Variable[]): any[] {
     let temp = []; // Stores running array of values for each index place.
     let answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
     let numberOfVariables = parametersArray.length-1;
+    let lastElementIndex = numberOfVariables - 1;
 
-    /** For loop calculates the total number of permutations based on the range
-        of the input parameters.  **/
-    var totalPermutations = 1;
-    for (var i = 0; i < numberOfVariables; i++) {
-      /** Range includes subtracting minimum from maximum and adding 1 to
-        include the minimum and maximum numbers **/
-    	var range = (parametersArray[i].max - parametersArray[i].min) *
-      ((Math.pow(10, parametersArray[i].decPoint))) + 1;
-    	totalPermutations *= range;
-      console.log(totalPermutations);
-    }
-    //totalPermutations = 500000;
-
-    // Intializes temp[] array with all the minimum parameters.
-    for (var i = 0; i < numberOfVariables; i++) {
-    	temp[i] = parametersArray[i].min;
-    }
+    let totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
+    console.log(totalPermutations);
+    
+    temp = this.initializeTempArray(parametersArray, numberOfVariables);
 
     /** This method is run as a for loop through all the calculated
         Permutations.  The index value is only used in order to track when
         all sets are generated. **/
     for (var index = 0; index < totalPermutations; index++) {
-    	var arrayValues = [];  // This will be pushed to final answerArray.
-
-      // Sets arrayValues to previous temp[] values.
-      for (var i = 0; i < numberOfVariables; i++) {
-      	arrayValues[i] = temp[i];
-      }
+      var arrayValues = [];  // This will be pushed to final answerArray.
 
       /** If statement is true if the last element has not reached the maximum
-          value.  It causes the last element to increase to the next in
-          order. **/
-          // Gets temp ready for the next run.
-      if (temp[numberOfVariables - 1] <= parametersArray[numberOfVariables - 1].max) {
-        temp[numberOfVariables - 1]
-        += 1/Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
-        //temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
-      }
+        value.  It causes the last element to increase to the next in order. **/
+    /** Else takes care of the situation where elements other than the last
+        one (right-most) need to be changed. Index i starts on the right-most 
+        element and works to the left.  If this addition brings the temp[i-1] to 
+        above the maximum, this will be taken care in the next iteration of the for loop.**/
 
-      /** Else takes care of the situation where elements other than the last
-          one (right-most) need to be changed.  **/
+    // Gets temp ready for the next run.
+      if (temp[lastElementIndex] <= parametersArray[lastElementIndex].max) {
+        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
+      }
       else {
-        /** Index i starts on the right-most element and works to the left.
-            If this addition brings the temp[i-1] to above the maximum,
-            this will be taken care in the next iteration of the for loop.**/
-        for (var i = numberOfVariables - 1; i >= 0; i--) {
+        for (var i = lastElementIndex; i >= 0; i--) {
           // if current temp[i] value has reached the parameter maximum.
           if (temp[i] > parametersArray[i].max) {
-    				temp[i] = parametersArray[i].min; // current temp[i] set to minimum.
-            temp[i - 1]
-            += 1/Math.pow(10, parametersArray[i - 1].decPoint);
+            temp[i] = parametersArray[i].min; // current temp[i] set to minimum.
+            temp[i - 1] += this.incrementElement(parametersArray[i - 1].decPoint);
 
-            //temp[i - 1] = temp[i - 1].toFixed(parametersArray[i - 1].decPoint);
             // temp[i-1] (one to the left) is added.
           }
-          arrayValues[i] = temp[i];  /** For loop ends with that temp[i]
-          finalized in arrayValues. **/
+          arrayValues[i] = temp[i];  // For loop ends with that temp[i] finalized in arrayValues.
         }
         // Adds to last element in array.
-        temp[numberOfVariables - 1]
-        += 1/Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
-        //temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
+        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
       }
       // For each index value, a set is pushed to the answerArray.
       answerArray.push(arrayValues);
+      
+      
     }
+      
     return answerArray;
   }
 
@@ -119,59 +188,12 @@ export class GeneratorService {
     return lastVariable;
   }
 
+  // This method returns an expression based on the variable solved for.
   solveForExpression(equation, variable): string {
     let result = nerdamer.solve(equation, variable).toString();
     
     return result;
   }
-
-  solveForVariable(equation: string, variable: string, decimalPlaces: number): any[] {
-    let result = nerdamer.solve(equation, variable).toString();
-    let answerValues = nerdamer(result);
-    console.log(answerValues);
-    let answerArray = [];
-    let expressionValue;
-
-    for (let i = 0; i < answerValues.symbol.elements.length; i++) {
-      let expressionValue = answerValues.symbol.elements[i].value;
-      console.log(expressionValue);
-      if (expressionValue === '#'|| expressionValue === 'i') {
-        let numerator = answerValues.symbol.elements[i].multiplier.num.value;
-        let denominator = answerValues.symbol.elements[i].multiplier.den.value;
-        expressionValue = numerator/denominator;
-        expressionValue = expressionValue.toFixed(decimalPlaces);
-      }
-      else {
-        expressionValue = nerdamer(expressionValue).text('decimals');
-      }
-      answerArray.push(expressionValue);
-    }
-    return answerArray;
-  }
-
-  //problemsToGenerate should be an int, arrayOfCombinations is assumed to be an array of arrays
-  /* solveForMin and solveForMax are the minimum and maximum allowed values for the variable to be solved for */
-  /*checkValues(problemsToGenerate, arrayOfCombinations, solveForMin, solveForMax) {
-   	let validCombos = [];
-    while (arrayOfCombinations.length > 0 && validCombos.length < problemsToGenerate) {
-    	let i = Math.floor(Math.random() * arrayOfCombinations.length);
-
-      // problemSolver should take in an array of values, use the library to solve for the last variable, and output the value of that variable
-      let x = problemSolver(arrayOfCombinations[i]);
-
-      var currentCombination = arrayOfCombinations.pop();
-      if(this.isValid(currentCombination)) {
-        validCombos.push(currentCombination);
-      }
-
-      if(x >= solveForMin && x <= solveForMax) {
-      	arrayOfCombinations[i].push(x);
-        validCombos.push(arrayOfCombinations[i]);
-      }
-      arrayOfCombinations.splice(i, 1);
-    }
-    return validCombos;
-  } */
 
   isValid(arrayOfCombinations: any[]) {
     // eg: arrayOfCombinations= [1,1,1,1];
@@ -220,53 +242,7 @@ export class GeneratorService {
     return Math.random() * index;
   }
 
-  createValidList(expression: string, variables: Variable[], permutationsList: any[], index: number): any[] {
-    let validList: any[] = [];
-  
-  // Feed each testSet into an expression in order to evaluate answer.
-    for (let i = 0; i < index; i++) {
-      let randomIndex = this.findRandomIndex(permutationsList.length);
-      let testSet = permutationsList[randomIndex];
-      let lastVariable = this.calculateLastVariable(variables, testSet, expression);
-      
-      // Check validity of answer based on parameters (range and integer).
-      if (this.compareResultWithUserSpecification(lastVariable, variables)) {
-        testSet.push(lastVariable);  // Send valid array to valid list.
-        validList.push(testSet);
-      }
-      
-      // Pop set out of permutations list.
-      this.popFromList(permutationsList, randomIndex);
-    }
-
-    return validList;
-  }
-
-  generateValidResults(equation: string, variables: Variable[], numberOfProblemsToGenerate: number): any[] {
-    let result: any[];
-
-    
-    // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
-    // Check each permutation set if it is valid set or not as per to the user's condition by taking random sets from the 'permutationsList'
-    // If the randomly selected set is valid then push it to the 'result' array
-    //
-    //let randomSet: number[]= [1,1,1,2];// to be generated randomly from the permutationsList
-
-    // Solve Equation for a variable to make an expression.
-    let variable = 'x';
-    let expression = this.solveForExpression(equation, variable);
-
-    /* Returns array of permutation sets.  Generate a random 
-        testSet based on parameters. (Subtract last variable.) */
-    let permutationsList: any[] = this.generatePermutations(variables);
-
-    // Go through process to find list of valid sets.
-    result = this.createValidList(expression, variables, permutationsList, numberOfProblemsToGenerate);
-
-    return result;
-  }
-
-  // This method moves the given variable parameters to the last variable position.
+    // This method moves the given variable parameters to the last variable position.
   setLastVariable(index, parameters) {
     parameters.push(parameters[index]);
     parameters.splice(index, 1);
@@ -300,12 +276,51 @@ export class GeneratorService {
   calculateTotalDecimals(parameters) {
     let decimals = 0;
     for (let i = 0; i < parameters.length; i++) {
-      if (parameters[i].decPoint > 1) {
+      if (parameters[i].decPoint > 0) {
         decimals++;
       }
     }
 
     return decimals;
+  }
+
+  createValidList(expression: string, variables: Variable[], permutationsList: any[], index: number): any[] {
+    let validList: any[] = [];
+  
+  // Feed each testSet into an expression in order to evaluate answer.
+    for (let i = 0; i < index; i++) {
+      let randomIndex = this.findRandomIndex(permutationsList.length);
+      let testSet = permutationsList[randomIndex];
+      let lastVariable = this.calculateLastVariable(variables, testSet, expression);
+      
+      // Check validity of answer based on parameters (range and integer).
+      if (this.compareResultWithUserSpecification(lastVariable, variables)) {
+        testSet.push(lastVariable);  // Send valid array to valid list.
+        validList.push(testSet);
+      }
+      
+      // Pop set out of permutations list.
+      this.popFromList(permutationsList, randomIndex);
+    }
+
+    return validList;
+  }
+
+  generateValidResults(equation: string, variables: Variable[], numberOfProblemsToGenerate: number): any[] {
+    let result: any[];
+
+    // Solve Equation for a variable to make an expression.
+    let variable = 'x';
+    let expression = this.solveForExpression(equation, variable);
+
+    /* Returns array of permutation sets.  Generate a random 
+        testSet based on parameters. (Subtract last variable.) */
+    let permutationsList: any[] = this.generatePermutations(variables);
+
+    // Go through process to find list of valid sets.
+    result = this.createValidList(expression, variables, permutationsList, numberOfProblemsToGenerate);
+
+    return result;
   }
 
   // Determines solving course of action based on variables and decimals.
