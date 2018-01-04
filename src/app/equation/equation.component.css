@@ -22,6 +22,9 @@ select.ng-valid{
 .col-md-8{
   display: none;
 }
+#loading{
+  display: none;
+}
 /*select.ng-pristine{
   border: 1px solid red;
 }*/

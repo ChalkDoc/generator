@@ -1,5 +1,6 @@
+import { Variable } from './../variable';
 import { Injectable } from '@angular/core';
-import { Variable } from '../variable';
+//import { Variable } from '../variable';
 
 import './../../../node_modules/nerdamer/nerdamer.core.js';
 import './../../../node_modules/nerdamer/Solve.js';
@@ -106,7 +107,7 @@ export class GeneratorService {
     let variablesObject = this.createVariableObject(randomSet, variables);
 
     let answer: string = nerdamer(simplifiedEquation, variablesObject);
-    console.log(answer);
+    console.log(answer.toString());
     
     let decimalAnswer: string  = nerdamer(answer).text('decimal');
     console.log('decimalAnswer');
@@ -156,7 +157,7 @@ export class GeneratorService {
 
     // check if value is an imaginary number
     // I am assuming that we dont check for the range if it is imaginary
-      if (this.isImaginary(currentValue) && lastVariable.isImaginary) {
+      if (this.containsImaginary(currentValue) && lastVariable.isImaginary) {
         return true;
       }
 
@@ -207,15 +208,16 @@ export class GeneratorService {
     return objArr;
   }
 
-  isInt(input: number): boolean {
-    if (Math.floor(input) === input) {
+  isInt(input: any): boolean {
+    let parsedInput = Number(input);
+    if (parsedInput !== NaN && Math.floor(parsedInput) === parsedInput) {
       return true;
     }else {
       return false;
     }
   }
 
-  isImaginary(input: string ) {
+  containsImaginary(input: string ) {
     if (input.includes('i')) {
       return true;
     } else {
@@ -223,44 +225,90 @@ export class GeneratorService {
     }
   }
 
-  calculateDecimalPlaces(input: number): number {
-    const inputArr = input.toString().split('.');
-    return inputArr[1].length;
+  calculateDecimalPlaces(input: string): number {
+    const inputArr = input.split('.');
+    if(inputArr.length === 1) {
+      return 0;
+    } else {
+      return inputArr[1].length;      
+    }
   }
 
-  
+
   generateValidVariableCombination(variables: Variable[], numberOfProblems: number, equation: string): any[] {
+    variables[variables.length-1].isImaginary = true;
     // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
 
     // Check if it is valid set or not as per to the user's condition
     // If it is valid then push it to the 'result' array
     const result: any[] = [];
     const permutationsList: any[] = this.generatePermutations(variables);
-    console.log('permutation list');
+   
     console.log(permutationsList);
 
     // tslint:disable-next-line:max-line-length
     let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length - 1].name); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
     simplifiedEquation = nerdamer(simplifiedEquation).text('decimal');
 
-    while (result.length !== numberOfProblems) {
+    while (result.length !== numberOfProblems && permutationsList.length > 0) {
        const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
-       console.log('randomset');
-
-       console.log(randomSet);
-
-       console.log('answwer array b4');
-
+     
       const answerArray  = this.solveForVariable(randomSet[0], simplifiedEquation, variables);
-      console.log('answwer array');
-      console.log(answerArray);
-
 
       if (this.compareResultWithUserSpecification(answerArray, variables)) {
-        randomSet.push(answerArray);
-        result.push(randomSet);
+        randomSet[0].push(answerArray);
+        result.push(randomSet[0]);
       }
     }
+
+    return result;
+  }
+
+
+  
+  reverseLaTex(input) {
+    let arr = [];
+    let reversedLaTex = "";
+    let inputArr = input.split(/[+\s]/);
+    let n = inputArr.length;
+    console.log(inputArr);
+    if (inputArr[n-2] === "=") {
+      for(var i = inputArr.length-3; i>=0; i--) {
+        if(inputArr[i].length !== 0) {
+          arr.push(inputArr[i]);
+        }
+      }
+    reversedLaTex = arr.join(' + ');
+    reversedLaTex+= " = 0";
+    } else {
+      for(var i = inputArr.length-1; i>=0; i--) {
+        if(inputArr[i].length !== 0) {
+          arr.push(inputArr[i]);
+        }
+      }
+      reversedLaTex = arr.join(' + ');
+    }
+    return reversedLaTex;
+  }
+
+  convertProblemToLaTeX(variables: Variable[], equation: string, validPermutaion): string {
+    let variablesObject = this.createVariableObject(validPermutaion, variables);
+
+    console.log(variablesObject);
+
+    let nerdamerAnswer = nerdamer(equation, variablesObject).toString();
+    let laTeXAnswer = nerdamer.convertToLaTeX(nerdamerAnswer);
+    console.log("LaTex: " + laTeXAnswer);
+
+    let reversedLaTeX = this.reverseLaTex(laTeXAnswer);
+
+    return laTeXAnswer;
+  }
+
+  generateProblem(validPermutations: any[], equation: string, variables: Variable[]): string[] {
+    let result: string[] = [];
+   // [[1, 2, [-3,3]]]
+    //let variableObject = this.createVariableObject()
 
     return result;
   }

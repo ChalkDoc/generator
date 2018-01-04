@@ -60,6 +60,11 @@
       </div>
     </div>
     <div class="col-md-8">
+      <!-- <div *ngIf="generatedCombinations">
+          <h1 > We are generating your questions!...</h1> 
+          <img src="../assets/img/calculatorLoading.gif">
+      </div> -->
+
       <!-- <img src="http://lorempixel.com/400/200">
       <div [ngSwitch]="color">
          <p *ngSwitchCase="'red'">This is red</p>
@@ -69,20 +74,17 @@
        <table >
          <thead >
            <ng-container>
-             <tr>
+             <!-- <tr>
                <th>a </th>
                <th>b </th>
                <th>c </th>
                <th>x </th>
       
-             </tr>
-             <!-- <tr *ngFor="let v of variables; let i = index">
-               <th>{{variables[0].name}} </th>
-               <th>{{variables[1].name}} </th>
-               <th>{{variables[2].name}} </th>
-               <th>{{variables[3].name}} </th>
-               <th>{{variables[4].name}} </th>
              </tr> -->
+             <tr>
+               <th  *ngFor="let v of variables; let i = index">{{v.name}} </th>
+  
+             </tr>
            </ng-container>
          </thead>
          <tbody>
@@ -90,6 +92,7 @@
              <td>{{gc[0]}}</td>
              <td>{{gc[1]}}</td>
              <td>{{gc[2]}}</td>
+             <td>{{gc[3]}}</td>
            </tr>
          </tbody>
        </table>

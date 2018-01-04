@@ -194,7 +194,7 @@ describe('GenertorService and all of its methods', () => {
     const variables: Variable[] = [a, b, c, x];
 
     const randomSet = [1, 0, 0];
-    
+
     const simplifiedEquation = _generatorService.simplifyEquation('a*x^2 + b*x + c = 25', 'x');
 
     const result =  _generatorService.solveForVariable(randomSet, simplifiedEquation, variables);
@@ -212,28 +212,277 @@ describe('GenertorService and all of its methods', () => {
     const variables: Variable[] = [a, b, c, x];
 
     const randomSet = [1, 0, 0];
-    
+
     const simplifiedEquation = _generatorService.simplifyEquation('a*x^2 + b*x + c = -4', 'x');
-    
+
     const result =  _generatorService.solveForVariable(randomSet, simplifiedEquation, variables);
     expect(result.toString()).toBe('2*i,-2*i');
   });
 
-  it('should return [1, 0, 0, 5, -5] upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
+  it('should return true upon calling isInt(input)', () => {
+    const input = 4;
+
+    expect(_generatorService.isInt(input)).toBe(true);
+  });
+
+  it('should return true upon calling isInt(input)', () => {
+    const input = '4';
+
+    expect(_generatorService.isInt(input)).toBe(true);
+  });
+
+  it('should return false upon calling isInt(input)', () => {
+    const input = 4.4;
+
+    expect(_generatorService.isInt(input)).toBe(false);
+  });
+
+  it('should return false upon calling isInt(input)', () => {
+    const input = 'sqrt(5)';
+
+    expect(_generatorService.isInt(input)).toBe(false);
+  });
+
+  it('should return true upon calling containsImaginary("2i")', () => {
+    const input = '2i';
+
+    expect(_generatorService.containsImaginary(input)).toBe(true);
+  });
+
+  it('should return true upon calling containsImaginary("2i + 4")', () => {
+    const input = '2i + 4';
+
+    expect(_generatorService.containsImaginary(input)).toBe(true);
+  });
+
+  it('should return false upon calling containsImaginary("4")', () => {
+    const input = '4';
+
+    expect(_generatorService.containsImaginary(input)).toBe(false);
+  });
+
+
+  it('should return 0 upon calling calculateDecimalPlaces("4")', () => {
+    const input = '4';
+
+    expect(_generatorService.calculateDecimalPlaces(input)).toBe(0);
+  });
+
+  it('should return 1 upon calling calculateDecimalPlaces("4.0")', () => {
+    const input = '4.0';
+
+    expect(_generatorService.calculateDecimalPlaces(input)).toBe(1);
+  });
+
+  it('should return 2 upon calling calculateDecimalPlaces("4.05")', () => {
+    const input = '4.05';
+
+    expect(_generatorService.calculateDecimalPlaces(input)).toBe(2);
+  });
+
+  it('should return true upon calling compareResultWithUserSpecification("5", variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, -100, 100);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['5'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(true);
+  });
+
+  it('should return false upon calling compareResultWithUserSpecification("5i", variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, -100, 100);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['5i'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(false);
+  });
+
+  it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, -100, 100);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['5i'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(false);
+  });
+
+  it('should return true upon calling compareResultWithUserSpecification(values, variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, -100, 100, true);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['5i'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(true);
+  });
+
+  it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, -100, 100);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['150'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(false);
+  });
+
+  it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, -100, 100);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['-150'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(false);
+  });
+
+  it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, -100, 100);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['-10.5'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(false);
+  });
+
+  it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, -100, 100);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['-10.5'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(false);
+  });
+
+  it('should return true upon calling compareResultWithUserSpecification(values, variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 1, -100, 100);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['-10.5'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(true);
+  });
+
+  it('should return true upon calling compareResultWithUserSpecification(values, variables)', () => {
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 1, -100, 100);
+    const variables: Variable[] = [a, b, c, x];
+
+    const values = ['-10.05'];
+
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+
+    expect(meetsUserSpecification).toBe(true);
+  });
+
+
+
+  it('should return [[3, 4, [-5, 5]]] upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
+    const a = new Variable('a', 0, 3, 3);
+    const b = new Variable('b', 0, 3, 4);
+    const c = new Variable('c', 0, 1, 5);
+    const variables: Variable[] = [a, b, c];
+
+    const numberOfProblems = 1;
+
+    const equation = 'a^2 + b^2 = c^2';
+    const result =  _generatorService.generateValidVariableCombination(variables, numberOfProblems, equation);
+    console.log(result);
+    console.log(result[3]);
+
+    expect(result.length).toBe(1);
+    expect(result[0].length).toBe(3);
+    expect(result[0][2].length).toBe(2);
+    expect(result[0][2].toString()).toContain('-5,5');
+  });
+
+  // tslint:disable-next-line:max-line-length
+  it('should return [[3, 4, [-5, 5]], [6, 8, [-10, 10]]] upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
     const a = new Variable('a', 0, 1, 10);
     const b = new Variable('b', 0, 1, 10);
     const c = new Variable('c', 0, 1, 10);
     const variables: Variable[] = [a, b, c];
 
-    const numberOfProblems = 1;
-    
+    const numberOfProblems = 2;
+
     const equation = 'a^2 + b^2 = c^2';
-    
     const result =  _generatorService.generateValidVariableCombination(variables, numberOfProblems, equation);
-    console.log(result);
-    console.log(result[3]);
-    
-    //expect(result.toString()).toBe('1,0,0,5,-5');
-    expect(result[result.length-1].toString()).toBe('5,-5');
+
+
+    expect(result.length).toBe(2);
+    expect(result[0].length).toBe(3);
+    expect(result[0][2].length).toBe(2);
+    expect(result[1].length).toBe(3);
+    expect(result[1][2].length).toBe(2);
+  });
+
+  it('should reverse the LaTex format to prioritize higher order digits.', () => {
+    const input = 'c + bx + a{x}^{2} = 0';
+    const expectedResult = 'a{x}^{2} + bx + c = 0';
+    const result = _generatorService.reverseLaTex(input);
+
+    expect(result).toBe(expectedResult);
+  });
+
+  it('should convert set of answers to a valid latex problem', () => {
+    const expectedResult = '2 \\cdot {x}^{2} + 3 \\cdot x + 4 = 0';
+
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, 1, 5);
+
+    const parameters: Variable[] = [a, b, c, x];
+    const equation = 'a*x^2 + b*x + c = 0';
+    const set = [2, 3, 4];
+
+    let result = _generatorService.convertProblemToLaTeX(parameters, equation, set);
+
+    expect(result).toBe(expectedResult);
   });
 });

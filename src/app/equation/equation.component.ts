@@ -23,9 +23,10 @@ export class EquationComponent implements OnInit {
   equation: string;
   variables: Variable[] = [];
   generatedCombinations: any[] = [];
-  generatedValidCombinations: any[] = [];
+  //generatedValidCombinations: any[] = [];
   numberOfProblems: number;
   userInputInJsonFormat: any;
+  problemList: string[] = [];
   // randomImgLink = "http://lorempixel.com/400/200";
   // color = 'red';
 
@@ -48,6 +49,8 @@ export class EquationComponent implements OnInit {
   output (type){
     try {
       this.equation = Guppy.instances['equationBox'].backend.get_content('text');
+      console.log(this.equation);
+      
       let extractedVars = nerdamer(this.equation).variables().sort();
       console.log("extractedVars: " + extractedVars);
       /* creating variable instance and pushing each variable instance into the variables array*/
@@ -56,7 +59,7 @@ export class EquationComponent implements OnInit {
         let newVar = new Variable(varName);
         this.variables.push(newVar);
       }
-      console.log(this.variables);
+      
       this.parameterDiv = $('.parameter-condition');
       this.parameterDiv.show();
     } catch (e) {
@@ -77,12 +80,14 @@ export class EquationComponent implements OnInit {
       j+= 3;
     }
 
-    console.log(this.variables);
-    let result = this._generatorService.generatePermutations(this.variables);
-    console.log(result);
-    this.generatedCombinations = result;
+    // let result = this._generatorService.generatePermutations(this.variables);
+    // console.log(result);
 
-    // let result = this._generatorService.generateValidVariableCombination(this.variables, this.numberOfProblems, this.equation);
+    let result1 = this._generatorService.generateValidVariableCombination(this.variables, this.numberOfProblems, this.equation);
+    this.generatedCombinations = result1;
+    console.log(result1);
+    
+    
   }
   /* this method converts object into an array of object*/
   toArray(obj) {
