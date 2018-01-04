@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Variable } from '../variable';
 
+import './../../../node_modules/nerdamer/nerdamer.core.js';
 import './../../../node_modules/nerdamer/Solve.js';
 import './../../../node_modules/nerdamer/Algebra.js';
 import './../../../node_modules/nerdamer/Calculus.js';
@@ -19,34 +20,34 @@ export class GeneratorService {
     let temp = []; // Stores running array of values for each index place.
     let answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
-    let numberOfVariables = parametersArray.length;
+    let numberOfVariables = parametersArray.length - 1;
 
     /** For loop calculates the total number of permutations based on the range
       of the input parameters.  **/
-    var totalPermutations = 1;
-    for (var i = 0; i < numberOfVariables; i++) {
+    let totalPermutations = 1;
+    for (let i = 0; i < numberOfVariables; i++) {
       /** Range includes subtracting minimum from maximum and adding 1 to
         include the minimum and maximum numbers **/
-    	var range = (parametersArray[i].max - parametersArray[i].min) *
+    	let range = (parametersArray[i].max - parametersArray[i].min) *
       ((Math.pow(10, parametersArray[i].decPoint))) + 1;
     	totalPermutations *= range;
       console.log(totalPermutations);
     }
-    //totalPermutations = 500000;
+    // totalPermutations = 500000;
 
     // Intializes temp[] array with all the minimum parameters.
-    for (var i = 0; i < numberOfVariables; i++) {
+    for (let i = 0; i < numberOfVariables; i++) {
     	temp[i] = parametersArray[i].min;
     }
 
     /* This method is run as a for loop through all the calculated
       Permutations.  The index value is only used in order to track when
       all sets are generated. */
-    for (var index = 0; index < totalPermutations; index++) {
-    	var arrayValues = [];  // This will be pushed to final answerArray.
+    for (let index = 0; index < totalPermutations; index++) {
+    	let arrayValues = [];  // This will be pushed to final answerArray.
 
       // Sets arrayValues to previous temp[] values.
-      for (var i = 0; i < numberOfVariables; i++) {
+      for (let i = 0; i < numberOfVariables; i++) {
       	arrayValues[i] = temp[i];
       }
 
@@ -56,7 +57,7 @@ export class GeneratorService {
       // Gets temp ready for the next run.
       if (temp[numberOfVariables - 1] <= parametersArray[numberOfVariables - 1].max) {
         temp[numberOfVariables - 1]
-        += 1/Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
+        += 1 / Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
         // temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
       }
 
@@ -66,7 +67,7 @@ export class GeneratorService {
         /** Index i starts on the right-most element and works to the left.
             If this addition brings the temp[i-1] to above the maximum,
             this will be taken care in the next iteration of the for loop.**/
-        for (var i = numberOfVariables - 1; i >= 0; i--) {
+        for (let i = numberOfVariables - 1; i >= 0; i--) {
           // if current temp[i] value has reached the parameter maximum.
           if (temp[i] > parametersArray[i].max) {
     				temp[i] = parametersArray[i].min; // current temp[i] set to minimum.
@@ -82,7 +83,7 @@ export class GeneratorService {
         // Adds to last element in array.
         temp[numberOfVariables - 1]
         += 1/Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
-        //temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
+        // temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
       }
       // For each index value, a set is pushed to the answerArray.
       answerArray.push(arrayValues);
@@ -90,35 +91,34 @@ export class GeneratorService {
     return answerArray;
   }
 
-  //IN PROGRESS KIM---possible refactoring
-  // calculateLastVariable(parametersArray, testSet, expression) {
-  //   let variablesObject = [];
-  //
-  //   for (let i = 0; i < parametersArray.length; i++) {
-  //     variablesObject[parametersArray[i].name] = testSet[i];
-  //   }
-  //
-  //   let lastVariable = nerdamer(expression, variablesObject).toString();
-  //   console.log(lastVariable);
-  //
-  //   return lastVariable;
-  // }
-//IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
+  createVariableObject(randomSet: number[], variables: Variable[]): object {
+    const variablesObject = {};
+    for (let i = 0; i < variables.length - 1; i++) {
+      const objectName = variables[i].name;
+      variablesObject[objectName] = randomSet[i];
+    }
+    return variablesObject;
+  }
+  // IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
   solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
-    //let result = nerdamer.solve(simplifiedEquation, variable).toString(); we dont need this part nw as the equation is already simplified.
-    let variablesObject = {a: 0, b: 0, c: 0}; // We must have a logic that takes the variables array and generate an object of this format; For now I am assuming that we are solving for 'ax^2 + bx +c = 0' a,b,c,x [1,2,3]
-    variablesObject.a = randomSet[0];
-    variablesObject.b = randomSet[1];
-    variablesObject.c = randomSet[2];
-
-    let answerValues = nerdamer(simplifiedEquation, variablesObject);
-    console.log(answerValues);
     let answerArray: any[] = [];
-    let expressionValue: string  = nerdamer(answerValues).text('decimal');
-    let expressionValueArray: string[] = expressionValue.split(/[\[,\]]/);
-    for (let i = 0; i < expressionValueArray.length; i++) {
-      if (expressionValueArray[i] !== "") {
-        answerArray.push(expressionValueArray[i]);  
+    
+    let variablesObject = this.createVariableObject(randomSet, variables);
+
+    let answer: string = nerdamer(simplifiedEquation, variablesObject);
+    console.log(answer);
+    
+    let decimalAnswer: string  = nerdamer(answer).text('decimal');
+    console.log('decimalAnswer');
+    console.log(decimalAnswer);
+    
+    
+    let decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
+    console.log(decimalAnswer);
+    
+    for (let i = 0; i < decimalAnswerArray.length; i++) {
+      if (decimalAnswerArray[i] !== '') {
+        answerArray.push(decimalAnswerArray[i]);
       }
     }
     // for (let i = 0; i < answerValues.symbol.elements.length; i++) {
@@ -138,69 +138,45 @@ export class GeneratorService {
     return answerArray;
   }
 
-  //problemsToGenerate should be an int, arrayOfCombinations is assumed to be an array of arrays
-  /* solveForMin and solveForMax are the minimum and maximum allowed values for the variable to be solved for */
-  // checkValues(problemsToGenerate, arrayOfCombinations, solveForMin, solveForMax) {
-  //  	let validCombos = [];
-  //   while (arrayOfCombinations.length > 0 && validCombos.length < problemsToGenerate) {
-  //   	let i = Math.floor(Math.random() * arrayOfCombinations.length);
-  //
-  //      problemSolver should take in an array of values, use the library to solve for the last variable, and output the value of that variable
-  //     let x = problemSolver(arrayOfCombinations[i]);
-  //     if(x >= solveForMin && x <= solveForMax) {
-  //     	arrayOfCombinations[i].push(x);
-  //       validCombos.push(arrayOfCombinations[i]);
-  //     }
-  //     arrayOfCombinations.splice(i, 1);
-  //   }
-  //   return validCombos;
-  // }
-
-  generateValidVariableCombination(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
-    // Check if it is valid set or not as per to the user's condition
-    // If it is valid then push it to the 'result' array
-    let result: any[] = [];
-    let permutationsList: any[] = this.generatePermutations(variables);
-
-    let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length-1].name); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
-    while (result.length === numberOfProblems || permutationsList.length === 0) {
-      let randomSet: number[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
-
-      if (this.isValid(randomSet, simplifiedEquation, variables)) {
-        result.push(randomSet);
-      }
-    }
-
-    return result;
-  }
+  // This method simplifies the equation and returns an expression
   simplifyEquation(equation: string, variableToSolve: string): string {
-    let simplifiedEquation = nerdamer.solve(equation, variableToSolve);
+    const simplifiedEquation = nerdamer.solve(equation, variableToSolve);
     return simplifiedEquation.toString();
   }
 
-  isValid(randomSet: number[], simplifiedEquation: string, variables: Variable[]): boolean{
-    let result: boolean = false;
-    let answerArray = this.solveForVariable(randomSet, simplifiedEquation, variables,);
-    if (this.compareResultWithUserSpecification(answerArray, variables)) {
-      result = true;
-    }
-    return result;
-  }
+  compareResultWithUserSpecification(values: any[], variables: Variable[]): boolean {
+    let inRange = false;
+    let sameDataType = false;
+    // tslint:disable-next-line:max-line-length
+    const lastVariable = variables[variables.length - 1]; // the last variable in the variables array. we are making an assumption that we are solving for the last variable
 
-  compareResultWithUserSpecification(value: any[], variables: Variable[]): boolean {
     // check if value is an integer/decimal.
-    // let position = parameters.length - 1;
-    // if (parameters[position].decPoint > 0) {
-    //   if (Math.round(value) != value) {
-    //     return false;
-    //   }
-    // }
-    // // check if value is in range.
-    // if (value < parameters[position].min || value > parameters[position].max) {
-    //   return false;
-    // }
-    return true; // if parameters are met, function will return true.
+    for (let i = 0; i < values.length; i++) {
+      const currentValue = values[i];
+
+    // check if value is an imaginary number
+    // I am assuming that we dont check for the range if it is imaginary
+      if (this.isImaginary(currentValue) && lastVariable.isImaginary) {
+        return true;
+      }
+
+      if (lastVariable.decPoint === 0 && this.isInt(currentValue)) {
+        sameDataType = true;
+      } else if (lastVariable.decPoint > 0 && this.calculateDecimalPlaces(currentValue) > 0) {
+        sameDataType = true;
+      }
+      // check if value is in range.
+      if (currentValue >= lastVariable.min && currentValue <= lastVariable.max) {
+        inRange = true;
+      }
+    }
+
+    // if parameters are met, function will return true.
+    if (inRange && sameDataType) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   calculateLastVariable(parametersArray: Variable[], testSet: number) {
@@ -215,29 +191,77 @@ export class GeneratorService {
   getRandomIntInclusive(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum and the minimum is inclusive
+    return Math.floor(Math.random() * (max - min + 1)) + min; // The maximum and the minimum is inclusive
   }
 
-  splicePermutationSetRandomly(permutationsList: any[]): number[] {
-    let result: number[] = [];
+  splicePermutationSetRandomly(permutationsList: any[]): any[] {
     let splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length-1);
-    result = permutationsList.splice(splicingIndex, 1);
+    let result = permutationsList.splice(splicingIndex, 1); // it returns [[...]]
     return result;
   }
-  // createValidList(expression: string, variables: Variable[], permutationsList: any[], index: number): any[] {
-  //   let validList: any[] = [];
-  //   // Feed each testSet into an expression in order to evaluate answer.
-  //   for (let i = 0; i < index; i++) {
-  //     let randomIndex = Math.random() * permutationsList.length;
-  //     let testSet = permutationsList[randomIndex];
-  //     let lastVariable = this.calculateLastVariable(variables, testSet);
-  //     // Check validity of answer based on parameters (range and integer).
-  //     if (this.compareResultWithUserSpecification(lastVariable, variables)) {
-  //       testSet.push(lastVariable);  // Send valid array to valid list.
-  //       validList.push(testSet);
-  //     }
-  //   }
-  //
-  //   return validList;
-  // }
+
+  toArray(obj) {
+    let objArr = Object.keys(obj).map(function(key){
+      return [String(key), obj[key]];
+    });
+    return objArr;
+  }
+
+  isInt(input: number): boolean {
+    if (Math.floor(input) === input) {
+      return true;
+    }else {
+      return false;
+    }
+  }
+
+  isImaginary(input: string ) {
+    if (input.includes('i')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  calculateDecimalPlaces(input: number): number {
+    const inputArr = input.toString().split('.');
+    return inputArr[1].length;
+  }
+
+  
+  generateValidVariableCombination(variables: Variable[], numberOfProblems: number, equation: string): any[] {
+    // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
+
+    // Check if it is valid set or not as per to the user's condition
+    // If it is valid then push it to the 'result' array
+    const result: any[] = [];
+    const permutationsList: any[] = this.generatePermutations(variables);
+    console.log('permutation list');
+    console.log(permutationsList);
+
+    // tslint:disable-next-line:max-line-length
+    let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length - 1].name); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
+    simplifiedEquation = nerdamer(simplifiedEquation).text('decimal');
+
+    while (result.length !== numberOfProblems) {
+       const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
+       console.log('randomset');
+
+       console.log(randomSet);
+
+       console.log('answwer array b4');
+
+      const answerArray  = this.solveForVariable(randomSet[0], simplifiedEquation, variables);
+      console.log('answwer array');
+      console.log(answerArray);
+
+
+      if (this.compareResultWithUserSpecification(answerArray, variables)) {
+        randomSet.push(answerArray);
+        result.push(randomSet);
+      }
+    }
+
+    return result;
+  }
 }
