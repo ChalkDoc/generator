@@ -14,80 +14,106 @@ declare var nerdamer: any;
 export class GeneratorService {
 
   constructor() { }
+
+  findRange(max: number, min: number, decPoint: number): number {
+    let range = (max - min) * (Math.pow(10, decPoint)) + 1;
+
+    return range;
+  }
+
+  /** For loop calculates the total number of permutations based on the range
+        of the input parameters.  **/
+  calculateTotalPermutations(parameters: Variable[], numOfVars: number): number {
+    let permutations = 1;
+
+    for (let i = 0; i< numOfVars; i++) {
+      /** Range includes subtracting minimum from maximu and adding 1
+       * to include both the minimum and maximum numbers. */
+      let range = this.findRange(parameters[i].max, parameters[i].min, parameters[i].decPoint);
+      permutations *= range;
+    }
+
+    return permutations;
+  }
+
+  // Method initializes temp[] array with all the minimum parameters
+  initializeTempArray(parameters: Variable[], numOfVars: number): number[] {
+    let temp = [];
+
+    for (let i = 0; i < numOfVars; i++) {
+      temp[i] = parameters[i].min;
+    }
+
+    return temp;
+  }
+
+  // Method sets arrayValues to previous temp[] values
+  
+  setArrayValuesToTemp(numOfVars: number, temp: number[]): number[] {
+    let arrayValues = [];
+    
+    for (let i = 0; i < numOfVars; i++) {
+      arrayValues[i] = temp[i];
+    }
+
+    return arrayValues;
+  }
+
+  // Adds to Element based on the number of decimal places desired.
+  incrementElement(decPoint: number): number {
+    let increment = 1/Math.pow(10, decPoint);
+
+    return increment;
+  }
+
   /* This method inputs parameters of variables with min and max values and
     generates sets that include all the permutations of these variables. */
-  // IN PROGRESS FOR DECIMAL ROBERT
   generatePermutations(parametersArray: Variable[]): any[] {
     let temp = []; // Stores running array of values for each index place.
     let answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
     let numberOfVariables = parametersArray.length - 1;
+    let lastElementIndex = numberOfVariables - 1;
 
-    /** For loop calculates the total number of permutations based on the range
-      of the input parameters.  **/
-    let totalPermutations = 1;
-    for (let i = 0; i < numberOfVariables; i++) {
-      /** Range includes subtracting minimum from maximum and adding 1 to
-        include the minimum and maximum numbers **/
-    	let range = (parametersArray[i].max - parametersArray[i].min) *
-      ((Math.pow(10, parametersArray[i].decPoint))) + 1;
-    	totalPermutations *= range;
-      console.log(totalPermutations);
-    }
-    // totalPermutations = 500000;
+    let totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
+    console.log(totalPermutations);
+    
+    temp = this.initializeTempArray(parametersArray, numberOfVariables);
 
-    // Intializes temp[] array with all the minimum parameters.
-    for (let i = 0; i < numberOfVariables; i++) {
-    	temp[i] = parametersArray[i].min;
-    }
+    /** This method is run as a for loop through all the calculated
+        Permutations.  The index value is only used in order to track when
+        all sets are generated. **/
+    for (var index = 0; index < totalPermutations; index++) {
+      let arrayValues = [];  // This will be pushed to final answerArray.
+      /** If statement is true if the last element has not reached the maximum
+        value.  It causes the last element to increase to the next in order. **/
+    /** Else takes care of the situation where elements other than the last
+        one (right-most) need to be changed. Index i starts on the right-most 
+        element and works to the left.  If this addition brings the temp[i-1] to 
+        above the maximum, this will be taken care in the next iteration of the for loop.**/
 
-    /* This method is run as a for loop through all the calculated
-      Permutations.  The index value is only used in order to track when
-      all sets are generated. */
-    for (let index = 0; index < totalPermutations; index++) {
-    	let arrayValues = [];  // This will be pushed to final answerArray.
+      arrayValues = this.setArrayValuesToTemp(numberOfVariables, temp);
 
-      // Sets arrayValues to previous temp[] values.
-      for (let i = 0; i < numberOfVariables; i++) {
-      	arrayValues[i] = temp[i];
+    // Gets temp ready for the next run.
+      if (temp[lastElementIndex] <= parametersArray[lastElementIndex].max) {
+        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
       }
-
-      /*If statement is true if the last element has not reached the maximum
-        value.  It causes the last element to increase to the next in
-        order. **/
-      // Gets temp ready for the next run.
-      if (temp[numberOfVariables - 1] <= parametersArray[numberOfVariables - 1].max) {
-        temp[numberOfVariables - 1]
-        += 1 / Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
-        // temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
-      }
-
-      /** Else takes care of the situation where elements other than the last
-          one (right-most) need to be changed.  **/
       else {
-        /** Index i starts on the right-most element and works to the left.
-            If this addition brings the temp[i-1] to above the maximum,
-            this will be taken care in the next iteration of the for loop.**/
-        for (let i = numberOfVariables - 1; i >= 0; i--) {
+        for (var i = lastElementIndex; i >= 0; i--) {
           // if current temp[i] value has reached the parameter maximum.
           if (temp[i] > parametersArray[i].max) {
-    				temp[i] = parametersArray[i].min; // current temp[i] set to minimum.
-            temp[i - 1]
-            += 1/Math.pow(10, parametersArray[i - 1].decPoint);
+            temp[i] = parametersArray[i].min; // current temp[i] set to minimum.
+            temp[i - 1] += this.incrementElement(parametersArray[i - 1].decPoint);
 
-            //temp[i - 1] = temp[i - 1].toFixed(parametersArray[i - 1].decPoint);
             // temp[i-1] (one to the left) is added.
           }
-          arrayValues[i] = temp[i];  /** For loop ends with that temp[i]
-          finalized in arrayValues. **/
+          arrayValues[i] = temp[i];  // For loop ends with that temp[i] finalized in arrayValues.
         }
         // Adds to last element in array.
-        temp[numberOfVariables - 1]
-        += 1/Math.pow(10, parametersArray[numberOfVariables - 1].decPoint);
-        // temp[numberOfVariables - 1] = temp[numberOfVariables - 1].toFixed(parametersArray[numberOfVariables - 1].decPoint);
+        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
       }
       // For each index value, a set is pushed to the answerArray.
-      answerArray.push(arrayValues);
+      answerArray.push(arrayValues); 
     }
     return answerArray;
   }
@@ -100,6 +126,52 @@ export class GeneratorService {
     }
     return variablesObject;
   }
+
+  reverseLaTex(input) {
+    let arr = [];
+    let reversedLaTex = "";
+    let inputArr = input.split(/[+\s]/);
+    let n = inputArr.length;
+    console.log(inputArr);
+    if (inputArr[n-2] === "=") {
+      for(var i = inputArr.length-3; i>=0; i--) {
+        if(inputArr[i].length !== 0) {
+          arr.push(inputArr[i]);
+        }
+      }
+    reversedLaTex = arr.join(' + ');
+    reversedLaTex+= " = 0";
+    } else {
+      for(var i = inputArr.length-1; i>=0; i--) {
+        if(inputArr[i].length !== 0) {
+          arr.push(inputArr[i]);
+        }
+      }
+      reversedLaTex = arr.join(' + ');
+    }
+    return reversedLaTex;
+  }
+
+  convertProblemToLaTeX(parametersArray, equation, solutionSet): string {
+    let variablesObject = this.createVariableObject(solutionSet, parametersArray);
+    // variablesObject['a'] = 1;
+    // variablesObject['a'] = 1;
+    // let variablesObject = {
+    //   a: 2,
+    //   b: 3,
+    //   c: 4
+    // };
+    console.log(variablesObject);
+
+    let nerdamerAnswer = nerdamer(equation, variablesObject).toString();
+    let laTeXAnswer = nerdamer.convertToLaTeX(nerdamerAnswer);
+    console.log("LaTex: " + laTeXAnswer);
+
+    let reversedLaTeX = this.reverseLaTex(laTeXAnswer);
+
+    return laTeXAnswer;
+  }
+
   // IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
   solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
     let answerArray: any[] = [];
@@ -178,15 +250,6 @@ export class GeneratorService {
     } else {
       return false;
     }
-  }
-
-  calculateLastVariable(parametersArray: Variable[], testSet: number) {
-    let variablesObject = [];
-
-    for (let i = 0; i < parametersArray.length; i++) {
-      variablesObject[parametersArray[i].name] = testSet[i];
-    }
-    return variablesObject;
   }
 
   getRandomIntInclusive(min: number, max: number): number {
