@@ -126,6 +126,51 @@ export class GeneratorService {
     return variablesObject;
   }
 
+  reverseLaTex(input) {
+    let arr = [];
+    let reversedLaTex = "";
+    let inputArr = input.split(/[+\s]/);
+    let n = inputArr.length;
+    console.log(inputArr);
+    if (inputArr[n-2] === "=") {
+      for(var i = inputArr.length-3; i>=0; i--) {
+        if(inputArr[i].length !== 0) {
+          arr.push(inputArr[i]);
+        }
+      }
+    reversedLaTex = arr.join(' + ');
+    reversedLaTex+= " = 0";
+    } else {
+      for(var i = inputArr.length-1; i>=0; i--) {
+        if(inputArr[i].length !== 0) {
+          arr.push(inputArr[i]);
+        }
+      }
+      reversedLaTex = arr.join(' + ');
+    }
+    return reversedLaTex;
+  }
+
+  convertProblemToLaTeX(parametersArray, equation, solutionSet): string {
+    let variablesObject = this.createVariableObject(solutionSet, parametersArray);
+    // variablesObject['a'] = 1;
+    // variablesObject['a'] = 1;
+    // let variablesObject = {
+    //   a: 2,
+    //   b: 3,
+    //   c: 4
+    // };
+    console.log(variablesObject);
+
+    let nerdamerAnswer = nerdamer(equation, variablesObject).toString();
+    let laTeXAnswer = nerdamer.convertToLaTeX(nerdamerAnswer);
+    console.log("LaTex: " + laTeXAnswer);
+
+    let reversedLaTeX = this.reverseLaTex(laTeXAnswer);
+
+    return laTeXAnswer;
+  }
+
   // IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
   solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
     let answerArray: any[] = [];
@@ -204,15 +249,6 @@ export class GeneratorService {
     } else {
       return false;
     }
-  }
-
-  calculateLastVariable(parametersArray: Variable[], testSet: number) {
-    let variablesObject = [];
-
-    for (let i = 0; i < parametersArray.length; i++) {
-      variablesObject[parametersArray[i].name] = testSet[i];
-    }
-    return variablesObject;
   }
 
   getRandomIntInclusive(min: number, max: number): number {

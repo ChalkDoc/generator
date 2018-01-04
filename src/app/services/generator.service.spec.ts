@@ -3,7 +3,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { GeneratorService } from './generator.service';
 import { Variable } from '../variable';
 
-describe('GenertorService and all of its methods', () => {
+describe('GeneratorService and all of its methods', () => {
   let _generatorService: GeneratorService;
 
   beforeEach(() => {
@@ -235,5 +235,30 @@ describe('GenertorService and all of its methods', () => {
     
     //expect(result.toString()).toBe('1,0,0,5,-5');
     expect(result[result.length-1].toString()).toBe('5,-5');
+  });
+
+  it('should reverse the LaTex format to prioritize higher order digits.', () => {
+    const input = 'c + bx + a{x}^{2} = 0';
+    const expectedResult = 'a{x}^{2} + bx + c = 0';
+    const result = _generatorService.reverseLaTex(input);
+
+    expect(result).toBe(expectedResult);
+  });
+
+  it('should convert set of answers to a valid latex problem', () => {
+    const expectedResult = '2 \\cdot {x}^{2} + 3 \\cdot x + 4 = 0';
+
+    const a = new Variable('a', 0, 1, 5);
+    const b = new Variable('b', 0, 1, 5);
+    const c = new Variable('c', 0, 1, 5);
+    const x = new Variable('x', 0, 1, 5);
+
+    const parameters: Variable[] = [a, b, c, x];
+    const equation = 'a*x^2 + b*x + c = 0';
+    const set = [2, 3, 4];
+
+    let result = _generatorService.convertProblemToLaTeX(parameters, equation, set);
+
+    expect(result).toBe(expectedResult);
   });
 });
