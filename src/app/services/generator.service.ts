@@ -153,13 +153,6 @@ export class GeneratorService {
 
   convertProblemToLaTeX(parametersArray, equation, solutionSet): string {
     let variablesObject = this.createVariableObject(solutionSet, parametersArray);
-    // variablesObject['a'] = 1;
-    // variablesObject['a'] = 1;
-    // let variablesObject = {
-    //   a: 2,
-    //   b: 3,
-    //   c: 4
-    // };
     console.log(variablesObject);
 
     let nerdamerAnswer = nerdamer(equation, variablesObject).toString();
@@ -289,6 +282,64 @@ export class GeneratorService {
   calculateDecimalPlaces(input: number): number {
     const inputArr = input.toString().split('.');
     return inputArr[1].length;
+  }
+
+  generateRangeOfValues(variable: Variable): number[] {
+    let values = [];
+    let countingValue = variable.min;
+    let range = this.findRange(variable.max, variable.min, variable.decPoint);
+
+    for (let i = 0; i < range; i++) {
+      //countingValue.toFixed(variable.decPoint);
+      values.push(countingValue.toFixed(variable.decPoint));
+      countingValue += 1 / (Math.pow(10, variable.decPoint));
+    }
+
+    return values;
+  }
+
+  createTestSet(valueList: any[]): number[] {
+    let testSet = [];
+    let tempSetArray = [];
+
+    for (let i = 0; i < valueList.length; i++) {
+      let randomIndex = Math.floor(Math.random() * valueList[i].length);
+      testSet[i] = valueList[i][randomIndex];
+    }
+
+    return testSet;
+  }
+
+  // Method controls valid table for problems that have a decimal answer
+  generateDecimalVariablesPermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
+    let result = [];
+    let valueList = [];
+    let numberOfLists = variables.length - 1;  // Will take away last variable.
+    let count = 0;
+
+    for (let i = 0; i < numberOfLists; i++) {
+      valueList[i] = this.generateRangeOfValues(variables[i]);
+    }
+
+    while (count < numberOfProblems) {
+      let testSet = this.createTestSet(valueList);
+
+      let answerArray = this.solveForVariable(testSet, equation, variables);
+
+      // This for loop takes into account the fact that the answerArray is an array.
+      // Caution:  The current implementation will potentially produce two of the same problem!!!
+      for (let i = 0; i < answerArray.length; i++) {
+        if (answerArray[i] >= variables[variables.length - 1].min 
+          && answerArray[i] <= variables[variables.length - 1].max) {
+            testSet.push(answerArray[i]);
+            count++;
+        }
+
+      }
+      result.push(testSet);
+    }
+
+    return result;
   }
 
   

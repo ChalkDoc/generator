@@ -261,4 +261,55 @@ describe('GeneratorService and all of its methods', () => {
 
     expect(result).toBe(expectedResult);
   });
+
+  it('should generate a set of values for a variable based on min, max, and decimal numbers', () => {
+    const variable = new Variable('a', 1, 1, 2);
+
+
+    const expectedResult = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0'];
+    //const expectedResult = [1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0];
+
+    let result = _generatorService.generateRangeOfValues(variable);
+    
+    expect(result[0]).toEqual(expectedResult[0]);
+    expect(result[1]).toEqual(expectedResult[1]);
+    expect(result[2]).toEqual(expectedResult[2]);
+    expect(result[3]).toEqual(expectedResult[3]);
+    expect(result[4]).toEqual(expectedResult[4]);
+    expect(result[5]).toEqual(expectedResult[5]);
+    expect(result[6]).toEqual(expectedResult[6]);
+    expect(result[7]).toEqual(expectedResult[7]);
+    expect(result[8]).toEqual(expectedResult[8]);
+    expect(result[9]).toEqual(expectedResult[9]);
+  });
+
+  it('should choose a set of values based on the generated list of values', () => {
+    let valueList = [];
+    valueList[0] = [1.1, 1.2, 1.3, 1.4, 1.5];
+    valueList[1] = [2.1, 2.2, 2.3, 2.4, 2.5];
+    valueList[2] = [3.1, 3.2, 3.3, 3.4, 3.5];
+
+    let testSetResult = _generatorService.createTestSet(valueList);
+    
+    expect(valueList[0]).toContain(testSetResult[0]);
+    expect(valueList[1]).toContain(testSetResult[1]);
+    expect(valueList[2]).toContain(testSetResult[2]);
+  });
+/*
+  it('should generate a list of valid permutation sets given decimal parameters', () => {
+    const a = new Variable('a', 1, 1, 5);
+    const b = new Variable('b', 1, 1, 5);
+    const c = new Variable('c', 1, 1, 5);
+
+    const variables: Variable[] = [a, b, c];
+    const numberOfProblems = 5;
+
+    const equation = 'a^2 + b^2 = c^2';
+
+    let results = _generatorService.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
+
+    let expectedResult = this.solveForVariable(results[0], equation, variables);
+
+    expect(results[0][2]).toEqual(expectedResult);
+  }); */
 });
