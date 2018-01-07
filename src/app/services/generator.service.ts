@@ -48,10 +48,10 @@ export class GeneratorService {
   }
 
   // Method sets arrayValues to previous temp[] values
-  
+
   setArrayValuesToTemp(numOfVars: number, temp: number[]): number[] {
     let arrayValues = [];
-    
+
     for (let i = 0; i < numOfVars; i++) {
       arrayValues[i] = temp[i];
     }
@@ -77,7 +77,7 @@ export class GeneratorService {
 
     let totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
     console.log(totalPermutations);
-    
+
     temp = this.initializeTempArray(parametersArray, numberOfVariables);
 
     /** This method is run as a for loop through all the calculated
@@ -88,8 +88,8 @@ export class GeneratorService {
       /** If statement is true if the last element has not reached the maximum
         value.  It causes the last element to increase to the next in order. **/
     /** Else takes care of the situation where elements other than the last
-        one (right-most) need to be changed. Index i starts on the right-most 
-        element and works to the left.  If this addition brings the temp[i-1] to 
+        one (right-most) need to be changed. Index i starts on the right-most
+        element and works to the left.  If this addition brings the temp[i-1] to
         above the maximum, this will be taken care in the next iteration of the for loop.**/
 
       arrayValues = this.setArrayValuesToTemp(numberOfVariables, temp);
@@ -113,7 +113,7 @@ export class GeneratorService {
         temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
       }
       // For each index value, a set is pushed to the answerArray.
-      answerArray.push(arrayValues); 
+      answerArray.push(arrayValues);
     }
     return answerArray;
   }
@@ -152,43 +152,22 @@ export class GeneratorService {
     return reversedLaTex;
   }
 
-  convertProblemToLaTeX(parametersArray, equation, solutionSet): string {
-    let variablesObject = this.createVariableObject(solutionSet, parametersArray);
-    // variablesObject['a'] = 1;
-    // variablesObject['a'] = 1;
-    // let variablesObject = {
-    //   a: 2,
-    //   b: 3,
-    //   c: 4
-    // };
-    console.log(variablesObject);
-
-    let nerdamerAnswer = nerdamer(equation, variablesObject).toString();
-    let laTeXAnswer = nerdamer.convertToLaTeX(nerdamerAnswer);
-    console.log("LaTex: " + laTeXAnswer);
-
-    let reversedLaTeX = this.reverseLaTex(laTeXAnswer);
-
-    return laTeXAnswer;
-  }
-
-  // IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
   solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
     let answerArray: any[] = [];
-    
+
     let variablesObject = this.createVariableObject(randomSet, variables);
 
     let answer: string = nerdamer(simplifiedEquation, variablesObject);
     console.log(answer.toString());
-    
+
     let decimalAnswer: string  = nerdamer(answer).text('decimal');
     console.log('decimalAnswer');
     console.log(decimalAnswer);
-    
-    
+
+
     let decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
     console.log(decimalAnswer);
-    
+
     for (let i = 0; i < decimalAnswerArray.length; i++) {
       if (decimalAnswerArray[i] !== '') {
         answerArray.push(decimalAnswerArray[i]);
@@ -224,23 +203,27 @@ export class GeneratorService {
     const lastVariable = variables[variables.length - 1]; // the last variable in the variables array. we are making an assumption that we are solving for the last variable
 
     // check if value is an integer/decimal.
-    for (let i = 0; i < values.length; i++) {
-      const currentValue = values[i];
+     for (let i = 0; i < values.length; i++) {
+       let currentValue = values[i];
 
     // check if value is an imaginary number
     // I am assuming that we dont check for the range if it is imaginary
-      if (this.containsImaginary(currentValue) && lastVariable.isImaginary) {
+      if (this.containsImaginary(currentValue) && lastVariable.containsImaginary) {
         return true;
       }
+      let currentValueDecPoint = this.calculateDecimalPlaces(currentValue);
+      currentValue = Number(values[i]);
 
       if (lastVariable.decPoint === 0 && this.isInt(currentValue)) {
         sameDataType = true;
-      } else if (lastVariable.decPoint > 0 && this.calculateDecimalPlaces(currentValue) > 0) {
+      } else if (lastVariable.decPoint > 0 && currentValueDecPoint === lastVariable.decPoint) {
         sameDataType = true;
       }
       // check if value is in range.
       if (currentValue >= lastVariable.min && currentValue <= lastVariable.max) {
         inRange = true;
+      } else {
+        inRange = false;
       }
     }
 
@@ -264,6 +247,7 @@ export class GeneratorService {
     return result;
   }
 
+  /* this method converts object into an array of object*/
   toArray(obj) {
     let objArr = Object.keys(obj).map(function(key){
       return [String(key), obj[key]];
@@ -293,80 +277,54 @@ export class GeneratorService {
     if(inputArr.length === 1) {
       return 0;
     } else {
-      return inputArr[1].length;      
+      return inputArr[1].length;
     }
   }
 
 
   generateValidVariableCombination(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    variables[variables.length-1].isImaginary = true;
     // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
 
     // Check if it is valid set or not as per to the user's condition
     // If it is valid then push it to the 'result' array
     const result: any[] = [];
     const permutationsList: any[] = this.generatePermutations(variables);
-   
-    console.log(permutationsList);
 
     // tslint:disable-next-line:max-line-length
     let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length - 1].name); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
-    simplifiedEquation = nerdamer(simplifiedEquation).text('decimal');
+    // simplifiedEquation = nerdamer(simplifiedEquation).text('decimal');
 
     while (result.length !== numberOfProblems && permutationsList.length > 0) {
        const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
-     
-      const answerArray  = this.solveForVariable(randomSet[0], simplifiedEquation, variables);
 
-      if (this.compareResultWithUserSpecification(answerArray, variables)) {
-        randomSet[0].push(answerArray);
-        result.push(randomSet[0]);
+      const answerArray  = this.solveForVariable(randomSet[0], simplifiedEquation, variables);
+      //
+
+      for (let i = 0; i < answerArray.length; i++) {
+        let currentAnswer = answerArray.slice(i, i+1);
+
+        if (this.compareResultWithUserSpecification(currentAnswer, variables)) {
+          let variableToSolve = variables[variables.length-1];
+          if (variableToSolve.answerMeetsAllSpecification === false) {
+            randomSet[0].push(answerArray);
+            result.push(randomSet[0]);
+            break;
+          }
+          randomSet[0].push(currentAnswer);
+          result.push(randomSet[0]);
+        }
       }
+
+      //
+      // if (this.compareResultWithUserSpecification(answerArray, variables)) {
+      //   randomSet[0].push(answerArray);
+      //   result.push(randomSet[0]);
+      // }
     }
 
     return result;
   }
 
-
-  
-  reverseLaTex(input) {
-    let arr = [];
-    let reversedLaTex = "";
-    let inputArr = input.split(/[+\s]/);
-    let n = inputArr.length;
-    console.log(inputArr);
-    if (inputArr[n-2] === "=") {
-      for(var i = inputArr.length-3; i>=0; i--) {
-        if(inputArr[i].length !== 0) {
-          arr.push(inputArr[i]);
-        }
-      }
-    reversedLaTex = arr.join(' + ');
-    reversedLaTex+= " = 0";
-    } else {
-      for(var i = inputArr.length-1; i>=0; i--) {
-        if(inputArr[i].length !== 0) {
-          arr.push(inputArr[i]);
-        }
-      }
-      reversedLaTex = arr.join(' + ');
-    }
-    return reversedLaTex;
-  }
-
-  convertProblemToLaTeX(variables: Variable[], equation: string, validPermutaion): string {
-    let variablesObject = this.createVariableObject(validPermutaion, variables);
-
-    console.log(variablesObject);
-
-    let nerdamerAnswer = nerdamer(equation, variablesObject).toString();
-    let laTeXAnswer = nerdamer.convertToLaTeX(nerdamerAnswer);
-    console.log("LaTex: " + laTeXAnswer);
-
-    let reversedLaTeX = this.reverseLaTex(laTeXAnswer);
-
-    return laTeXAnswer;
-  }
 
   generateProblem(validPermutations: any[], equation: string, variables: Variable[]): string[] {
     let result: string[] = [];

@@ -7,6 +7,14 @@ input.ng-invalid{
 input.ng-valid{
   border: 1px solid black;
 }
+.grayFont {
+  color:#ccc;
+  display: inline;
+}
+#parameterToSolveDiv {
+  /* border: 1px solid gray;
+  border-radius: 5px; */
+}
 /*input.ng-pristine{
   border: 1px solid red;
 }*/
@@ -19,7 +27,7 @@ select.ng-invalid{
 select.ng-valid{
   border: 1px solid black;
 }
-.col-md-8{
+#generatedView, #isLoading{
   display: none;
 }
 #loading{

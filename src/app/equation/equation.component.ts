@@ -10,7 +10,8 @@ import './../../../node_modules/nerdamer/Extra.js';
 declare var nerdamer: any;
 
 import * as $ from 'jquery';
-declare var Guppy: any;   //declaring Guppy
+declare var Guppy: any;   // declaring Guppy
+ declare var GuppyOSK: any;
 
 @Component({
   selector: 'app-equation',
@@ -22,11 +23,15 @@ export class EquationComponent implements OnInit {
   parameterDiv: any;
   equation: string;
   variables: Variable[] = [];
+  variableToSolve: Variable = null;
+  canContainImaginary = false;
+  meetParameterCondition = false;
+
   generatedCombinations: any[] = [];
-  //generatedValidCombinations: any[] = [];
+  // generatedValidCombinations: any[] = [];
   numberOfProblems: number;
-  userInputInJsonFormat: any;
-  problemList: string[] = [];
+
+
   // randomImgLink = "http://lorempixel.com/400/200";
   // color = 'red';
 
@@ -34,6 +39,27 @@ export class EquationComponent implements OnInit {
 
   ngOnInit() {
     Guppy.init_symbols(['/assets/symbols.json']);
+  }
+  ngDoCheck() {
+    console.log(this.variableToSolve);
+    console.log(this.canContainImaginary);
+    console.log(this.meetParameterCondition);
+
+    if (this.variableToSolve) {
+      for (let i = 0; i < this.variables.length; i++) {
+        let currentVarObj = this.variables[i];
+        if (currentVarObj.name === this.variableToSolve.name) {
+          this.variables[i].solveForThisVariable = true;
+          this.variables[i].containsImaginary = this.canContainImaginary;
+          this.variables[i].answerMeetsAllSpecification = this.meetParameterCondition;
+        }
+      }
+      console.log(this.variables);
+      // this takes the variable to solve to the end of the array.
+      debugger;
+      this.switchParameterToSolve(this.variables, this.variableToSolve);
+
+    }
   }
   ngAfterViewChecked() {
     // To create the guppy box
@@ -49,17 +75,14 @@ export class EquationComponent implements OnInit {
   output (type){
     try {
       this.equation = Guppy.instances['equationBox'].backend.get_content('text');
-      console.log(this.equation);
-      
       let extractedVars = nerdamer(this.equation).variables().sort();
-      console.log("extractedVars: " + extractedVars);
       /* creating variable instance and pushing each variable instance into the variables array*/
       for (let i = 0; i < extractedVars.length; i++) {
-        let varName:string = extractedVars[i];
+        let varName: string = extractedVars[i];
         let newVar = new Variable(varName);
         this.variables.push(newVar);
       }
-      
+
       this.parameterDiv = $('.parameter-condition');
       this.parameterDiv.show();
     } catch (e) {
@@ -68,33 +91,34 @@ export class EquationComponent implements OnInit {
   }
 
   onSubmit(formValue) {
-    // $('.col-md-8').html('<h1> We are generating your questions!...</h1> <img src="../assets/img/calculatorLoading.gif">')
-    /* this logic updates the variables array value using the data obtained from the form */
-    $('.col-md-8').show();
+    // this logic updates the variables array value using the data obtained from the form
+    $('#generatedView').show();
+    $('#isLoading').show();
+
     this.numberOfProblems = formValue.numberOfProblems;
-    let formVariables = this.toArray(formValue.variables); //converting object into array
+    // converting object into array
+    let formVariables = this._generatorService.toArray (formValue.variables);
     for (let i = 0, j = 0; i < this.variables.length; i++) {
       this.variables[i].decPoint = formVariables[j][1];
-      this.variables[i].min = formVariables[j+1][1];
-      this.variables[i].max = formVariables[j+2][1];
-      j+= 3;
+      this.variables[i].min = formVariables[j + 1][1];
+      this.variables[i].max = formVariables[j + 2][1];
+      j += 3;
     }
 
-    // let result = this._generatorService.generatePermutations(this.variables);
-    // console.log(result);
-
-    let result1 = this._generatorService.generateValidVariableCombination(this.variables, this.numberOfProblems, this.equation);
-    this.generatedCombinations = result1;
-    console.log(result1);
-    
-    
-  }
-  /* this method converts object into an array of object*/
-  toArray(obj) {
-    let formVariables = Object.keys(obj).map(function(key){
-      return [String(key),obj[key]]
-    });
-    return formVariables;
+    let result = this._generatorService.generateValidVariableCombination(this.variables,this.numberOfProblems, this.equation);
+    this.generatedCombinations = result;
+    $('#isLoading').hide();
   }
 
+  switchParameterToSolve(variables: Variable[], variableToSolve: Variable): void {
+    let lastVariable = variables[variables.length-1];
+    for (let i = 0; i < variables.length; i++) {
+      let currentVar = variables[i];
+      if (currentVar.solveForThisVariable === true) {
+        variables[variables.length-1] = currentVar;
+        variables[i] = lastVariable;
+        break;
+      }
+    }
+  }
 }
