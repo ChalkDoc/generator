@@ -9,11 +9,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 
 ### See the [Documentaion](https://github.com/ChalkDoc/generator/wiki)
-### For how to deploy on Firebase [click here](https://alligator.io/angular/deploying-angular-app-to-firebase/)
-
-
-
-
 
 ## Development server
 
