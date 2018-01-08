@@ -5,7 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 <img align="left" src="https://www.excitor.com/sites/default/files/Document-Icon-small_3.png" /><br><br><br>
 
 
-### [Documentaion](https://github.com/ChalkDoc/generator/wiki)
+### See the [Documentaion](https://github.com/ChalkDoc/generator/wiki)
 
 
 
