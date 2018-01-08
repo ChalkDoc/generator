@@ -5,7 +5,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 <img align="left" src="https://www.excitor.com/sites/default/files/Document-Icon-small_3.png" /><br><br><br>
 
 
+
+
+
 ### See the [Documentaion](https://github.com/ChalkDoc/generator/wiki)
+### For how to deploy on Firebase [click here](https://alligator.io/angular/deploying-angular-app-to-firebase/)
 
 
 
