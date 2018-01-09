@@ -7,11 +7,11 @@ import './../../../node_modules/nerdamer/Algebra.js';
 import './../../../node_modules/nerdamer/Calculus.js';
 import './../../../node_modules/nerdamer/Extra.js';
 
-declare var nerdamer: any;
+declare var nerdamer: any; // declaring nerdamer
 
-import * as $ from 'jquery';
+import * as $ from 'jquery'; // declaring jQuery
 declare var Guppy: any;   // declaring Guppy
- declare var GuppyOSK: any;
+declare var GuppyOSK: any;
 
 @Component({
   selector: 'app-equation',
@@ -26,14 +26,8 @@ export class EquationComponent implements OnInit {
   variableToSolve: Variable = null;
   canContainImaginary = false;
   meetParameterCondition = false;
-
   generatedCombinations: any[] = [];
-  // generatedValidCombinations: any[] = [];
   numberOfProblems: number;
-
-
-  // randomImgLink = "http://lorempixel.com/400/200";
-  // color = 'red';
 
   constructor(private _generatorService: GeneratorService) { }
 
@@ -41,10 +35,6 @@ export class EquationComponent implements OnInit {
     Guppy.init_symbols(['/assets/symbols.json']);
   }
   ngDoCheck() {
-    console.log(this.variableToSolve);
-    console.log(this.canContainImaginary);
-    console.log(this.meetParameterCondition);
-
     if (this.variableToSolve) {
       for (let i = 0; i < this.variables.length; i++) {
         let currentVarObj = this.variables[i];
@@ -54,16 +44,11 @@ export class EquationComponent implements OnInit {
           this.variables[i].answerMeetsAllSpecification = this.meetParameterCondition;
         }
       }
-      console.log(this.variables);
       // this takes the variable to solve to the end of the array.
-      debugger;
       this.switchParameterToSolve(this.variables, this.variableToSolve);
-
     }
   }
   ngAfterViewChecked() {
-    // To create the guppy box
-    //new Guppy("equationBox");
     this.guppyBox = $('.equation-container');
     if (!this.guppyBox.data('has-guppy')) {
     let guppy = new Guppy('equationBox');
@@ -72,7 +57,7 @@ export class EquationComponent implements OnInit {
   }
   /* this is to get the content of the guppy box,
     it also converts the mathematical equation/expression into the desired format type(latex, asciimath, text, ast, eqns, function, xml)*/
-  output (type){
+  output (){
     try {
       this.equation = Guppy.instances['equationBox'].backend.get_content('text');
       let extractedVars = nerdamer(this.equation).variables().sort();

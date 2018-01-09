@@ -1,6 +1,5 @@
 import { Variable } from './../variable';
 import { Injectable } from '@angular/core';
-//import { Variable } from '../variable';
 
 import './../../../node_modules/nerdamer/nerdamer.core.js';
 import './../../../node_modules/nerdamer/Solve.js';
@@ -21,14 +20,12 @@ export class GeneratorService {
     return range;
   }
 
-  /** For loop calculates the total number of permutations based on the range
-        of the input parameters.  **/
+  // For loop calculates the total number of permutations based on the range of the input parameters.
   calculateTotalPermutations(parameters: Variable[], numOfVars: number): number {
     let permutations = 1;
 
     for (let i = 0; i< numOfVars; i++) {
-      /** Range includes subtracting minimum from maximu and adding 1
-       * to include both the minimum and maximum numbers. */
+      // Range includes subtracting minimum from maximu and adding 1 to include both the minimum and maximum numbers.
       let range = this.findRange(parameters[i].max, parameters[i].min, parameters[i].decPoint);
       permutations *= range;
     }
@@ -36,7 +33,7 @@ export class GeneratorService {
     return permutations;
   }
 
-  // Method initializes temp[] array with all the minimum parameters
+  // Initializes temp[] array with all the minimum parameters
   initializeTempArray(parameters: Variable[], numOfVars: number): number[] {
     let temp = [];
 
@@ -118,6 +115,7 @@ export class GeneratorService {
     return answerArray;
   }
 
+  /* Takes array of numbers and Variable array and converts to a varialble object*/
   createVariableObject(randomSet: number[], variables: Variable[]): object {
     const variablesObject = {};
     for (let i = 0; i < variables.length - 1; i++) {
@@ -127,31 +125,7 @@ export class GeneratorService {
     return variablesObject;
   }
 
-  reverseLaTex(input) {
-    let arr = [];
-    let reversedLaTex = "";
-    let inputArr = input.split(/[+\s]/);
-    let n = inputArr.length;
-    console.log(inputArr);
-    if (inputArr[n-2] === "=") {
-      for(var i = inputArr.length-3; i>=0; i--) {
-        if(inputArr[i].length !== 0) {
-          arr.push(inputArr[i]);
-        }
-      }
-    reversedLaTex = arr.join(' + ');
-    reversedLaTex+= " = 0";
-    } else {
-      for(var i = inputArr.length-1; i>=0; i--) {
-        if(inputArr[i].length !== 0) {
-          arr.push(inputArr[i]);
-        }
-      }
-      reversedLaTex = arr.join(' + ');
-    }
-    return reversedLaTex;
-  }
-
+  /* Solves the equation/expression using the nerdamer math  library by taking array of numbers, the simplified algebric equation and the variable array */
   solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
     let answerArray: any[] = [];
 
@@ -190,12 +164,13 @@ export class GeneratorService {
     return answerArray;
   }
 
-  // This method simplifies the equation and returns an expression
+  /* This method simplifies an algebric equation and returns an expression */
   simplifyEquation(equation: string, variableToSolve: string): string {
     const simplifiedEquation = nerdamer.solve(equation, variableToSolve);
     return simplifiedEquation.toString();
   }
 
+  /* It compares value with the user's varialble specfication. It takes array of any and array of variable and return true if all conditions are met otherwise false. */
   compareResultWithUserSpecification(values: any[], variables: Variable[]): boolean {
     let inRange = false;
     let sameDataType = false;
@@ -235,26 +210,29 @@ export class GeneratorService {
     }
   }
 
+  /* Generate a random intiger between two integers(inclusive). The method takes the min and max boundaries as an argument. */
   getRandomIntInclusive(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min; // The maximum and the minimum is inclusive
   }
 
+  /* It cuts out an element from an array at a random position. It takes an array of any as an argument. */
   splicePermutationSetRandomly(permutationsList: any[]): any[] {
     let splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length-1);
     let result = permutationsList.splice(splicingIndex, 1); // it returns [[...]]
     return result;
   }
 
-  /* this method converts object into an array of object*/
-  toArray(obj) {
+  /* This method takes an object as an argument and converts into an array. */
+  toArray(obj: object) {
     let objArr = Object.keys(obj).map(function(key){
       return [String(key), obj[key]];
     });
     return objArr;
   }
 
+  /* Checks if an input is an integer or not after being parsed to number. It takes a string or a number as an argument. */
   isInt(input: any): boolean {
     let parsedInput = Number(input);
     if (parsedInput !== NaN && Math.floor(parsedInput) === parsedInput) {
@@ -264,7 +242,8 @@ export class GeneratorService {
     }
   }
 
-  containsImaginary(input: string ) {
+  /* Checks if a string contains 'i' which is an indirect check of a number if it is imaginary or not. It takes a string as an argument. */
+  containsImaginary(input: string) {
     if (input.includes('i')) {
       return true;
     } else {
@@ -272,6 +251,7 @@ export class GeneratorService {
     }
   }
 
+  /* Takes a number as a string and calculates the number of decimal places. */
   calculateDecimalPlaces(input: string): number {
     const inputArr = input.split('.');
     if(inputArr.length === 1) {
@@ -281,12 +261,8 @@ export class GeneratorService {
     }
   }
 
-
+  /* Generates combination of numbers(including complex numbers) that are valid as per the user's specification. It takes array of variables, the number of combination to generate and a string of  algebric eaution as an argument.  Returns an array of any.*/
   generateValidVariableCombination(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
-
-    // Check if it is valid set or not as per to the user's condition
-    // If it is valid then push it to the 'result' array
     const result: any[] = [];
     const permutationsList: any[] = this.generatePermutations(variables);
 
@@ -295,14 +271,13 @@ export class GeneratorService {
     // simplifiedEquation = nerdamer(simplifiedEquation).text('decimal');
 
     while (result.length !== numberOfProblems && permutationsList.length > 0) {
-       const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
-
+      // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
+      const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);
       const answerArray  = this.solveForVariable(randomSet[0], simplifiedEquation, variables);
-      //
 
       for (let i = 0; i < answerArray.length; i++) {
         let currentAnswer = answerArray.slice(i, i+1);
-
+        // Check if it is valid set or not as per to the user's condition
         if (this.compareResultWithUserSpecification(currentAnswer, variables)) {
           let variableToSolve = variables[variables.length-1];
           if (variableToSolve.answerMeetsAllSpecification === false) {
@@ -314,22 +289,7 @@ export class GeneratorService {
           result.push(randomSet[0]);
         }
       }
-
-      //
-      // if (this.compareResultWithUserSpecification(answerArray, variables)) {
-      //   randomSet[0].push(answerArray);
-      //   result.push(randomSet[0]);
-      // }
     }
-
-    return result;
-  }
-
-
-  generateProblem(validPermutations: any[], equation: string, variables: Variable[]): string[] {
-    let result: string[] = [];
-   // [[1, 2, [-3,3]]]
-    //let variableObject = this.createVariableObject()
 
     return result;
   }
