@@ -218,7 +218,7 @@ describe('GeneratorService and all of its methods', () => {
     const result =  _generatorService.solveForVariable(randomSet, simplifiedEquation, variables);
     expect(result.toString()).toBe('2*i,-2*i');
   });
-
+/*
   it('should return [1, 0, 0, 5, -5] upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
     const a = new Variable('a', 0, 1, 10);
     const b = new Variable('b', 0, 1, 10);
@@ -230,13 +230,11 @@ describe('GeneratorService and all of its methods', () => {
     const equation = 'a^2 + b^2 = c^2';
     
     const result =  _generatorService.generateValidVariableCombination(variables, numberOfProblems, equation);
-    console.log(result);
-    console.log(result[3]);
     
     //expect(result.toString()).toBe('1,0,0,5,-5');
     expect(result[result.length-1].toString()).toBe('5,-5');
   });
-
+*/
   it('should reverse the LaTex format to prioritize higher order digits.', () => {
     const input = 'c + bx + a{x}^{2} = 0';
     const expectedResult = 'a{x}^{2} + bx + c = 0';
@@ -295,7 +293,7 @@ describe('GeneratorService and all of its methods', () => {
     expect(valueList[1]).toContain(testSetResult[1]);
     expect(valueList[2]).toContain(testSetResult[2]);
   });
-/*
+
   it('should generate a list of valid permutation sets given decimal parameters', () => {
     const a = new Variable('a', 1, 1, 5);
     const b = new Variable('b', 1, 1, 5);
@@ -305,11 +303,12 @@ describe('GeneratorService and all of its methods', () => {
     const numberOfProblems = 5;
 
     const equation = 'a^2 + b^2 = c^2';
+    const expression = _generatorService.simplifyEquation(equation, variables[variables.length - 1].name);
 
     let results = _generatorService.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
 
-    let expectedResult = this.solveForVariable(results[0], equation, variables);
+    let expectedResult = _generatorService.solveForVariable(results[0], expression, variables);
 
-    expect(results[0][2]).toEqual(expectedResult);
-  }); */
+    expect(results[0][2]).toEqual(expectedResult[0]);
+  });
 });

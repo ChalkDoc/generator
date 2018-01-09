@@ -75,7 +75,6 @@ export class GeneratorService {
     let lastElementIndex = numberOfVariables - 1;
 
     let totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
-    console.log(totalPermutations);
     
     temp = this.initializeTempArray(parametersArray, numberOfVariables);
 
@@ -131,7 +130,6 @@ export class GeneratorService {
     let reversedLaTex = "";
     let inputArr = input.split(/[+\s]/);
     let n = inputArr.length;
-    console.log(inputArr);
     if (inputArr[n-2] === "=") {
       for(var i = inputArr.length-3; i>=0; i--) {
         if(inputArr[i].length !== 0) {
@@ -153,53 +151,35 @@ export class GeneratorService {
 
   convertProblemToLaTeX(parametersArray, equation, solutionSet): string {
     let variablesObject = this.createVariableObject(solutionSet, parametersArray);
-    console.log(variablesObject);
 
     let nerdamerAnswer = nerdamer(equation, variablesObject).toString();
     let laTeXAnswer = nerdamer.convertToLaTeX(nerdamerAnswer);
-    console.log("LaTex: " + laTeXAnswer);
 
     let reversedLaTeX = this.reverseLaTex(laTeXAnswer);
 
     return laTeXAnswer;
   }
 
-  // IN PROGRESS KIM CHANGE TO 'SOLVE()' --possible refactoring
   solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
     let answerArray: any[] = [];
     
     let variablesObject = this.createVariableObject(randomSet, variables);
 
     let answer: string = nerdamer(simplifiedEquation, variablesObject);
-    console.log(answer);
+    //console.log('answer: ' + answer);
     
     let decimalAnswer: string  = nerdamer(answer).text('decimal');
-    console.log('decimalAnswer');
-    console.log(decimalAnswer);
-    
+    //console.log('decimalAnswer:' + decimalAnswer);    
     
     let decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
-    console.log(decimalAnswer);
+    //console.log('decimalAnswerArray:' + decimalAnswerArray);
     
     for (let i = 0; i < decimalAnswerArray.length; i++) {
       if (decimalAnswerArray[i] !== '') {
         answerArray.push(decimalAnswerArray[i]);
       }
     }
-    // for (let i = 0; i < answerValues.symbol.elements.length; i++) {
-    //   let expressionValue = answerValues.symbol.elements[i].value;
-    //   console.log(expressionValue);
-    //   if (expressionValue === '#'|| expressionValue === 'i') {
-    //     let numerator = answerValues.symbol.elements[i].multiplier.num.value;
-    //     let denominator = answerValues.symbol.elements[i].multiplier.den.value;
-    //     expressionValue = numerator/denominator;
-    //     expressionValue = expressionValue.toFixed(variables[variables.length-1].decPoint);
-    //   }
-    //   else {
-    //     expressionValue = nerdamer(expressionValue).text('decimals');
-    //   }
-    //   answerArray.push(expressionValue);
-    // }
+    
     return answerArray;
   }
 
@@ -310,31 +290,56 @@ export class GeneratorService {
     return testSet;
   }
 
+  solveForDecimalVariable(set: number[], expression: string, variables: Variable[]): any[] {
+    let answerArray: any[] = [];
+    
+    let variablesObject = this.createVariableObject(set, variables);
+
+    let answer: string = nerdamer(expression, variablesObject);
+    //console.log('answer: ' + answer);
+    
+    let decimalAnswer: string  = nerdamer(answer).text('decimal');
+    //console.log('decimalAnswer:' + decimalAnswer);    
+    
+    let decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
+    //console.log('decimalAnswerArray:' + decimalAnswerArray);
+    
+    for (let i = 0; i < decimalAnswerArray.length; i++) {
+      if (decimalAnswerArray[i] !== '') {
+        answerArray.push(decimalAnswerArray[i]);
+      }
+    }
+    
+    return answerArray;
+  }
+
   // Method controls valid table for problems that have a decimal answer
   generateDecimalVariablesPermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     let result = [];
     let valueList = [];
     let numberOfLists = variables.length - 1;  // Will take away last variable.
     let count = 0;
+    let expression = this.simplifyEquation(equation, variables[variables.length - 1].name);
 
     for (let i = 0; i < numberOfLists; i++) {
       valueList[i] = this.generateRangeOfValues(variables[i]);
     }
 
     while (count < numberOfProblems) {
-      let testSet = this.createTestSet(valueList);
+      let testSet: any[];
+      testSet = this.createTestSet(valueList);
 
-      let answerArray = this.solveForVariable(testSet, equation, variables);
+      let answerArray = this.solveForVariable(testSet, expression, variables);
+      console.log(answerArray);
+      let realAnswer = nerdamer(answerArray);
+      console.log(realAnswer);
 
       // This for loop takes into account the fact that the answerArray is an array.
       // Caution:  The current implementation will potentially produce two of the same problem!!!
       for (let i = 0; i < answerArray.length; i++) {
-        if (answerArray[i] >= variables[variables.length - 1].min 
-          && answerArray[i] <= variables[variables.length - 1].max) {
-            testSet.push(answerArray[i]);
-            count++;
-        }
-
+        testSet.push(answerArray[i]);
+        //console.log(testSet);
+        count++;
       }
       result.push(testSet);
     }
@@ -350,24 +355,17 @@ export class GeneratorService {
     // If it is valid then push it to the 'result' array
     const result: any[] = [];
     const permutationsList: any[] = this.generatePermutations(variables);
-    console.log('permutation list');
-    console.log(permutationsList);
 
     // tslint:disable-next-line:max-line-length
     let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length - 1].name); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
     simplifiedEquation = nerdamer(simplifiedEquation).text('decimal');
 
     while (result.length !== numberOfProblems) {
-       const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
-       console.log('randomset');
-
-       console.log(randomSet);
-
-       console.log('answwer array b4');
+      const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);  // splice a permutation set randomly
 
       const answerArray  = this.solveForVariable(randomSet[0], simplifiedEquation, variables);
-      console.log('answwer array');
-      console.log(answerArray);
+      // console.log('answwer array');
+      // console.log(answerArray);
 
 
       if (this.compareResultWithUserSpecification(answerArray, variables)) {
