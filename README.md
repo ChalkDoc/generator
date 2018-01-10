@@ -61,7 +61,7 @@ followed by
 ```
 npm install --save-dev @angular/cli@latest
 ```
-## Technologies pushed
+## Technologies used
 * Angular cli
 * Savascript
 * Typescript
