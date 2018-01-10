@@ -248,6 +248,64 @@ export class GeneratorService {
     }
   }
 
+  generateRangeOfValues(variable: Variable): number[] {
+    let values = [];
+    let countingValue = variable.min;
+    let range = this.findRange(variable.max, variable.min, variable.decPoint);
+
+    for (let i = 0; i < range; i++) {
+      //countingValue.toFixed(variable.decPoint);
+      values.push(countingValue.toFixed(variable.decPoint));
+      countingValue += 1 / (Math.pow(10, variable.decPoint));
+    }
+
+    return values;
+  }
+
+  createTestSet(valueList: any[]): number[] {
+    let testSet = [];
+    let tempSetArray = [];
+
+    for (let i = 0; i < valueList.length; i++) {
+      let randomIndex = Math.floor(Math.random() * valueList[i].length);
+      testSet[i] = valueList[i][randomIndex];
+    }
+
+    return testSet;
+  }
+
+  // Method controls valid table for problems that have a decimal answer
+  generateDecimalVariablesPermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
+    let result = [];
+    let valueList = [];
+    let numberOfLists = variables.length - 1;  // Will take away last variable.
+    let count = 0;
+    let expression = this.simplifyEquation(equation, variables[variables.length - 1].name);
+
+    for (let i = 0; i < numberOfLists; i++) {
+      valueList[i] = this.generateRangeOfValues(variables[i]);
+    }
+
+    while (count < numberOfProblems) {
+      let testSet: any[];
+      testSet = this.createTestSet(valueList);
+
+      let answerArray = this.solveForVariable(testSet, expression, variables);
+      console.log(answerArray);
+
+      // This for loop takes into account the fact that the answerArray is an array.
+      // Caution:  The current implementation will potentially produce two of the same problem!!!
+      for (let i = 0; i < answerArray.length; i++) {
+        testSet.push(answerArray[i]);
+        //console.log(testSet);
+        count++;
+      }
+      result.push(testSet);
+    }
+
+    return result;
+  }
+
   /* Generates combination of numbers(including complex numbers) that are valid as per the user's specification. It takes array of variables, the number of combination to generate and a string of  algebric eaution as an argument.  Returns an array of any.*/
   generateValidVariableCombination(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     const result: any[] = [];
