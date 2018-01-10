@@ -414,7 +414,7 @@ describe('GeneratorService and all of its methods', () => {
     const variables: Variable[] = [a, b, c, x];
 
     const values = ['-10.05'];
-debugger;
+
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
     console.log(meetsUserSpecification);
     expect(meetsUserSpecification).toBe(true);
@@ -432,7 +432,7 @@ debugger;
     const numberOfProblems = 1;
 
     const equation = 'a^2 + b^2 = c^2';
- 
+
     const result =  _generatorService.generateValidVariableCombination(variables, numberOfProblems, equation);
 
     expect(result.length).toBe(1);
@@ -441,7 +441,6 @@ debugger;
     expect(result[0][2].toString()).toContain('5');
   });
 
-  // tslint:disable-next-line:max-line-length
   it('should return [[3, 4, [5]], [6, 8, [10]]] upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
     const a = new Variable('a', 0, 1, 10);
     const b = new Variable('b', 0, 1, 10);
@@ -462,4 +461,25 @@ debugger;
     expect(result[1][2].length).toBe(1);
   });
 
+  it('should generate a random number between 1 and 5 upon calling generateRandomDecimal(min, max)', () => {
+    let min = 1;
+    let max = 5;
+    let decPoint = 2;
+    let result = _generatorService.generateRandomDecimal(min, max, decPoint);
+
+    expect(result).toBeGreaterThanOrEqual(1);
+    expect(result).toBeLessThanOrEqual(5);
+  });
+
+  it('should return an array of 3 numbers upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
+    const a = new Variable('a', 2, 1, 10);
+    const b = new Variable('b', 2, 1, 10);
+    const c = new Variable('c', 2, 1, 10);
+    const variables: Variable[] = [a, b, c];
+
+    const result =  _generatorService.generateDecimalCombination(variables);
+    console.log(result);
+    
+    expect(result.length).toBe(3);
+  });
 });

@@ -61,6 +61,29 @@ followed by
 ```
 npm install --save-dev @angular/cli@latest
 ```
+## Technologies pushed
+* Angular cli
+* Savascript
+* Typescript
+* Jasmine
+* Bower
+* npm
+* Node Js
+* Karma
+* Guppy WYSIWYG editor
+* jQuery
+* Bootstrap 4
+* Nerdamer math library
+
+## Further Work:
+* Handling decimalAnswer
+* Writing more unit test to include as many test cases as possible.
+* Error handling for user inputs
+* Refactoring existing code for better performance
+
+## Bugs
+
+* No known Bugs
 
 ## Further help
 

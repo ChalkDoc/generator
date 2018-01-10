@@ -147,20 +147,7 @@ export class GeneratorService {
         answerArray.push(decimalAnswerArray[i]);
       }
     }
-    // for (let i = 0; i < answerValues.symbol.elements.length; i++) {
-    //   let expressionValue = answerValues.symbol.elements[i].value;
-    //   console.log(expressionValue);
-    //   if (expressionValue === '#'|| expressionValue === 'i') {
-    //     let numerator = answerValues.symbol.elements[i].multiplier.num.value;
-    //     let denominator = answerValues.symbol.elements[i].multiplier.den.value;
-    //     expressionValue = numerator/denominator;
-    //     expressionValue = expressionValue.toFixed(variables[variables.length-1].decPoint);
-    //   }
-    //   else {
-    //     expressionValue = nerdamer(expressionValue).text('decimals');
-    //   }
-    //   answerArray.push(expressionValue);
-    // }
+
     return answerArray;
   }
 
@@ -265,10 +252,8 @@ export class GeneratorService {
   generateValidVariableCombination(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     const result: any[] = [];
     const permutationsList: any[] = this.generatePermutations(variables);
-
-    // tslint:disable-next-line:max-line-length
-    let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length - 1].name); // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
-    // simplifiedEquation = nerdamer(simplifiedEquation).text('decimal');
+    // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
+    let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length - 1].name);
 
     while (result.length !== numberOfProblems && permutationsList.length > 0) {
       // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
@@ -293,4 +278,24 @@ export class GeneratorService {
 
     return result;
   }
+
+  generateRandomDecimal(min: number, max: number, decPoint: number): number {
+    let randomDecimal =  (Math.random() * (max - min)) + min;
+    return Number(randomDecimal.toFixed(decPoint));
+  }
+  generateDecimalCombination(variables: Variable[]) {
+    let randomSet = [];
+      for (var i = 0; i < variables.length; i++) {
+        let currentVar = variables[i];
+        let min = currentVar.min;
+        let max = currentVar.max;
+        let decPoint = currentVar.decPoint;
+
+        let randomForCurrentVar = this.generateRandomDecimal(min, max, decPoint);
+        randomSet.push(randomForCurrentVar);
+      }
+
+    return randomSet;
+  }
+
 }
