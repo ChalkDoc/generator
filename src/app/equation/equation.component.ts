@@ -90,7 +90,7 @@ export class EquationComponent implements OnInit {
       j += 3;
     }
 
-    let result = this._generatorService.generateValidVariableCombination(this.variables,this.numberOfProblems, this.equation);
+    let result = this._generatorService.solverDecisionTree(this.variables,this.numberOfProblems, this.equation);
     this.generatedCombinations = result;
     console.log(this.generatedCombinations);
     
@@ -109,3 +109,5 @@ export class EquationComponent implements OnInit {
     }
   }
 }
+
+
