@@ -92,6 +92,8 @@ export class EquationComponent implements OnInit {
 
     let result = this._generatorService.solverDecisionTree(this.variables,this.numberOfProblems, this.equation);
     this.generatedCombinations = result;
+    console.log(this.generatedCombinations);
+    
     $('#isLoading').hide();
   }
 

@@ -414,7 +414,7 @@ describe('GeneratorService and all of its methods', () => {
     const variables: Variable[] = [a, b, c, x];
 
     const values = ['-10.05'];
-debugger;
+
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
     console.log(meetsUserSpecification);
     expect(meetsUserSpecification).toBe(true);
@@ -441,7 +441,6 @@ debugger;
     expect(result[0][2].toString()).toContain('5');
   });
 
-  // tslint:disable-next-line:max-line-length
   it('should return [[3, 4, [5]], [6, 8, [10]]] upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
     const a = new Variable('a', 0, 1, 10);
     const b = new Variable('b', 0, 1, 10);
@@ -470,7 +469,7 @@ debugger;
     //const expectedResult = [1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0];
 
     let result = _generatorService.generateRangeOfValues(variable);
-    
+
     expect(result[0]).toBe(expectedResult[0]);
     expect(result[1]).toBe(expectedResult[1]);
     expect(result[2]).toBe(expectedResult[2]);
@@ -490,7 +489,7 @@ debugger;
     valueList[2] = [3.1, 3.2, 3.3, 3.4, 3.5];
 
     let testSetResult = _generatorService.createTestSet(valueList);
-    
+
     expect(valueList[0]).toContain(testSetResult[0]);
     expect(valueList[1]).toContain(testSetResult[1]);
     expect(valueList[2]).toContain(testSetResult[2]);
