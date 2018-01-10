@@ -461,29 +461,6 @@ describe('GeneratorService and all of its methods', () => {
     expect(result[1][2].length).toBe(1);
   });
 
-<<<<<<< HEAD
-  it('should generate a random number between 1 and 5 upon calling generateRandomDecimal(min, max)', () => {
-    let min = 1;
-    let max = 5;
-    let decPoint = 2;
-    let result = _generatorService.generateRandomDecimal(min, max, decPoint);
-
-    expect(result).toBeGreaterThanOrEqual(1);
-    expect(result).toBeLessThanOrEqual(5);
-  });
-
-  it('should return an array of 3 numbers upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
-    const a = new Variable('a', 2, 1, 10);
-    const b = new Variable('b', 2, 1, 10);
-    const c = new Variable('c', 2, 1, 10);
-    const variables: Variable[] = [a, b, c];
-
-    const result =  _generatorService.generateDecimalCombination(variables);
-    console.log(result);
-    
-    expect(result.length).toBe(3);
-  });
-=======
   it('should generate a set of values for a variable based on min, max, and decimal numbers', () => {
     const variable = new Variable('a', 1, 1, 2);
 
@@ -492,7 +469,7 @@ describe('GeneratorService and all of its methods', () => {
     //const expectedResult = [1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0];
 
     let result = _generatorService.generateRangeOfValues(variable);
-    
+
     expect(result[0]).toBe(expectedResult[0]);
     expect(result[1]).toBe(expectedResult[1]);
     expect(result[2]).toBe(expectedResult[2]);
@@ -512,7 +489,7 @@ describe('GeneratorService and all of its methods', () => {
     valueList[2] = [3.1, 3.2, 3.3, 3.4, 3.5];
 
     let testSetResult = _generatorService.createTestSet(valueList);
-    
+
     expect(valueList[0]).toContain(testSetResult[0]);
     expect(valueList[1]).toContain(testSetResult[1]);
     expect(valueList[2]).toContain(testSetResult[2]);
@@ -536,5 +513,4 @@ describe('GeneratorService and all of its methods', () => {
     expect(results[0][2]).toEqual(expectedResult[0]);
   });
 
->>>>>>> b7eb3b26826399abd05195025fb7a47ad655f1ef
 });

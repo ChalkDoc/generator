@@ -336,24 +336,4 @@ export class GeneratorService {
 
     return result;
   }
-
-  generateRandomDecimal(min: number, max: number, decPoint: number): number {
-    let randomDecimal =  (Math.random() * (max - min)) + min;
-    return Number(randomDecimal.toFixed(decPoint));
-  }
-  generateDecimalCombination(variables: Variable[]) {
-    let randomSet = [];
-      for (var i = 0; i < variables.length; i++) {
-        let currentVar = variables[i];
-        let min = currentVar.min;
-        let max = currentVar.max;
-        let decPoint = currentVar.decPoint;
-
-        let randomForCurrentVar = this.generateRandomDecimal(min, max, decPoint);
-        randomSet.push(randomForCurrentVar);
-      }
-
-    return randomSet;
-  }
-
 }
