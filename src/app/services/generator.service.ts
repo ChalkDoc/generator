@@ -132,18 +132,16 @@ export class GeneratorService {
     let variablesObject = this.createVariableObject(randomSet, variables);
 
     let answer: string = nerdamer(simplifiedEquation, variablesObject);
-    console.log(answer.toString());
+    //console.log('answer: ' + answer.toString());
+    console.log(answer);
 
     let decimalAnswer: string  = nerdamer(answer).text('decimal');
-    console.log('decimalAnswer');
-    console.log(decimalAnswer);
-
 
     let decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
-    console.log(decimalAnswer);
 
     for (let i = 0; i < decimalAnswerArray.length; i++) {
       if (decimalAnswerArray[i] !== '') {
+        console.log(decimalAnswerArray[i]);
         answerArray.push(decimalAnswerArray[i]);
       }
     }
@@ -320,7 +318,7 @@ export class GeneratorService {
   }
 
   /* Generates combination of numbers(including complex numbers) that are valid as per the user's specification. It takes array of variables, the number of combination to generate and a string of  algebric eaution as an argument.  Returns an array of any.*/
-  generateValidVariableCombination(variables: Variable[], numberOfProblems: number, equation: string): any[] {
+  generateValidVariablePermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     const result: any[] = [];
     const permutationsList: any[] = this.generatePermutations(variables);
 
@@ -350,5 +348,36 @@ export class GeneratorService {
     }
 
     return result;
+  }
+
+  // Method examines parameters to determine how many variables can be decimals.
+  calculateTotalDecimals(variables) {
+    let decimals = 0;
+    for (let i = 0; i < variables.length; i++) {
+      if (variables[i].decPoint > 0) {
+        decimals++;
+      }
+    }
+
+    return decimals;
+  }
+
+  // Determines solving course of action based on variables and decimals.
+  solverDecisionTree(variables: Variable[], numberOfProblems: number, equation: string): any[] {
+    let totalDecimals = this.calculateTotalDecimals(variables);
+    let result = [];
+
+    if (totalDecimals == 0) {
+      // All variables are to be integers.  Use permutations table.
+      result = this.generateValidVariablePermutations(variables, numberOfProblems, equation);
+
+      return result;
+    }
+    else {
+      // All variable parameters are decimals.
+      result = this.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
+
+      return result;
+    }
   }
 }
