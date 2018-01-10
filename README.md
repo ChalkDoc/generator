@@ -76,7 +76,7 @@ npm install --save-dev @angular/cli@latest
 * Nerdamer math library
 
 ## Further Work:
-* Handling decimalAnswer
+* Handling decimal Answer
 * Writing more unit test to include as many test cases as possible.
 * Error handling for user inputs
 * Refactoring existing code for better performance
