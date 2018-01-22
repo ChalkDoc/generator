@@ -5,7 +5,11 @@ import { Variable } from '../variable';
 
 describe('GeneratorService and all of its methods', () => {
   let _generatorService: GeneratorService;
-
+  const a = new Variable('a', 0, 1, 5);
+  const b = new Variable('b', 0, 1, 5);
+  const c = new Variable('c', 0, 1, 5);
+  const x = new Variable('x', 0, -100, 100);
+  const variables: Variable[] = [a, b, c, x];
   beforeEach(() => {
     _generatorService = new GeneratorService();
     TestBed.configureTestingModule({
@@ -18,11 +22,6 @@ describe('GeneratorService and all of its methods', () => {
   }));
 
   it('should return 125 when calling generatePermutations(4 variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
     const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
     expect(generatedCombinations.length).toBe(125);
   });
@@ -432,7 +431,7 @@ describe('GeneratorService and all of its methods', () => {
     const numberOfProblems = 1;
 
     const equation = 'a^2 + b^2 = c^2';
- 
+
     const result =  _generatorService.generateValidVariablePermutations(variables, numberOfProblems, equation);
 
     expect(result.length).toBe(1);
