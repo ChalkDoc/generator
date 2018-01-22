@@ -22,6 +22,8 @@ declare var GuppyOSK: any;
 export class EquationComponent implements OnInit {
   guppyBox: any;
   parameterDiv = false;
+  generatedView = false;
+  isLoading = false;
   equation: string;
   variables: Variable[] = [];
   variableToSolve: Variable = null;
@@ -79,8 +81,10 @@ export class EquationComponent implements OnInit {
 
   onSubmit(formValue) {
     // this logic updates the variables array value using the data obtained from the form
-    $('#generatedView').show();
-    $('#isLoading').show();
+    this.generatedView = true;
+    this.isLoading = true;
+    // $('#generatedView').show();
+    // $('#isLoading').show();
 
     this.numberOfProblems = formValue.numberOfProblems;
     // converting object into array
@@ -96,7 +100,8 @@ export class EquationComponent implements OnInit {
     this.generatedCombinations = result;
     console.log(this.generatedCombinations);
 
-    $('#isLoading').hide();
+    this.isLoading = false;
+    // $('#isLoading').hide();
   }
 
   switchParameterToSolve(variables: Variable[], variableToSolve: Variable): void {

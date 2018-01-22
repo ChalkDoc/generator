@@ -33,9 +33,9 @@ select.ng-valid{
   border: 1px solid black;
 }
 
-#generatedView, #isLoading{
+/* #generatedView, #isLoading{
   display: none;
-}
+} */
 
 #loading{
   display: none;

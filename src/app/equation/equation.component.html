@@ -75,8 +75,8 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6" id="generatedView">
-      <div id="isLoading">
+    <div class="col-md-6" *ngIf="generatedView">
+      <div *ngIf="isLoading">
         <img src="../assets/img/loadingGear.gif">
       </div>
       <table>
