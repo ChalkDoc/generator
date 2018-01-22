@@ -27,65 +27,39 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should contain [1,1,1] when calling generatePermutations(4 variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
     expect(generatedCombinations).toContain([1, 1, 1]);
   });
 
   it('should return 125 when calling generatePermutations(3 variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
     const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
     expect(generatedCombinations.length).toBe(125);
   });
 
   it('should contain [1,1,1] when calling generatePermutations(3 variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
     const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
     expect(generatedCombinations).toContain([1, 1, 1]);
   });
 
   it('should return 25 when calling generatePermutations(2 variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
     const variables: Variable[] = [a, b, x];
     const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
     expect(generatedCombinations.length).toBe(25);
   });
 
   it('should contain [1,1] when calling generatePermutations(2 variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
     const variables: Variable[] = [a, b, x];
     const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
     expect(generatedCombinations).toContain([1, 1]);
   });
 
   it('should return 5 when calling generatePermutations(1 variable)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
     const variables: Variable[] = [a, x];
     const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
     expect(generatedCombinations.length).toBe(5);
   });
 
   it('should contain [1] when calling generatePermutations(1 variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
     const variables: Variable[] = [a, x];
     const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
     expect(generatedCombinations).toContain([1]);
@@ -129,11 +103,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should splice a random permutation set 1 time when calling splicePermutationSetRandomly(permutationsList)  decreasing the permutationList count by 1', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
     const permutationsList: any[] = _generatorService.generatePermutations(variables);
 
     _generatorService.splicePermutationSetRandomly(permutationsList);
@@ -141,26 +110,14 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should splice a random permutation set 2 times when calling splicePermutationSetRandomly(permutationsList)  decreasing the permutationList count by 2', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
     const permutationsList: any[] = _generatorService.generatePermutations(variables);
-
     _generatorService.splicePermutationSetRandomly(permutationsList);
     _generatorService.splicePermutationSetRandomly(permutationsList);
     expect(permutationsList.length).toBe(123);
   });
 
   it('should splice a random permutation set 3 times when calling splicePermutationSetRandomly(permutationsList) decreasing the permutationList count by 3', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
     const permutationsList: any[] = _generatorService.generatePermutations(variables);
-
     _generatorService.splicePermutationSetRandomly(permutationsList);
     _generatorService.splicePermutationSetRandomly(permutationsList);
     _generatorService.splicePermutationSetRandomly(permutationsList);
@@ -168,13 +125,7 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should create an object of {a: 1, b: 1, c: 1} when calling createVariablesObject()', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
     const randomSet = [1, 1, 1];
-
     let variablesObject = _generatorService.createVariableObject(randomSet, variables);
     let variablesObjectArr = _generatorService.toArray(variablesObject);
     expect(variablesObjectArr[0][0]).toBe('a');
@@ -186,12 +137,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return -5 and 5 upon calling solveForVariable(randomSet, simplifiedEquation, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const randomSet = [1, 0, 0];
 
     const simplifiedEquation = _generatorService.simplifyEquation('a*x^2 + b*x + c = 25', 'x');
@@ -204,12 +149,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return 2*i and -2*i upon calling solveForVariable(randomSet, simplifiedEquation, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const randomSet = [1, 0, 0];
 
     const simplifiedEquation = _generatorService.simplifyEquation('a*x^2 + b*x + c = -4', 'x');
@@ -280,12 +219,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return true upon calling compareResultWithUserSpecification("5", variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const values = ['5'];
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
@@ -294,12 +227,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification("5i", variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const values = ['5i'];
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
@@ -308,12 +235,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const values = ['5i'];
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
@@ -322,9 +243,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return true upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
     const x = new Variable('x', 0, -100, 100, true);
     const variables: Variable[] = [a, b, c, x];
 
@@ -336,12 +254,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const values = ['150'];
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
@@ -350,12 +262,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const values = ['-150'];
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
@@ -364,12 +270,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const values = ['-10.5'];
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
@@ -378,12 +278,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
-    const x = new Variable('x', 0, -100, 100);
-    const variables: Variable[] = [a, b, c, x];
-
     const values = ['-10.5'];
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
@@ -392,9 +286,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return true upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
     const x = new Variable('x', 1, -100, 100);
     const variables: Variable[] = [a, b, c, x];
 
@@ -406,9 +297,6 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return true upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const a = new Variable('a', 0, 1, 5);
-    const b = new Variable('b', 0, 1, 5);
-    const c = new Variable('c', 0, 1, 5);
     const x = new Variable('x', 2, -100, 100);
     const variables: Variable[] = [a, b, c, x];
 
