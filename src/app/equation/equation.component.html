@@ -10,7 +10,7 @@
           </button>
         </div>
         <h6 class="grayFont">Type any Equation/Expression Imaginable and click proceed.</h6>
-        <div class="parameter-condition">
+        <div *ngIf="parameterDiv">
           <form #variableForm = "ngForm" (ngSubmit) = "onSubmit(variableForm.value)">
             <br><br>
               <div class="row">

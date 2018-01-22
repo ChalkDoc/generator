@@ -9,7 +9,8 @@ import './../../../node_modules/nerdamer/Extra.js';
 
 declare var nerdamer: any; // declaring nerdamer
 
-import * as $ from 'jquery'; // declaring jQuery
+import * as $ from 'jquery';
+// declaring jQuery
 declare var Guppy: any;   // declaring Guppy
 declare var GuppyOSK: any;
 
@@ -20,7 +21,7 @@ declare var GuppyOSK: any;
 })
 export class EquationComponent implements OnInit {
   guppyBox: any;
-  parameterDiv: any;
+  parameterDiv = false;
   equation: string;
   variables: Variable[] = [];
   variableToSolve: Variable = null;
@@ -68,8 +69,9 @@ export class EquationComponent implements OnInit {
         this.variables.push(newVar);
       }
 
-      this.parameterDiv = $('.parameter-condition');
-      this.parameterDiv.show();
+      // this.parameterDiv = $('.parameter-condition');
+      // this.parameterDiv.show();
+      this.parameterDiv = true;
     } catch (e) {
       alert('Parsing error!' + e);
     }
@@ -93,7 +95,7 @@ export class EquationComponent implements OnInit {
     let result = this._generatorService.solverDecisionTree(this.variables,this.numberOfProblems, this.equation);
     this.generatedCombinations = result;
     console.log(this.generatedCombinations);
-    
+
     $('#isLoading').hide();
   }
 
@@ -109,5 +111,3 @@ export class EquationComponent implements OnInit {
     }
   }
 }
-
-

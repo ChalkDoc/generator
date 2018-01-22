@@ -1,35 +1,42 @@
-.parameter-condition{
+/* .parameter-condition{
     display: none;
-  }
+  } */
+
 input.ng-invalid{
   border: 1px solid red;
 }
+
 input.ng-valid{
   border: 1px solid black;
 }
+
 .grayFont {
   color:#ccc;
   display: inline;
 }
-#parameterToSolveDiv {
-  /* border: 1px solid gray;
-  border-radius: 5px; */
+
+/* #parameterToSolveDiv {
+  border: 1px solid gray;
+  border-radius: 5px;
 }
-/*input.ng-pristine{
+input.ng-pristine{
   border: 1px solid red;
-}*/
-/*input.ng-untouched{
+}
+input.ng-untouched{
   border: 1px solid red;
-}*/
+} */
 select.ng-invalid{
   border: 1px solid red;
 }
+
 select.ng-valid{
   border: 1px solid black;
 }
+
 #generatedView, #isLoading{
   display: none;
 }
+
 #loading{
   display: none;
 }
