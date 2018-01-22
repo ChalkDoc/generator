@@ -347,13 +347,12 @@ describe('GeneratorService and all of its methods', () => {
     expect(result[1].length).toBe(3);
     expect(result[1][2].length).toBe(1);
   });
-/*
+
   it('should generate a set of values for a variable based on min, max, and decimal numbers', () => {
     const variable = new Variable('a', 1, 1, 2);
 
 
     const expectedResult = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0'];
-    //const expectedResult = [1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0];
 
     let result = _generatorService.generateRangeOfValues(variable);
 
@@ -368,6 +367,8 @@ describe('GeneratorService and all of its methods', () => {
     expect(result[8]).toBe(expectedResult[8]);
     expect(result[9]).toBe(expectedResult[9]);
   });
+
+  /*
 
   it('should choose a set of values based on the generated list of values', () => {
     let valueList = [];
