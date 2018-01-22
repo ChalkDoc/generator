@@ -356,16 +356,16 @@ describe('GeneratorService and all of its methods', () => {
 
     let result = _generatorService.generateRangeOfValues(variable);
 
-    expect(result[0]).toBe(expectedResult[0]);
-    expect(result[1]).toBe(expectedResult[1]);
-    expect(result[2]).toBe(expectedResult[2]);
-    expect(result[3]).toBe(expectedResult[3]);
-    expect(result[4]).toBe(expectedResult[4]);
-    expect(result[5]).toBe(expectedResult[5]);
-    expect(result[6]).toBe(expectedResult[6]);
-    expect(result[7]).toBe(expectedResult[7]);
-    expect(result[8]).toBe(expectedResult[8]);
-    expect(result[9]).toBe(expectedResult[9]);
+    expect<any>(result[0]).toBe(expectedResult[0]);
+    expect<any>(result[1]).toBe(expectedResult[1]);
+    expect<any>(result[2]).toBe(expectedResult[2]);
+    expect<any>(result[3]).toBe(expectedResult[3]);
+    expect<any>(result[4]).toBe(expectedResult[4]);
+    expect<any>(result[5]).toBe(expectedResult[5]);
+    expect<any>(result[6]).toBe(expectedResult[6]);
+    expect<any>(result[7]).toBe(expectedResult[7]);
+    expect<any>(result[8]).toBe(expectedResult[8]);
+    expect<any>(result[9]).toBe(expectedResult[9]);
   });
 
   /*
