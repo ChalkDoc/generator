@@ -9,7 +9,7 @@ import './../../../node_modules/nerdamer/Extra.js';
 
 declare var nerdamer: any; // declaring nerdamer
 
-import * as $ from 'jquery';
+// import * as $ from 'jquery';
 // declaring jQuery
 declare var Guppy: any;   // declaring Guppy
 declare var GuppyOSK: any;
@@ -20,7 +20,7 @@ declare var GuppyOSK: any;
   styleUrls: ['./equation.component.css']
 })
 export class EquationComponent implements OnInit {
-  guppyBox: any;
+  guppyBox = false;
   parameterDiv = false;
   generatedView = false;
   isLoading = false;
@@ -32,7 +32,7 @@ export class EquationComponent implements OnInit {
   generatedCombinations: any[] = [];
   numberOfProblems: number;
 
-  constructor(private _generatorService: GeneratorService) { }
+  constructor(private _generatorService: GeneratorService) {}
 
   ngOnInit() {
     Guppy.init_symbols(['/assets/symbols.json']);
@@ -52,10 +52,9 @@ export class EquationComponent implements OnInit {
     }
   }
   ngAfterViewChecked() {
-    this.guppyBox = $('.equation-container');
-    if (!this.guppyBox.data('has-guppy')) {
+    if (!this.guppyBox) {
+      this.guppyBox = true;
     let guppy = new Guppy('equationBox');
-      $(this.guppyBox).data('has-guppy', true);
     }
   }
   /* this is to get the content of the guppy box,
@@ -70,9 +69,6 @@ export class EquationComponent implements OnInit {
         let newVar = new Variable(varName);
         this.variables.push(newVar);
       }
-
-      // this.parameterDiv = $('.parameter-condition');
-      // this.parameterDiv.show();
       this.parameterDiv = true;
     } catch (e) {
       alert('Parsing error!' + e);
@@ -83,8 +79,7 @@ export class EquationComponent implements OnInit {
     // this logic updates the variables array value using the data obtained from the form
     this.generatedView = true;
     this.isLoading = true;
-    // $('#generatedView').show();
-    // $('#isLoading').show();
+
 
     this.numberOfProblems = formValue.numberOfProblems;
     // converting object into array
@@ -101,7 +96,6 @@ export class EquationComponent implements OnInit {
     console.log(this.generatedCombinations);
 
     this.isLoading = false;
-    // $('#isLoading').hide();
   }
 
   switchParameterToSolve(variables: Variable[], variableToSolve: Variable): void {
