@@ -368,8 +368,6 @@ describe('GeneratorService and all of its methods', () => {
     expect<any>(result[9]).toBe(expectedResult[9]);
   });
 
-  /*
-
   it('should choose a set of values based on the generated list of values', () => {
     let valueList = [];
     valueList[0] = [1.1, 1.2, 1.3, 1.4, 1.5];
@@ -382,7 +380,7 @@ describe('GeneratorService and all of its methods', () => {
     expect(valueList[1]).toContain(testSetResult[1]);
     expect(valueList[2]).toContain(testSetResult[2]);
   });
-
+/*
   it('should generate a list of valid permutation sets given decimal parameters', () => {
     const a = new Variable('a', 1, 1, 5);
     const b = new Variable('b', 1, 1, 5);
