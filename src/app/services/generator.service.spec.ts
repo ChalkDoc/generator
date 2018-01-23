@@ -380,7 +380,7 @@ describe('GeneratorService and all of its methods', () => {
     expect(valueList[1]).toContain(testSetResult[1]);
     expect(valueList[2]).toContain(testSetResult[2]);
   });
-/*
+
   it('should generate a list of valid permutation sets given decimal parameters', () => {
     const a = new Variable('a', 1, 1, 5);
     const b = new Variable('b', 1, 1, 5);
@@ -397,6 +397,6 @@ describe('GeneratorService and all of its methods', () => {
     let expectedResult = _generatorService.solveForVariable(results[0], expression, variables);
 
     expect(results[0][2]).toEqual(expectedResult[0]);
-  }); */
+  });
 
 });
