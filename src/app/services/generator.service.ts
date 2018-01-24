@@ -1,6 +1,8 @@
 import { Variable } from './../variable';
 import { Injectable } from '@angular/core';
 
+import { findRange } from './../utilities';
+
 import './../../../node_modules/nerdamer/nerdamer.core.js';
 import './../../../node_modules/nerdamer/Solve.js';
 import './../../../node_modules/nerdamer/Algebra.js';
@@ -12,13 +14,7 @@ declare var nerdamer: any;
 @Injectable()
 export class GeneratorService {
 
-  constructor() { }
-
-  findRange(max: number, min: number, decPoint: number): number {
-    let range = (max - min) * (Math.pow(10, decPoint)) + 1;
-
-    return range;
-  }
+  constructor() {}
 
   // For loop calculates the total number of permutations based on the range of the input parameters.
   calculateTotalPermutations(parameters: Variable[], numOfVars: number): number {
@@ -26,7 +22,7 @@ export class GeneratorService {
 
     for (let i = 0; i< numOfVars; i++) {
       // Range includes subtracting minimum from maximu and adding 1 to include both the minimum and maximum numbers.
-      let range = this.findRange(parameters[i].max, parameters[i].min, parameters[i].decPoint);
+      let range = findRange(parameters[i].max, parameters[i].min, parameters[i].decPoint);
       permutations *= range;
     }
 
@@ -249,7 +245,7 @@ export class GeneratorService {
   generateRangeOfValues(variable: Variable): number[] {
     let values = [];
     let countingValue = variable.min;
-    let range = this.findRange(variable.max, variable.min, variable.decPoint);
+    let range = findRange(variable.max, variable.min, variable.decPoint);
 
     for (let i = 0; i < range; i++) {
       //countingValue.toFixed(variable.decPoint);
