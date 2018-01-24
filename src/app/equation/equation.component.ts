@@ -9,8 +9,6 @@ import './../../../node_modules/nerdamer/Extra.js';
 
 declare var nerdamer: any; // declaring nerdamer
 
-// import * as $ from 'jquery';
-// declaring jQuery
 declare var Guppy: any;   // declaring Guppy
 declare var GuppyOSK: any;
 
@@ -32,7 +30,7 @@ export class EquationComponent implements OnInit {
   generatedCombinations: any[] = [];
   numberOfProblems: number;
 
-  constructor(private _generatorService: GeneratorService) {}
+  constructor(private _generatorService: GeneratorService) { }
 
   ngOnInit() {
     Guppy.init_symbols(['/assets/symbols.json']);
@@ -52,6 +50,7 @@ export class EquationComponent implements OnInit {
     }
   }
   ngAfterViewChecked() {
+
     if (!this.guppyBox) {
       this.guppyBox = true;
     let guppy = new Guppy('equationBox');
@@ -79,7 +78,6 @@ export class EquationComponent implements OnInit {
     // this logic updates the variables array value using the data obtained from the form
     this.generatedView = true;
     this.isLoading = true;
-
 
     this.numberOfProblems = formValue.numberOfProblems;
     // converting object into array
