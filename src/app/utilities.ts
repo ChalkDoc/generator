@@ -41,3 +41,9 @@ declare var nerdamer: any;
 
     return answerArray;
   }
+
+  /* This method simplifies an algebric equation and returns an expression */
+  export function simplifyEquation(equation: string, variableToSolve: string): string {
+    const simplifiedEquation = nerdamer.solve(equation, variableToSolve);
+    return simplifiedEquation.toString();
+  }

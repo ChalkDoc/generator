@@ -1,7 +1,10 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { GeneratorService } from './generator.service';
-import { createVariableObject, solveForVariable } from './../utilities'
+import {
+  createVariableObject,
+  solveForVariable,
+  simplifyEquation} from './../utilities'
 import { Variable } from '../variable';
 
 describe('GeneratorService and all of its methods', () => {
@@ -70,7 +73,7 @@ describe('GeneratorService and all of its methods', () => {
     const equation = 'x + a = 0';
     const variableToSolve: Variable = new Variable('x',  0, 0, 0);
 
-    const simplifiedEquation: string = _generatorService.simplifyEquation(equation, variableToSolve.name);
+    const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
     expect(simplifiedEquation.toString()).toBe('[-a]');
   });
 
@@ -78,7 +81,7 @@ describe('GeneratorService and all of its methods', () => {
     const equation = 'x^2 + a = 0';
     const variableToSolve: Variable = new Variable('x',  0, 0, 0);
 
-    const simplifiedEquation: string = _generatorService.simplifyEquation(equation, variableToSolve.name);
+    const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
     expect(simplifiedEquation.toString()).toBe('[sqrt(-a),-sqrt(-a)]');
   });
 
@@ -86,7 +89,7 @@ describe('GeneratorService and all of its methods', () => {
     const equation = 'x^3 + a = 0';
     const variableToSolve: Variable = new Variable('x',  0, 0, 0);
 
-    const simplifiedEquation: string = _generatorService.simplifyEquation(equation, variableToSolve.name);
+    const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
     expect(simplifiedEquation.toString()).toBe('[(-220328269/832788672)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((-138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3)]');
   });
 
@@ -94,7 +97,7 @@ describe('GeneratorService and all of its methods', () => {
     const equation = 'a*x^2 + b*x + c = 0';
     const variableToSolve: Variable = new Variable('x',  0, 0, 0);
 
-    const simplifiedEquation: string = _generatorService.simplifyEquation(equation, variableToSolve.name);
+    const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
     expect(simplifiedEquation.toString()).toBe('[(1/2)*(-b+sqrt(-4*a*c+b^2))*a^(-1),(1/2)*(-b-sqrt(-4*a*c+b^2))*a^(-1)]');
   });
 
@@ -140,7 +143,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return -5 and 5 upon calling solveForVariable(randomSet, simplifiedEquation, variables)', () => {
     const randomSet = [1, 0, 0];
 
-    const simplifiedEquation = _generatorService.simplifyEquation('a*x^2 + b*x + c = 25', 'x');
+    const simplifiedEquation = simplifyEquation('a*x^2 + b*x + c = 25', 'x');
 
     const result =  solveForVariable(randomSet, simplifiedEquation, variables);
 
@@ -152,7 +155,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return 2*i and -2*i upon calling solveForVariable(randomSet, simplifiedEquation, variables)', () => {
     const randomSet = [1, 0, 0];
 
-    const simplifiedEquation = _generatorService.simplifyEquation('a*x^2 + b*x + c = -4', 'x');
+    const simplifiedEquation = simplifyEquation('a*x^2 + b*x + c = -4', 'x');
 
     const result =  solveForVariable(randomSet, simplifiedEquation, variables);
     expect(result.toString()).toBe('2*i,-2*i');
@@ -391,7 +394,7 @@ describe('GeneratorService and all of its methods', () => {
     const numberOfProblems = 5;
 
     const equation = 'a^2 + b^2 = c^2';
-    const expression = _generatorService.simplifyEquation(equation, variables[variables.length - 1].name);
+    const expression = simplifyEquation(equation, variables[variables.length - 1].name);
 
     let results = _generatorService.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
 

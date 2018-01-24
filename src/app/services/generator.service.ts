@@ -1,7 +1,11 @@
 import { Variable } from './../variable';
 import { Injectable } from '@angular/core';
 
-import { findRange, createVariableObject, solveForVariable } from './../utilities';
+import {
+  findRange,
+  createVariableObject,
+  solveForVariable,
+  simplifyEquation } from './../utilities';
 
 import './../../../node_modules/nerdamer/nerdamer.core.js';
 import './../../../node_modules/nerdamer/Solve.js';
@@ -109,12 +113,6 @@ export class GeneratorService {
       answerArray.push(arrayValues);
     }
     return answerArray;
-  }
-
-  /* This method simplifies an algebric equation and returns an expression */
-  simplifyEquation(equation: string, variableToSolve: string): string {
-    const simplifiedEquation = nerdamer.solve(equation, variableToSolve);
-    return simplifiedEquation.toString();
   }
 
   /* It compares value with the user's varialble specfication. It takes array of any and array of variable and return true if all conditions are met otherwise false. */
@@ -240,7 +238,7 @@ export class GeneratorService {
     let valueList = [];
     let numberOfLists = variables.length - 1;  // Will take away last variable.
     let count = 0;
-    let expression = this.simplifyEquation(equation, variables[variables.length - 1].name);
+    let expression = simplifyEquation(equation, variables[variables.length - 1].name);
 
     for (let i = 0; i < numberOfLists; i++) {
       valueList[i] = this.generateRangeOfValues(variables[i]);
@@ -271,7 +269,7 @@ export class GeneratorService {
     const result: any[] = [];
     const permutationsList: any[] = this.generatePermutations(variables);
     // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
-    let simplifiedEquation = this.simplifyEquation(equation, variables[variables.length - 1].name);
+    let simplifiedEquation = simplifyEquation(equation, variables[variables.length - 1].name);
 
     while (result.length !== numberOfProblems && permutationsList.length > 0) {
       // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
