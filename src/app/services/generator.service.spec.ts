@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { GeneratorService } from './generator.service';
-import { createVariableObject } from './../utilities'
+import { createVariableObject, solveForVariable } from './../utilities'
 import { Variable } from '../variable';
 
 describe('GeneratorService and all of its methods', () => {
@@ -142,7 +142,7 @@ describe('GeneratorService and all of its methods', () => {
 
     const simplifiedEquation = _generatorService.simplifyEquation('a*x^2 + b*x + c = 25', 'x');
 
-    const result =  _generatorService.solveForVariable(randomSet, simplifiedEquation, variables);
+    const result =  solveForVariable(randomSet, simplifiedEquation, variables);
 
     expect(result[0]).toBe('5');
     expect(result[1]).toBe('-5');
@@ -154,7 +154,7 @@ describe('GeneratorService and all of its methods', () => {
 
     const simplifiedEquation = _generatorService.simplifyEquation('a*x^2 + b*x + c = -4', 'x');
 
-    const result =  _generatorService.solveForVariable(randomSet, simplifiedEquation, variables);
+    const result =  solveForVariable(randomSet, simplifiedEquation, variables);
     expect(result.toString()).toBe('2*i,-2*i');
   });
 
@@ -395,7 +395,7 @@ describe('GeneratorService and all of its methods', () => {
 
     let results = _generatorService.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
 
-    let expectedResult = _generatorService.solveForVariable(results[0], expression, variables);
+    let expectedResult = solveForVariable(results[0], expression, variables);
 
     expect(results[0][2]).toEqual(expectedResult[0]);
   });

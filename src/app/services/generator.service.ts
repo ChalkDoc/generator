@@ -1,7 +1,7 @@
 import { Variable } from './../variable';
 import { Injectable } from '@angular/core';
 
-import { findRange, createVariableObject } from './../utilities';
+import { findRange, createVariableObject, solveForVariable } from './../utilities';
 
 import './../../../node_modules/nerdamer/nerdamer.core.js';
 import './../../../node_modules/nerdamer/Solve.js';
@@ -108,30 +108,6 @@ export class GeneratorService {
       // For each index value, a set is pushed to the answerArray.
       answerArray.push(arrayValues);
     }
-    return answerArray;
-  }
-
-  /* Solves the equation/expression using the nerdamer math  library by taking array of numbers, the simplified algebric equation and the variable array */
-  solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
-    let answerArray: any[] = [];
-
-    let variablesObject = createVariableObject(randomSet, variables);
-
-    let answer: string = nerdamer(simplifiedEquation, variablesObject);
-    //console.log('answer: ' + answer.toString());
-    console.log(answer);
-
-    let decimalAnswer: string  = nerdamer(answer).text('decimal');
-
-    let decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
-
-    for (let i = 0; i < decimalAnswerArray.length; i++) {
-      if (decimalAnswerArray[i] !== '') {
-        console.log(decimalAnswerArray[i]);
-        answerArray.push(decimalAnswerArray[i]);
-      }
-    }
-
     return answerArray;
   }
 
@@ -274,7 +250,7 @@ export class GeneratorService {
       let testSet: any[];
       testSet = this.createTestSet(valueList);
 
-      let answerArray = this.solveForVariable(testSet, expression, variables);
+      let answerArray = solveForVariable(testSet, expression, variables);
       console.log(answerArray);
 
       // This for loop takes into account the fact that the answerArray is an array.
@@ -300,7 +276,7 @@ export class GeneratorService {
     while (result.length !== numberOfProblems && permutationsList.length > 0) {
       // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
       const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);
-      const answerArray  = this.solveForVariable(randomSet[0], simplifiedEquation, variables);
+      const answerArray  = solveForVariable(randomSet[0], simplifiedEquation, variables);
 
       for (let i = 0; i < answerArray.length; i++) {
         let currentAnswer = answerArray.slice(i, i+1);
