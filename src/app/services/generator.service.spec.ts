@@ -1,6 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { GeneratorService } from './generator.service';
+import { createVariableObject } from './../utilities'
 import { Variable } from '../variable';
 
 describe('GeneratorService and all of its methods', () => {
@@ -126,7 +127,7 @@ describe('GeneratorService and all of its methods', () => {
 
   it('should create an object of {a: 1, b: 1, c: 1} when calling createVariablesObject()', () => {
     const randomSet = [1, 1, 1];
-    let variablesObject = _generatorService.createVariableObject(randomSet, variables);
+    let variablesObject = createVariableObject(randomSet, variables);
     let variablesObjectArr = _generatorService.toArray(variablesObject);
     expect(variablesObjectArr[0][0]).toBe('a');
     expect(variablesObjectArr[0][1]).toBe(1);

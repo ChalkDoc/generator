@@ -1,7 +1,7 @@
 import { Variable } from './../variable';
 import { Injectable } from '@angular/core';
 
-import { findRange } from './../utilities';
+import { findRange, createVariableObject } from './../utilities';
 
 import './../../../node_modules/nerdamer/nerdamer.core.js';
 import './../../../node_modules/nerdamer/Solve.js';
@@ -111,21 +111,11 @@ export class GeneratorService {
     return answerArray;
   }
 
-  /* Takes array of numbers and Variable array and converts to a varialble object*/
-  createVariableObject(randomSet: number[], variables: Variable[]): object {
-    const variablesObject = {};
-    for (let i = 0; i < variables.length - 1; i++) {
-      const objectName = variables[i].name;
-      variablesObject[objectName] = randomSet[i];
-    }
-    return variablesObject;
-  }
-
   /* Solves the equation/expression using the nerdamer math  library by taking array of numbers, the simplified algebric equation and the variable array */
   solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
     let answerArray: any[] = [];
 
-    let variablesObject = this.createVariableObject(randomSet, variables);
+    let variablesObject = createVariableObject(randomSet, variables);
 
     let answer: string = nerdamer(simplifiedEquation, variablesObject);
     //console.log('answer: ' + answer.toString());
