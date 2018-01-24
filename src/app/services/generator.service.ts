@@ -24,9 +24,9 @@ export class GeneratorService {
   calculateTotalPermutations(parameters: Variable[], numOfVars: number): number {
     let permutations = 1;
 
-    for (let i = 0; i< numOfVars; i++) {
+    for (let i = 0; i < numOfVars; i++) {
       // Range includes subtracting minimum from maximu and adding 1 to include both the minimum and maximum numbers.
-      let range = findRange(parameters[i].max, parameters[i].min, parameters[i].decPoint);
+      const range = findRange(parameters[i].max, parameters[i].min, parameters[i].decPoint);
       permutations *= range;
     }
 
@@ -35,7 +35,7 @@ export class GeneratorService {
 
   // Initializes temp[] array with all the minimum parameters
   initializeTempArray(parameters: Variable[], numOfVars: number): number[] {
-    let temp = [];
+    const temp = [];
 
     for (let i = 0; i < numOfVars; i++) {
       temp[i] = parameters[i].min;
@@ -47,7 +47,7 @@ export class GeneratorService {
   // Method sets arrayValues to previous temp[] values
 
   setArrayValuesToTemp(numOfVars: number, temp: number[]): number[] {
-    let arrayValues = [];
+    const arrayValues = [];
 
     for (let i = 0; i < numOfVars; i++) {
       arrayValues[i] = temp[i];
@@ -58,7 +58,7 @@ export class GeneratorService {
 
   // Adds to Element based on the number of decimal places desired.
   incrementElement(decPoint: number): number {
-    let increment = 1/Math.pow(10, decPoint);
+    const increment = 1 / Math.pow(10, decPoint);
 
     return increment;
   }
@@ -67,12 +67,12 @@ export class GeneratorService {
     generates sets that include all the permutations of these variables. */
   generatePermutations(parametersArray: Variable[]): any[] {
     let temp = []; // Stores running array of values for each index place.
-    let answerArray = [];  // Array returned with all possible permutation sets.
+    const answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
-    let numberOfVariables = parametersArray.length - 1;
-    let lastElementIndex = numberOfVariables - 1;
+    const numberOfVariables = parametersArray.length - 1;
+    const lastElementIndex = numberOfVariables - 1;
 
-    let totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
+    const totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
     console.log(totalPermutations);
 
     temp = this.initializeTempArray(parametersArray, numberOfVariables);
@@ -80,7 +80,7 @@ export class GeneratorService {
     /** This method is run as a for loop through all the calculated
         Permutations.  The index value is only used in order to track when
         all sets are generated. **/
-    for (var index = 0; index < totalPermutations; index++) {
+    for (let index = 0; index < totalPermutations; index++) {
       let arrayValues = [];  // This will be pushed to final answerArray.
       /** If statement is true if the last element has not reached the maximum
         value.  It causes the last element to increase to the next in order. **/
@@ -94,9 +94,8 @@ export class GeneratorService {
     // Gets temp ready for the next run.
       if (temp[lastElementIndex] <= parametersArray[lastElementIndex].max) {
         temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
-      }
-      else {
-        for (var i = lastElementIndex; i >= 0; i--) {
+      } else {
+        for (let i = lastElementIndex; i >= 0; i--) {
           // if current temp[i] value has reached the parameter maximum.
           if (temp[i] > parametersArray[i].max) {
             temp[i] = parametersArray[i].min; // current temp[i] set to minimum.
@@ -115,6 +114,7 @@ export class GeneratorService {
     return answerArray;
   }
 
+  // tslint:disable-next-line:max-line-length
   /* It compares value with the user's varialble specfication. It takes array of any and array of variable and return true if all conditions are met otherwise false. */
   compareResultWithUserSpecification(values: any[], variables: Variable[]): boolean {
     let inRange = false;
@@ -123,15 +123,15 @@ export class GeneratorService {
     const lastVariable = variables[variables.length - 1]; // the last variable in the variables array. we are making an assumption that we are solving for the last variable
 
     // check if value is an integer/decimal.
-     for (let i = 0; i < values.length; i++) {
-       let currentValue = values[i];
+    for (let i = 0; i < values.length; i++) {
+      let currentValue = values[i];
 
     // check if value is an imaginary number
     // I am assuming that we dont check for the range if it is imaginary
       if (this.containsImaginary(currentValue) && lastVariable.containsImaginary) {
         return true;
       }
-      let currentValueDecPoint = this.calculateDecimalPlaces(currentValue);
+      const currentValueDecPoint = this.calculateDecimalPlaces(currentValue);
       currentValue = Number(values[i]);
 
       if (lastVariable.decPoint === 0 && this.isInt(currentValue)) {
@@ -164,14 +164,14 @@ export class GeneratorService {
 
   /* It cuts out an element from an array at a random position. It takes an array of any as an argument. */
   splicePermutationSetRandomly(permutationsList: any[]): any[] {
-    let splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length-1);
-    let result = permutationsList.splice(splicingIndex, 1); // it returns [[...]]
+    const splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length-1);
+    const result = permutationsList.splice(splicingIndex, 1); // it returns [[...]]
     return result;
   }
 
   /* This method takes an object as an argument and converts into an array. */
   toArray(obj: object) {
-    let objArr = Object.keys(obj).map(function(key){
+    const objArr = Object.keys(obj).map(function(key){
       return [String(key), obj[key]];
     });
     return objArr;
@@ -179,7 +179,7 @@ export class GeneratorService {
 
   /* Checks if an input is an integer or not after being parsed to number. It takes a string or a number as an argument. */
   isInt(input: any): boolean {
-    let parsedInput = Number(input);
+    const parsedInput = Number(input);
     if (parsedInput !== NaN && Math.floor(parsedInput) === parsedInput) {
       return true;
     }else {
@@ -199,7 +199,7 @@ export class GeneratorService {
   /* Takes a number as a string and calculates the number of decimal places. */
   calculateDecimalPlaces(input: string): number {
     const inputArr = input.split('.');
-    if(inputArr.length === 1) {
+    if (inputArr.length === 1) {
       return 0;
     } else {
       return inputArr[1].length;
@@ -207,12 +207,12 @@ export class GeneratorService {
   }
 
   generateRangeOfValues(variable: Variable): number[] {
-    let values = [];
+    const values = [];
     let countingValue = variable.min;
-    let range = findRange(variable.max, variable.min, variable.decPoint);
+    const range = findRange(variable.max, variable.min, variable.decPoint);
 
     for (let i = 0; i < range; i++) {
-      //countingValue.toFixed(variable.decPoint);
+      // countingValue.toFixed(variable.decPoint);
       values.push(countingValue.toFixed(variable.decPoint));
       countingValue += 1 / (Math.pow(10, variable.decPoint));
     }
@@ -221,11 +221,11 @@ export class GeneratorService {
   }
 
   createTestSet(valueList: any[]): number[] {
-    let testSet = [];
-    let tempSetArray = [];
+    const testSet = [];
+    const tempSetArray = [];
 
     for (let i = 0; i < valueList.length; i++) {
-      let randomIndex = Math.floor(Math.random() * valueList[i].length);
+      const randomIndex = Math.floor(Math.random() * valueList[i].length);
       testSet[i] = valueList[i][randomIndex];
     }
 
@@ -234,11 +234,11 @@ export class GeneratorService {
 
   // Method controls valid table for problems that have a decimal answer
   generateDecimalVariablesPermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    let result = [];
-    let valueList = [];
-    let numberOfLists = variables.length - 1;  // Will take away last variable.
+    const result = [];
+    const valueList = [];
+    const numberOfLists = variables.length - 1;  // Will take away last variable.
     let count = 0;
-    let expression = simplifyEquation(equation, variables[variables.length - 1].name);
+    const expression = simplifyEquation(equation, variables[variables.length - 1].name);
 
     for (let i = 0; i < numberOfLists; i++) {
       valueList[i] = this.generateRangeOfValues(variables[i]);
@@ -248,14 +248,14 @@ export class GeneratorService {
       let testSet: any[];
       testSet = this.createTestSet(valueList);
 
-      let answerArray = solveForVariable(testSet, expression, variables);
+      const answerArray = solveForVariable(testSet, expression, variables);
       console.log(answerArray);
 
       // This for loop takes into account the fact that the answerArray is an array.
       // Caution:  The current implementation will potentially produce two of the same problem!!!
       for (let i = 0; i < answerArray.length; i++) {
         testSet.push(answerArray[i]);
-        //console.log(testSet);
+        // console.log(testSet);
         count++;
       }
       result.push(testSet);
@@ -264,12 +264,13 @@ export class GeneratorService {
     return result;
   }
 
+  // tslint:disable-next-line:max-line-length
   /* Generates combination of numbers(including complex numbers) that are valid as per the user's specification. It takes array of variables, the number of combination to generate and a string of  algebric eaution as an argument.  Returns an array of any.*/
   generateValidVariablePermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     const result: any[] = [];
     const permutationsList: any[] = this.generatePermutations(variables);
     // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
-    let simplifiedEquation = simplifyEquation(equation, variables[variables.length - 1].name);
+    const simplifiedEquation = simplifyEquation(equation, variables[variables.length - 1].name);
 
     while (result.length !== numberOfProblems && permutationsList.length > 0) {
       // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
@@ -277,7 +278,7 @@ export class GeneratorService {
       const answerArray  = solveForVariable(randomSet[0], simplifiedEquation, variables);
 
       for (let i = 0; i < answerArray.length; i++) {
-        let currentAnswer = answerArray.slice(i, i+1);
+        const currentAnswer = answerArray.slice(i, i+1);
         // Check if it is valid set or not as per to the user's condition
         if (this.compareResultWithUserSpecification(currentAnswer, variables)) {
           let variableToSolve = variables[variables.length-1];
@@ -309,16 +310,15 @@ export class GeneratorService {
 
   // Determines solving course of action based on variables and decimals.
   solverDecisionTree(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    let totalDecimals = this.calculateTotalDecimals(variables);
+    const totalDecimals = this.calculateTotalDecimals(variables);
     let result = [];
 
-    if (totalDecimals == 0) {
+    if (totalDecimals === 0) {
       // All variables are to be integers.  Use permutations table.
       result = this.generateValidVariablePermutations(variables, numberOfProblems, equation);
 
       return result;
-    }
-    else {
+    } else {
       // All variable parameters are decimals.
       result = this.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
 
