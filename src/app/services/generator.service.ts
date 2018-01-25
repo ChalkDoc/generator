@@ -40,7 +40,7 @@ export class GeneratorService {
   generatePermutations(parametersArray: Variable[]): any[] {
     const answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
-    // const unknownVariable = parametersArray.pop();
+    const unknownVariable = parametersArray.slice(-1)[0];
     const numberOfVariables = parametersArray.length - 1;
     const lastElementIndex = numberOfVariables - 1;
     const totalPermutations = this.calculateTotalPermutations(parametersArray);
@@ -54,7 +54,7 @@ export class GeneratorService {
 
     // Gets knownVariablesMins ready for the next run.
       if (knownVariableMins[lastElementIndex] <= parametersArray[lastElementIndex].max) {
-        knownVariableMins[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex]);
+        knownVariableMins[lastElementIndex] += this.incrementElement(unknownVariable);
       } else {
         for (let i = lastElementIndex; i >= 0; i--) {
           // if current temp[i] value has reached the parameter maximum.
@@ -67,7 +67,7 @@ export class GeneratorService {
           arrayValues[i] = knownVariableMins[i];  // For loop ends with that temp[i] finalized in arrayValues.
         }
         // Adds to last element in array.
-        knownVariableMins[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex]);
+        knownVariableMins[lastElementIndex] += this.incrementElement(unknownVariable);
       }
       // For each index value, a set is pushed to the answerArray.
       answerArray.push(arrayValues);
