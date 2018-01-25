@@ -24,7 +24,7 @@ export class GeneratorService {
   // For loop calculates the total number of permutations based on the range of the input parameters.
   calculateTotalPermutations(parameters: Variable[]): number {
     const permutationsTotal = parameters.slice(0, -1).reduce((permutations, parameter) => {
-      const range = findRange(parameter.max, parameter.min, parameter.decPoint);
+      const range = findRange(parameter);
       return permutations * range;
   }, 1) ;
     return permutationsTotal;
@@ -191,15 +191,15 @@ export class GeneratorService {
     }
   }
 
-  generateRangeOfValues(variable: Variable): number[] {
+  generateRangeOfValues(variableObj: Variable): number[] {
     const values = [];
-    let countingValue = variable.min;
-    const range = findRange(variable.max, variable.min, variable.decPoint);
+    let countingValue = variableObj.min;
+    const range = findRange(variableObj);
 
     for (let i = 0; i < range; i++) {
       // countingValue.toFixed(variable.decPoint);
-      values.push(countingValue.toFixed(variable.decPoint));
-      countingValue += 1 / (Math.pow(10, variable.decPoint));
+      values.push(countingValue.toFixed(variableObj.decPoint));
+      countingValue += 1 / (Math.pow(10, variableObj.decPoint));
     }
 
     return values;

@@ -2,9 +2,8 @@ import { Variable } from './variable'
 
 declare var nerdamer: any;
 
-  export function findRange(max: number, min: number, decPoint: number): number {
-    let range = (max - min) * (Math.pow(10, decPoint)) + 1;
-    
+  export function findRange(variable: Variable): number {
+    const range = (variable.max - variable.min) * (Math.pow(10, variable.decPoint)) + 1;
     return range;
   }
 
