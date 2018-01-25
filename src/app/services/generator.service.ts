@@ -33,17 +33,6 @@ export class GeneratorService {
     return permutations;
   }
 
-  // Initializes temp[] array with all the minimum parameters
-  initializeTempArray(parameters: Variable[], numOfVars: number): number[] {
-    const temp = [];
-
-    for (let i = 0; i < numOfVars; i++) {
-      temp[i] = parameters[i].min;
-    }
-
-    return temp;
-  }
-
   // Method sets arrayValues to previous temp[] values
 
   setArrayValuesToTemp(numOfVars: number, temp: number[]): number[] {
@@ -66,13 +55,16 @@ export class GeneratorService {
   /* This method inputs parameters of variables with min and max values and
     generates sets that include all the permutations of these variables. */
   generatePermutations(parametersArray: Variable[]): any[] {
-    let temp = []; // Stores running array of values for each index place.
     const answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
     const numberOfVariables = parametersArray.length - 1;
     const lastElementIndex = numberOfVariables - 1;
     const totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
-    temp = this.initializeTempArray(parametersArray, numberOfVariables);
+    const temp = parametersArray.map( (variable, index) => {
+      if (index !== (parametersArray.length - 1)) {
+        return variable.min;
+      }
+    });
 
     /** This method is run as a for loop through all the calculated
         Permutations.  The index value is only used in order to track when
