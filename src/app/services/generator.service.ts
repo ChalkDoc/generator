@@ -141,20 +141,12 @@ export class GeneratorService {
   }
 
   containsImaginary(input: string) {
-    if (input.includes('i')) {
-      return true;
-    } else {
-      return false;
-    }
+    return input.includes('i') ? true : false;
   }
 
   calculateDecimalPlaces(input: string): number {
     const inputArr = input.split('.');
-    if (inputArr.length === 1) {
-      return 0;
-    } else {
-      return inputArr[1].length;
-    }
+    return inputArr.length === 1 ? 0 : inputArr[1].length;
   }
 
   generateRangeOfValues(variableObj: Variable): number[] {
