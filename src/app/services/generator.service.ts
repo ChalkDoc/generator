@@ -12,6 +12,7 @@ import './../../../node_modules/nerdamer/Solve.js';
 import './../../../node_modules/nerdamer/Algebra.js';
 import './../../../node_modules/nerdamer/Calculus.js';
 import './../../../node_modules/nerdamer/Extra.js';
+import { variable } from '@angular/compiler/src/output/output_ast';
 
 declare var nerdamer: any;
 
@@ -21,26 +22,19 @@ export class GeneratorService {
   constructor() {}
 
   // For loop calculates the total number of permutations based on the range of the input parameters.
-  calculateTotalPermutations(parameters: Variable[], numOfVars: number): number {
-    let permutations = 1;
+  calculateTotalPermutations(parameters: Variable[]): number {
+    let permutationsTotal = 1
+  // const permutationsTotal = parameters.reduce((permutations, parameter) => {
+  //   const range = findRange(parameter.max, parameter.min, parameter.decPoint);
+  //   return permutations * range;
+  // }, 1) ;
 
-    for (let i = 0; i < numOfVars; i++) {
+    for (let i = 0; i < parameters.length - 1; i++) {
       // Range includes subtracting minimum from maximu and adding 1 to include both the minimum and maximum numbers.
       const range = findRange(parameters[i].max, parameters[i].min, parameters[i].decPoint);
-      permutations *= range;
+      permutationsTotal *= range;
     }
-
-    return permutations;
-  }
-
-  initializeTempArray(parameters: Variable[]): number[] {
-    const temp = parameters.map( (variable, index) => {
-      if (index !== (parameters.length - 1)) {
-        return variable.min;
-      }
-    });
-    temp.pop();
-    return temp;
+    return permutationsTotal;
   }
 
   // Method sets arrayValues to previous temp[] values
@@ -67,11 +61,14 @@ export class GeneratorService {
   generatePermutations(parametersArray: Variable[]): any[] {
     const answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
-    const temp = this.initializeTempArray(parametersArray);
+    // const unknownVariable = parametersArray.pop();
     const numberOfVariables = parametersArray.length - 1;
     const lastElementIndex = numberOfVariables - 1;
-    const totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
-    
+    const totalPermutations = this.calculateTotalPermutations(parametersArray);
+    const temp = parametersArray.map( (parameter) => {
+      return parameter.min;
+    });
+    temp.pop();
 
     /** This method is run as a for loop through all the calculated
         Permutations.  The index value is only used in order to track when
@@ -84,7 +81,6 @@ export class GeneratorService {
         one (right-most) need to be changed. Index i starts on the right-most
         element and works to the left.  If this addition brings the temp[i-1] to
         above the maximum, this will be taken care in the next iteration of the for loop.**/
-      debugger;
       arrayValues = this.setArrayValuesToTemp(numberOfVariables, temp);
 
     // Gets temp ready for the next run.
