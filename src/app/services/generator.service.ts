@@ -23,17 +23,10 @@ export class GeneratorService {
 
   // For loop calculates the total number of permutations based on the range of the input parameters.
   calculateTotalPermutations(parameters: Variable[]): number {
-    let permutationsTotal = 1
-  // const permutationsTotal = parameters.reduce((permutations, parameter) => {
-  //   const range = findRange(parameter.max, parameter.min, parameter.decPoint);
-  //   return permutations * range;
-  // }, 1) ;
-
-    for (let i = 0; i < parameters.length - 1; i++) {
-      // Range includes subtracting minimum from maximu and adding 1 to include both the minimum and maximum numbers.
-      const range = findRange(parameters[i].max, parameters[i].min, parameters[i].decPoint);
-      permutationsTotal *= range;
-    }
+    const permutationsTotal = parameters.slice(0, -1).reduce((permutations, parameter) => {
+      const range = findRange(parameter.max, parameter.min, parameter.decPoint);
+      return permutations * range;
+  }, 1) ;
     return permutationsTotal;
   }
 
