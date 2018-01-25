@@ -33,6 +33,16 @@ export class GeneratorService {
     return permutations;
   }
 
+  initializeTempArray(parameters: Variable[]): number[] {
+    const temp = parameters.map( (variable, index) => {
+      if (index !== (parameters.length - 1)) {
+        return variable.min;
+      }
+    });
+    temp.pop();
+    return temp;
+  }
+
   // Method sets arrayValues to previous temp[] values
 
   setArrayValuesToTemp(numOfVars: number, temp: number[]): number[] {
@@ -57,14 +67,11 @@ export class GeneratorService {
   generatePermutations(parametersArray: Variable[]): any[] {
     const answerArray = [];  // Array returned with all possible permutation sets.
     // Locates index of last variable.
+    const temp = this.initializeTempArray(parametersArray);
     const numberOfVariables = parametersArray.length - 1;
     const lastElementIndex = numberOfVariables - 1;
     const totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
-    const temp = parametersArray.map( (variable, index) => {
-      if (index !== (parametersArray.length - 1)) {
-        return variable.min;
-      }
-    });
+    
 
     /** This method is run as a for loop through all the calculated
         Permutations.  The index value is only used in order to track when
@@ -77,7 +84,7 @@ export class GeneratorService {
         one (right-most) need to be changed. Index i starts on the right-most
         element and works to the left.  If this addition brings the temp[i-1] to
         above the maximum, this will be taken care in the next iteration of the for loop.**/
-
+      debugger;
       arrayValues = this.setArrayValuesToTemp(numberOfVariables, temp);
 
     // Gets temp ready for the next run.
