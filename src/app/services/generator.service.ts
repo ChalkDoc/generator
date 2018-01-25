@@ -43,8 +43,8 @@ export class GeneratorService {
   }
 
   // Adds to Element based on the number of decimal places desired.
-  incrementElement(decPoint: number): number {
-    const increment = 1 / Math.pow(10, decPoint);
+  incrementElement(variableObject: Variable): number {
+    const increment = 1 / Math.pow(10, variableObject.decPoint);
 
     return increment;
   }
@@ -78,20 +78,20 @@ export class GeneratorService {
 
     // Gets temp ready for the next run.
       if (temp[lastElementIndex] <= parametersArray[lastElementIndex].max) {
-        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
+        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex]);
       } else {
         for (let i = lastElementIndex; i >= 0; i--) {
           // if current temp[i] value has reached the parameter maximum.
           if (temp[i] > parametersArray[i].max) {
             temp[i] = parametersArray[i].min; // current temp[i] set to minimum.
-            temp[i - 1] += this.incrementElement(parametersArray[i - 1].decPoint);
+            temp[i - 1] += this.incrementElement(parametersArray[i - 1]);
 
             // temp[i-1] (one to the left) is added.
           }
           arrayValues[i] = temp[i];  // For loop ends with that temp[i] finalized in arrayValues.
         }
         // Adds to last element in array.
-        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
+        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex]);
       }
       // For each index value, a set is pushed to the answerArray.
       answerArray.push(arrayValues);
