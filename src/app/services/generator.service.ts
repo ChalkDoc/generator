@@ -30,18 +30,6 @@ export class GeneratorService {
     return permutationsTotal;
   }
 
-  // Method sets arrayValues to previous temp[] values
-
-  setArrayValuesToTemp(numOfVars: number, temp: number[]): number[] {
-    const arrayValues = [];
-
-    for (let i = 0; i < numOfVars; i++) {
-      arrayValues[i] = temp[i];
-    }
-
-    return arrayValues;
-  }
-
   // Adds to Element based on the number of decimal places desired.
   incrementElement(variableObj: Variable): number {
     const increment = 1 / Math.pow(10, variableObj.decPoint);
@@ -67,10 +55,9 @@ export class GeneratorService {
         Permutations.  The index value is only used in order to track when
         all sets are generated. **/
     for (let index = 0; index < totalPermutations; index++) {
-      let arrayValues = [];
-      arrayValues = this.setArrayValuesToTemp(numberOfVariables, knownVariables);
+    const  arrayValues = JSON.parse(JSON.stringify(knownVariables));
 
-    // Gets temp ready for the next run.
+    // Gets knownVariables ready for the next run.
       if (knownVariables[lastElementIndex] <= parametersArray[lastElementIndex].max) {
         knownVariables[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex]);
       } else {
