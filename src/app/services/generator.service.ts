@@ -43,8 +43,8 @@ export class GeneratorService {
   }
 
   // Adds to Element based on the number of decimal places desired.
-  incrementElement(decPoint: number): number {
-    const increment = 1 / Math.pow(10, decPoint);
+  incrementElement(variableObj: Variable): number {
+    const increment = 1 / Math.pow(10, variableObj.decPoint);
 
     return increment;
   }
@@ -58,40 +58,34 @@ export class GeneratorService {
     const numberOfVariables = parametersArray.length - 1;
     const lastElementIndex = numberOfVariables - 1;
     const totalPermutations = this.calculateTotalPermutations(parametersArray);
-    const temp = parametersArray.map( (parameter) => {
+    const knownVariables = parametersArray.map( (parameter) => {
       return parameter.min;
     });
-    temp.pop();
+    knownVariables.pop();
 
     /** This method is run as a for loop through all the calculated
         Permutations.  The index value is only used in order to track when
         all sets are generated. **/
     for (let index = 0; index < totalPermutations; index++) {
-      let arrayValues = [];  // This will be pushed to final answerArray.
-      /** If statement is true if the last element has not reached the maximum
-        value.  It causes the last element to increase to the next in order. **/
-    /** Else takes care of the situation where elements other than the last
-        one (right-most) need to be changed. Index i starts on the right-most
-        element and works to the left.  If this addition brings the temp[i-1] to
-        above the maximum, this will be taken care in the next iteration of the for loop.**/
-      arrayValues = this.setArrayValuesToTemp(numberOfVariables, temp);
+      let arrayValues = [];
+      arrayValues = this.setArrayValuesToTemp(numberOfVariables, knownVariables);
 
     // Gets temp ready for the next run.
-      if (temp[lastElementIndex] <= parametersArray[lastElementIndex].max) {
-        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
+      if (knownVariables[lastElementIndex] <= parametersArray[lastElementIndex].max) {
+        knownVariables[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex]);
       } else {
         for (let i = lastElementIndex; i >= 0; i--) {
           // if current temp[i] value has reached the parameter maximum.
-          if (temp[i] > parametersArray[i].max) {
-            temp[i] = parametersArray[i].min; // current temp[i] set to minimum.
-            temp[i - 1] += this.incrementElement(parametersArray[i - 1].decPoint);
+          if (knownVariables[i] > parametersArray[i].max) {
+            knownVariables[i] = parametersArray[i].min; // current temp[i] set to minimum.
+            knownVariables[i - 1] += this.incrementElement(parametersArray[i - 1]);
 
             // temp[i-1] (one to the left) is added.
           }
-          arrayValues[i] = temp[i];  // For loop ends with that temp[i] finalized in arrayValues.
+          arrayValues[i] = knownVariables[i];  // For loop ends with that temp[i] finalized in arrayValues.
         }
         // Adds to last element in array.
-        temp[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex].decPoint);
+        knownVariables[lastElementIndex] += this.incrementElement(parametersArray[lastElementIndex]);
       }
       // For each index value, a set is pushed to the answerArray.
       answerArray.push(arrayValues);
