@@ -71,10 +71,7 @@ export class GeneratorService {
     // Locates index of last variable.
     const numberOfVariables = parametersArray.length - 1;
     const lastElementIndex = numberOfVariables - 1;
-
     const totalPermutations = this.calculateTotalPermutations(parametersArray, numberOfVariables);
-    console.log(totalPermutations);
-
     temp = this.initializeTempArray(parametersArray, numberOfVariables);
 
     /** This method is run as a for loop through all the calculated
@@ -278,10 +275,10 @@ export class GeneratorService {
       const answerArray  = solveForVariable(randomSet[0], simplifiedEquation, variables);
 
       for (let i = 0; i < answerArray.length; i++) {
-        const currentAnswer = answerArray.slice(i, i+1);
+        const currentAnswer = answerArray.slice(i, i + 1);
         // Check if it is valid set or not as per to the user's condition
         if (this.compareResultWithUserSpecification(currentAnswer, variables)) {
-          let variableToSolve = variables[variables.length-1];
+          const variableToSolve = variables[variables.length - 1];
           if (variableToSolve.answerMeetsAllSpecification === false) {
             randomSet[0].push(answerArray);
             result.push(randomSet[0]);

@@ -4,7 +4,7 @@ declare var nerdamer: any;
 
   export function findRange(max: number, min: number, decPoint: number): number {
     let range = (max - min) * (Math.pow(10, decPoint)) + 1;
-
+    
     return range;
   }
 
@@ -18,6 +18,7 @@ declare var nerdamer: any;
     return variablesObject;
   }
 
+  // tslint:disable-next-line:max-line-length
   /* Solves the equation/expression using the nerdamer math  library by taking array of numbers, the simplified algebric equation and the variable array */
   export function solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
     let answerArray: any[] = [];

@@ -61,13 +61,14 @@ export class EquationComponent implements OnInit {
   output (){
     try {
       this.equation = Guppy.instances['equationBox'].backend.get_content('text');
-      let extractedVars = nerdamer(this.equation).variables().sort();
+      let extractedVars = nerdamer(this.equation).variables();
       /* creating variable instance and pushing each variable instance into the variables array*/
       for (let i = 0; i < extractedVars.length; i++) {
         let varName: string = extractedVars[i];
         let newVar = new Variable(varName);
         this.variables.push(newVar);
       }
+      console.log(this.variables);
       this.parameterDiv = true;
     } catch (e) {
       alert('Parsing error!' + e);
@@ -78,17 +79,7 @@ export class EquationComponent implements OnInit {
     // this logic updates the variables array value using the data obtained from the form
     this.generatedView = true;
     this.isLoading = true;
-
     this.numberOfProblems = formValue.numberOfProblems;
-    // converting object into array
-    let formVariables = this._generatorService.toArray (formValue.variables);
-    for (let i = 0, j = 0; i < this.variables.length; i++) {
-      this.variables[i].decPoint = formVariables[j][1];
-      this.variables[i].min = formVariables[j + 1][1];
-      this.variables[i].max = formVariables[j + 2][1];
-      j += 3;
-    }
-
     let result = this._generatorService.solverDecisionTree(this.variables,this.numberOfProblems, this.equation);
     this.generatedCombinations = result;
     console.log(this.generatedCombinations);
@@ -101,7 +92,7 @@ export class EquationComponent implements OnInit {
     for (let i = 0; i < variables.length; i++) {
       let currentVar = variables[i];
       if (currentVar.solveForThisVariable === true) {
-        variables[variables.length-1] = currentVar;
+        variables[variables.length - 1] = currentVar;
         variables[i] = lastVariable;
         break;
       }
