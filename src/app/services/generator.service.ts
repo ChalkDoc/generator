@@ -5,7 +5,9 @@ import {
   findRange,
   createVariableObject,
   solveForVariable,
-  simplifyEquation } from './../utilities';
+  simplifyEquation,
+  getRangeValues
+} from './../utilities';
 
 import './../../../node_modules/nerdamer/nerdamer.core.js';
 import './../../../node_modules/nerdamer/Solve.js';
@@ -19,14 +21,14 @@ declare var nerdamer: any;
 @Injectable()
 export class GeneratorService {
 
-  constructor() {}
+  constructor() { }
 
   // For loop calculates the total number of permutations based on the range of the input parameters.
   calculateTotalPermutations(parameters: Variable[]): number {
     const permutationsTotal = parameters.slice(0, -1).reduce((permutations, parameter) => {
       const range = findRange(parameter);
       return permutations * range;
-  }, 1) ;
+    }, 1);
     return permutationsTotal;
   }
 
@@ -38,41 +40,53 @@ export class GeneratorService {
   }
 
   generatePermutations(parametersArray: Variable[]): any[] {
-    const answerArray = [];  // Array returned with all possible permutation sets.
-    // Locates index of last variable.
-    const unknownVariable = parametersArray.slice(-1)[0];
-    const numberOfVariables = parametersArray.length - 1;
-    const lastElementIndex = numberOfVariables - 1;
-    const totalPermutations = this.calculateTotalPermutations(parametersArray);
-    // Creates a template array of known variable mins
-    const knownVariableMins = parametersArray.slice(0, -1).map( (parameter) => {
-      return parameter.min;
-    });
-
-    for (let index = 0; index < totalPermutations; index++) {
-    const  arrayValues = JSON.parse(JSON.stringify(knownVariableMins));
-
-    // Gets knownVariablesMins ready for the next run.
-      if (knownVariableMins[lastElementIndex] <= parametersArray[lastElementIndex].max) {
-        knownVariableMins[lastElementIndex] += this.incrementElement(unknownVariable);
-      } else {
-        for (let i = lastElementIndex; i >= 0; i--) {
-          // if current temp[i] value has reached the parameter maximum.
-          if (knownVariableMins[i] > parametersArray[i].max) {
-            knownVariableMins[i] = parametersArray[i].min; // current temp[i] set to minimum.
-            knownVariableMins[i - 1] += this.incrementElement(parametersArray[i - 1]);
-
-            // temp[i-1] (one to the left) is added.
-          }
-          arrayValues[i] = knownVariableMins[i];  // For loop ends with that temp[i] finalized in arrayValues.
-        }
-        // Adds to last element in array.
-        knownVariableMins[lastElementIndex] += this.incrementElement(unknownVariable);
-      }
-      // For each index value, a set is pushed to the answerArray.
-      answerArray.push(arrayValues);
-    }
+    const answerArray = parametersArray.slice(0, -1).reduce((possibleValues, parameter) => {
+      const result = [];
+      const rangeValues = getRangeValues(parameter);
+      possibleValues.forEach(possibleValue => {
+        rangeValues.forEach(value => {
+          result.push([...possibleValue, value]);
+        });
+      });
+      return result;
+    }, [[]]);
     return answerArray;
+
+    // const answerArray = [];  // Array returned with all possible permutation sets.
+    // Locates index of last variable.
+    // const unknownVariable = parametersArray.slice(-1)[0];
+    // const numberOfVariables = parametersArray.length - 1;
+    // const lastElementIndex = numberOfVariables - 1;
+    // const totalPermutations = this.calculateTotalPermutations(parametersArray);
+    // // Creates a template array of known variable mins
+    // const knownVariableMins = parametersArray.slice(0, -1).map((parameter) => {
+    //   return parameter.min;
+    // });
+
+    // for (let index = 0; index < totalPermutations; index++) {
+    // const  arrayValues = JSON.parse(JSON.stringify(knownVariableMins));
+
+    // // Gets knownVariablesMins ready for the next run.
+    //   if (knownVariableMins[lastElementIndex] <= parametersArray[lastElementIndex].max) {
+    //     knownVariableMins[lastElementIndex] += this.incrementElement(unknownVariable);
+    //   } else {
+    //     for (let i = lastElementIndex; i >= 0; i--) {
+    //       // if current temp[i] value has reached the parameter maximum.
+    //       if (knownVariableMins[i] > parametersArray[i].max) {
+    //         knownVariableMins[i] = parametersArray[i].min; // current temp[i] set to minimum.
+    //         knownVariableMins[i - 1] += this.incrementElement(parametersArray[i - 1]);
+
+    //         // temp[i-1] (one to the left) is added.
+    //       }
+    //       arrayValues[i] = knownVariableMins[i];  // For loop ends with that temp[i] finalized in arrayValues.
+    //     }
+    //     // Adds to last element in array.
+    //     knownVariableMins[lastElementIndex] += this.incrementElement(unknownVariable);
+    //   }
+    //   // For each index value, a set is pushed to the answerArray.
+    //   answerArray.push(arrayValues);
+    // }
+    // return answerArray;
   }
 
   compareResultWithUserSpecification(values: any[], variables: Variable[]): boolean {
@@ -82,8 +96,8 @@ export class GeneratorService {
     // check if value is an integer/decimal.
     for (let i = 0; i < values.length; i++) {
       let currentValue = values[i];
-    // check if value is an imaginary number
-    // I am assuming that we dont check for the range if it is imaginary
+      // check if value is an imaginary number
+      // I am assuming that we dont check for the range if it is imaginary
       if (this.containsImaginary(currentValue) && lastVariable.containsImaginary) {
         return true;
       }
@@ -118,14 +132,14 @@ export class GeneratorService {
   }
 
   splicePermutationSetRandomly(permutationsList: any[]): any[] {
-    const splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length-1);
+    const splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length - 1);
     const result = permutationsList.splice(splicingIndex, 1); // it returns [[...]]
     return result;
   }
 
   /* This method takes an object as an argument and converts into an array. */
   toArray(obj: object) {
-    const objArr = Object.keys(obj).map(function(key){
+    const objArr = Object.keys(obj).map(function (key) {
       return [String(key), obj[key]];
     });
     return objArr;
@@ -135,7 +149,7 @@ export class GeneratorService {
     const parsedInput = Number(input);
     if (parsedInput !== NaN && Math.floor(parsedInput) === parsedInput) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
@@ -215,7 +229,7 @@ export class GeneratorService {
     while (result.length !== numberOfProblems && permutationsList.length > 0) {
       // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
       const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);
-      const answerArray  = solveForVariable(randomSet[0], simplifiedEquation, variables);
+      const answerArray = solveForVariable(randomSet[0], simplifiedEquation, variables);
 
       for (let i = 0; i < answerArray.length; i++) {
         const currentAnswer = answerArray.slice(i, i + 1);
