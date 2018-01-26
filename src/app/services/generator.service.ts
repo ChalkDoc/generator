@@ -159,13 +159,7 @@ export class GeneratorService {
         const currentAnswer = answerArray.slice(i, i + 1);
         // Check if it is valid set or not as per to the user's condition
         if (this.compareResultWithUserSpecification(currentAnswer, variables[variables.length - 1])) {
-          const variableToSolve = variables[variables.length - 1];
-          if (variableToSolve.answerMeetsAllSpecification === false) {
-            randomSet[0].push(answerArray);
-            result.push(randomSet[0]);
-            break;
-          }
-          randomSet[0].push(currentAnswer);
+          randomSet[0].push(answerArray);
           result.push(randomSet[0]);
         }
       }

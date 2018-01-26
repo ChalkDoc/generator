@@ -309,44 +309,44 @@ describe('GeneratorService and all of its methods', () => {
 
 
 
-  it('should return [[3, 4, [-5, 5]]] upon calling generateValidVariablePermutations(variables, numberOfProblems, equation) ', () => {
-    const a = new Variable('a', 0, 3, 4 );
-    const b = new Variable('b', 0, 3, 4);
-    const c = new Variable('c', 0, 1, 5);
-    c.answerMeetsAllSpecification = true;
-    const variables: Variable[] = [a, b, c];
+  // it('should return [[3, 4, [-5, 5]]] upon calling generateValidVariablePermutations(variables, numberOfProblems, equation) ', () => {
+  //   const a = new Variable('a', 0, 3, 4 );
+  //   const b = new Variable('b', 0, 3, 4);
+  //   const c = new Variable('c', 0, 1, 5);
+  //   c.answerMeetsAllSpecification = true;
+  //   const variables: Variable[] = [a, b, c];
 
-    const numberOfProblems = 1;
+  //   const numberOfProblems = 1;
 
-    const equation = 'a^2 + b^2 = c^2';
+  //   const equation = 'a^2 + b^2 = c^2';
 
-    const result =  _generatorService.generateValidVariablePermutations(variables, numberOfProblems, equation);
+  //   const result =  _generatorService.generateValidVariablePermutations(variables, numberOfProblems, equation);
 
-    expect(result.length).toBe(1);
-    expect(result[0].length).toBe(3);
-    expect(result[0][2].length).toBe(1);
-    expect(result[0][2].toString()).toContain('5');
-  });
+  //   expect(result.length).toBe(1);
+  //   expect(result[0].length).toBe(3);
+  //   expect(result[0][2].length).toBe(1);
+  //   expect(result[0][2].toString()).toContain('5');
+  // });
 
-  it('should return [[3, 4, [5]], [6, 8, [10]]] upon calling generateValidVariablePermutations(variables, numberOfProblems, equation) ', () => {
-    const a = new Variable('a', 0, 1, 10);
-    const b = new Variable('b', 0, 1, 10);
-    const c = new Variable('c', 0, 1, 10);
-    c.answerMeetsAllSpecification = true;
-    const variables: Variable[] = [a, b, c];
+  // it('should return [[3, 4, [5]], [6, 8, [10]]] upon calling generateValidVariablePermutations(variables, numberOfProblems, equation) ', () => {
+  //   const a = new Variable('a', 0, 1, 10);
+  //   const b = new Variable('b', 0, 1, 10);
+  //   const c = new Variable('c', 0, 1, 10);
+  //   c.answerMeetsAllSpecification = true;
+  //   const variables: Variable[] = [a, b, c];
 
-    const numberOfProblems = 2;
+  //   const numberOfProblems = 2;
 
-    const equation = 'a^2 + b^2 = c^2';
-    const result =  _generatorService.generateValidVariablePermutations(variables, numberOfProblems, equation);
+  //   const equation = 'a^2 + b^2 = c^2';
+  //   const result =  _generatorService.generateValidVariablePermutations(variables, numberOfProblems, equation);
 
 
-    expect(result.length).toBe(2);
-    expect(result[0].length).toBe(3);
-    expect(result[0][2].length).toBe(1);
-    expect(result[1].length).toBe(3);
-    expect(result[1][2].length).toBe(1);
-  });
+  //   expect(result.length).toBe(2);
+  //   expect(result[0].length).toBe(3);
+  //   expect(result[0][2].length).toBe(1);
+  //   expect(result[1].length).toBe(3);
+  //   expect(result[1][2].length).toBe(1);
+  // });
 
   it('should generate a set of values for a variable based on min, max, and decimal numbers', () => {
     const variable = new Variable('a', 1, 1, 2);
