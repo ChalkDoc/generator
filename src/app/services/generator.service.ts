@@ -17,6 +17,7 @@ import './../../../node_modules/nerdamer/Extra.js';
 import { variable } from '@angular/compiler/src/output/output_ast';
 
 declare var nerdamer: any;
+const number = require('lodash/number');
 
 @Injectable()
 export class GeneratorService {
@@ -72,14 +73,8 @@ export class GeneratorService {
     }
   }
 
-  getRandomIntInclusive(min: number, max: number): number {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min; // The maximum and the minimum is inclusive
-  }
-
   splicePermutationSetRandomly(permutationsList: any[]): any[] {
-    const splicingIndex: number = this.getRandomIntInclusive(0, permutationsList.length - 1);
+    const splicingIndex: number = number.random(0, permutationsList.length - 1);
     const result = permutationsList.splice(splicingIndex, 1); // it returns [[...]]
     return result;
   }

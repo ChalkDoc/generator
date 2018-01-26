@@ -102,11 +102,6 @@ describe('GeneratorService and all of its methods', () => {
     expect(simplifiedEquation.toString()).toBe('[(1/2)*(-b+sqrt(-4*a*c+b^2))*a^(-1),(1/2)*(-b-sqrt(-4*a*c+b^2))*a^(-1)]');
   });
 
-  it('should return a random intiger between 1-10 inclusive when calling getRandomIntInclusive(min, max)', () => {
-    const radnomInt: number = _generatorService.getRandomIntInclusive(1, 10);
-    expect(radnomInt >= 1 || radnomInt <= 10).toBe(true);
-  });
-
   it('should splice a random permutation set 1 time when calling splicePermutationSetRandomly(permutationsList)  decreasing the permutationList count by 1', () => {
     const permutationsList: any[] = _generatorService.generatePermutations(variables);
 
@@ -314,7 +309,7 @@ describe('GeneratorService and all of its methods', () => {
 
 
 
-  it('should return [[3, 4, [-5, 5]]] upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
+  it('should return [[3, 4, [-5, 5]]] upon calling generateValidVariablePermutations(variables, numberOfProblems, equation) ', () => {
     const a = new Variable('a', 0, 3, 4 );
     const b = new Variable('b', 0, 3, 4);
     const c = new Variable('c', 0, 1, 5);
@@ -333,7 +328,7 @@ describe('GeneratorService and all of its methods', () => {
     expect(result[0][2].toString()).toContain('5');
   });
 
-  it('should return [[3, 4, [5]], [6, 8, [10]]] upon calling generateValidVariableCombination(variables, numberOfProblems, equation) ', () => {
+  it('should return [[3, 4, [5]], [6, 8, [10]]] upon calling generateValidVariablePermutations(variables, numberOfProblems, equation) ', () => {
     const a = new Variable('a', 0, 1, 10);
     const b = new Variable('b', 0, 1, 10);
     const c = new Variable('c', 0, 1, 10);
