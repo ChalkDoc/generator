@@ -1,4 +1,8 @@
-import { Variable } from './variable'
+import { Variable } from './variable';
+import { math } from 'mathjs';
+//import './../../node_modules/mathjs/core.js';
+
+declare var math: any;
 
 declare var nerdamer: any;
 
@@ -35,6 +39,9 @@ declare var nerdamer: any;
     for (let i = 0; i < decimalAnswerArray.length; i++) {
       if (decimalAnswerArray[i] !== '') {
         console.log(decimalAnswerArray[i]);
+        //console.log(math.eval('(5/357)*((1/5)*sqrt(168814)-206/5)'));
+        //console.log(math.eval(decimalAnswerArray[i]));
+        //decimalAnswerArray[i] = mathjs.complex(decimalAnswerArray[i]);
         answerArray.push(decimalAnswerArray[i]);
       }
     }

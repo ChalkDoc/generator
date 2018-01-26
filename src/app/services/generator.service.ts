@@ -1,5 +1,9 @@
 import { Variable } from './../variable';
 import { Injectable } from '@angular/core';
+//import { mathjs } from 'mathjs';
+
+//import './../../../node_modules/mathjs/core.js';
+var math = require('mathjs');
 
 import {
   findRange,
@@ -15,11 +19,20 @@ import './../../../node_modules/nerdamer/Extra.js';
 import { variable } from '@angular/compiler/src/output/output_ast';
 
 declare var nerdamer: any;
+declare var mathjs: any;
 
 @Injectable()
 export class GeneratorService {
 
   constructor() {}
+
+  convertAnswerStringToDecimal(stringAnswer: string): any {
+    let decimalAnswer = math.eval(stringAnswer);
+
+    //let decimalAnswer: string  = mathjs(stringAnswer).eval();
+
+    return decimalAnswer;
+  }
 
   // For loop calculates the total number of permutations based on the range of the input parameters.
   calculateTotalPermutations(parameters: Variable[]): number {

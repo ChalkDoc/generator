@@ -403,4 +403,22 @@ describe('GeneratorService and all of its methods', () => {
     expect(results[0][2]).toEqual(expectedResult[0]);
   });
 
+  it('should convert a string answer into a decimal number', () => {
+    const numberString = 'sqrt(25)';
+    let result = _generatorService.convertAnswerStringToDecimal(numberString);
+    console.log(result);
+    const expectedResult = 5;
+
+    expect<any>(result).toEqual(expectedResult);
+  });
+
+  it('should convert a long string answer into a decimal number', () => {
+    const numberString = 'sqrt(25)*5/2';
+    let result = _generatorService.convertAnswerStringToDecimal(numberString);
+    console.log(result);
+    const expectedResult = 12.5;
+
+    expect<any>(result).toEqual(expectedResult);
+  });
+
 });

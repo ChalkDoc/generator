@@ -68,7 +68,7 @@ export class EquationComponent implements OnInit {
         let newVar = new Variable(varName);
         this.variables.push(newVar);
       }
-      console.log(this.variables);
+      //console.log(this.variables);
       this.parameterDiv = true;
     } catch (e) {
       alert('Parsing error!' + e);
@@ -82,7 +82,7 @@ export class EquationComponent implements OnInit {
     this.numberOfProblems = formValue.numberOfProblems;
     let result = this._generatorService.solverDecisionTree(this.variables,this.numberOfProblems, this.equation);
     this.generatedCombinations = result;
-    console.log(this.generatedCombinations);
+    //console.log(this.generatedCombinations);
 
     this.isLoading = false;
   }
