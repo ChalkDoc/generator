@@ -1,5 +1,6 @@
 import { Variable } from './../variable';
 import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 
 import {
   findRange,
@@ -17,7 +18,6 @@ import './../../../node_modules/nerdamer/Extra.js';
 import { variable } from '@angular/compiler/src/output/output_ast';
 
 declare var nerdamer: any;
-const number = require('lodash/number');
 
 @Injectable()
 export class GeneratorService {
@@ -74,7 +74,7 @@ export class GeneratorService {
   }
 
   splicePermutationSetRandomly(permutationsList: any[]): any[] {
-    const splicingIndex: number = number.random(0, permutationsList.length - 1);
+    const splicingIndex: number = _.random(0, permutationsList.length - 1);
     const result = permutationsList.splice(splicingIndex, 1); // it returns [[...]]
     return result;
   }
