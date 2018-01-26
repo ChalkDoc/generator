@@ -23,22 +23,6 @@ export class GeneratorService {
 
   constructor() { }
 
-  // For loop calculates the total number of permutations based on the range of the input parameters.
-  calculateTotalPermutations(parameters: Variable[]): number {
-    const permutationsTotal = parameters.slice(0, -1).reduce((permutations, parameter) => {
-      const range = findRange(parameter);
-      return permutations * range;
-    }, 1);
-    return permutationsTotal;
-  }
-
-  // Adds to Element based on the number of decimal places desired.
-  incrementElement(variableObj: Variable): number {
-    const increment = 1 / Math.pow(10, variableObj.decPoint);
-
-    return increment;
-  }
-
   generatePermutations(parametersArray: Variable[]): number[] {
     const answerArray = parametersArray.slice(0, -1).reduce((possibleValues, parameter) => {
       const result = [];
