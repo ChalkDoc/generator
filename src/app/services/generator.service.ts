@@ -10,13 +10,6 @@ import {
   getRangeValues
 } from './../utilities';
 
-import './../../../node_modules/nerdamer/nerdamer.core.js';
-import './../../../node_modules/nerdamer/Solve.js';
-import './../../../node_modules/nerdamer/Algebra.js';
-import './../../../node_modules/nerdamer/Calculus.js';
-import './../../../node_modules/nerdamer/Extra.js';
-import { variable } from '@angular/compiler/src/output/output_ast';
-
 declare var nerdamer: any;
 
 @Injectable()
