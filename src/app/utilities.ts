@@ -1,11 +1,11 @@
-import { Variable } from './variable'
+import { Variable } from './variable';
 
 declare var nerdamer: any;
 
-export function findRange(variable: Variable): number {
-  const range = (variable.max - variable.min) * (Math.pow(10, variable.decPoint)) + 1;
-  return range;
+export function findRange({min, max, decPoint}: Variable): number {
+  return (max - min) * 10 ** decPoint + 1;
 }
+
 
 /* Takes array of numbers and Variable array and converts to a varialble object*/
 export function createVariableObject(randomSet: number[], variables: Variable[]): object {
