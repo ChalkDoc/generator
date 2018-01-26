@@ -85,14 +85,6 @@ export class GeneratorService {
     return result;
   }
 
-  /* This method takes an object as an argument and converts into an array. */
-  toArray(obj: object) {
-    const objArr = Object.keys(obj).map(function (key) {
-      return [String(key), obj[key]];
-    });
-    return objArr;
-  }
-
   isInt(input: any): boolean {
     const parsedInput = Number(input);
     if (parsedInput !== NaN && Math.floor(parsedInput) === parsedInput) {

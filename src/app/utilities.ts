@@ -58,3 +58,10 @@ export function getRangeValues({ min, max, decPoint }) {
   }
   return rangeValues;
 }
+  /* This method takes an object as an argument and converts into an array. */
+  export function toArray(obj: object) {
+    const objArr = Object.keys(obj).map(function (key) {
+      return [String(key), obj[key]];
+    });
+    return objArr;
+  }
