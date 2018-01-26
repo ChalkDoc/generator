@@ -226,7 +226,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return true upon calling compareResultWithUserSpecification("5", variables)', () => {
     const values = ['5'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(true);
   });
@@ -234,7 +234,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification("5i", variables)', () => {
     const values = ['5i'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -242,7 +242,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = ['5i'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -253,7 +253,7 @@ describe('GeneratorService and all of its methods', () => {
 
     const values = ['5i'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(true);
   });
@@ -261,7 +261,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = ['150'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -269,7 +269,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = ['-150'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -277,7 +277,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = ['-10.5'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -285,7 +285,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = ['-10.5'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -296,7 +296,7 @@ describe('GeneratorService and all of its methods', () => {
 
     const values = ['-10.5'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(true);
   });
@@ -307,7 +307,7 @@ describe('GeneratorService and all of its methods', () => {
 
     const values = ['-10.05'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables);
+    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
     console.log(meetsUserSpecification);
     expect(meetsUserSpecification).toBe(true);
   });

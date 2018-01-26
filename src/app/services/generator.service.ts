@@ -37,28 +37,27 @@ export class GeneratorService {
     return answerArray;
   }
 
-  compareResultWithUserSpecification(values: any[], variables: Variable[]): boolean {
+  compareResultWithUserSpecification(values: any[], unknownVariable: Variable): boolean {
     let inRange = false;
     let sameDataType = false;
-    const lastVariable = variables[variables.length - 1];
     // check if value is an integer/decimal.
     for (let i = 0; i < values.length; i++) {
       let currentValue = values[i];
       // check if value is an imaginary number
       // I am assuming that we dont check for the range if it is imaginary
-      if (this.containsImaginary(currentValue) && lastVariable.containsImaginary) {
+      if (this.containsImaginary(currentValue) && unknownVariable.containsImaginary) {
         return true;
       }
       const currentValueDecPoint = this.calculateDecimalPlaces(currentValue);
       currentValue = Number(values[i]);
 
-      if (lastVariable.decPoint === 0 && this.isInt(currentValue)) {
+      if (unknownVariable.decPoint === 0 && this.isInt(currentValue)) {
         sameDataType = true;
-      } else if (lastVariable.decPoint > 0 && currentValueDecPoint === lastVariable.decPoint) {
+      } else if (unknownVariable.decPoint > 0 && currentValueDecPoint === unknownVariable.decPoint) {
         sameDataType = true;
       }
       // check if value is in range.
-      if (currentValue >= lastVariable.min && currentValue <= lastVariable.max) {
+      if (currentValue >= unknownVariable.min && currentValue <= unknownVariable.max) {
         inRange = true;
       } else {
         inRange = false;
@@ -174,7 +173,7 @@ export class GeneratorService {
       for (let i = 0; i < answerArray.length; i++) {
         const currentAnswer = answerArray.slice(i, i + 1);
         // Check if it is valid set or not as per to the user's condition
-        if (this.compareResultWithUserSpecification(currentAnswer, variables)) {
+        if (this.compareResultWithUserSpecification(currentAnswer, variables[variables.length - 1])) {
           const variableToSolve = variables[variables.length - 1];
           if (variableToSolve.answerMeetsAllSpecification === false) {
             randomSet[0].push(answerArray);
