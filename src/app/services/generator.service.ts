@@ -39,7 +39,7 @@ export class GeneratorService {
     return increment;
   }
 
-  generatePermutations(parametersArray: Variable[]): any[] {
+  generatePermutations(parametersArray: Variable[]): number[] {
     const answerArray = parametersArray.slice(0, -1).reduce((possibleValues, parameter) => {
       const result = [];
       const rangeValues = getRangeValues(parameter);
@@ -51,42 +51,6 @@ export class GeneratorService {
       return result;
     }, [[]]);
     return answerArray;
-
-    // const answerArray = [];  // Array returned with all possible permutation sets.
-    // Locates index of last variable.
-    // const unknownVariable = parametersArray.slice(-1)[0];
-    // const numberOfVariables = parametersArray.length - 1;
-    // const lastElementIndex = numberOfVariables - 1;
-    // const totalPermutations = this.calculateTotalPermutations(parametersArray);
-    // // Creates a template array of known variable mins
-    // const knownVariableMins = parametersArray.slice(0, -1).map((parameter) => {
-    //   return parameter.min;
-    // });
-
-    // for (let index = 0; index < totalPermutations; index++) {
-    // const  arrayValues = JSON.parse(JSON.stringify(knownVariableMins));
-
-    // // Gets knownVariablesMins ready for the next run.
-    //   if (knownVariableMins[lastElementIndex] <= parametersArray[lastElementIndex].max) {
-    //     knownVariableMins[lastElementIndex] += this.incrementElement(unknownVariable);
-    //   } else {
-    //     for (let i = lastElementIndex; i >= 0; i--) {
-    //       // if current temp[i] value has reached the parameter maximum.
-    //       if (knownVariableMins[i] > parametersArray[i].max) {
-    //         knownVariableMins[i] = parametersArray[i].min; // current temp[i] set to minimum.
-    //         knownVariableMins[i - 1] += this.incrementElement(parametersArray[i - 1]);
-
-    //         // temp[i-1] (one to the left) is added.
-    //       }
-    //       arrayValues[i] = knownVariableMins[i];  // For loop ends with that temp[i] finalized in arrayValues.
-    //     }
-    //     // Adds to last element in array.
-    //     knownVariableMins[lastElementIndex] += this.incrementElement(unknownVariable);
-    //   }
-    //   // For each index value, a set is pushed to the answerArray.
-    //   answerArray.push(arrayValues);
-    // }
-    // return answerArray;
   }
 
   compareResultWithUserSpecification(values: any[], variables: Variable[]): boolean {
