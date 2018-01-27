@@ -63,4 +63,16 @@ export function toArray(obj: object) {
   return objArr;
 }
 
-
+export function generatePermutations(parametersArray: Variable[]): number[] {
+  const answerArray = parametersArray.slice(0, -1).reduce((possibleValues, parameter) => {
+    const result = [];
+    const rangeValues = getRangeValues(parameter);
+    possibleValues.forEach(possibleValue => {
+      rangeValues.forEach(value => {
+        result.push([...possibleValue, value]);
+      });
+    });
+    return result;
+  }, [[]]);
+  return answerArray;
+}

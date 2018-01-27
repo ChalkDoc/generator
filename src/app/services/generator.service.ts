@@ -5,27 +5,12 @@ import {
   findRange,
   solveForVariable,
   simplifyEquation,
-  getRangeValues
+  getRangeValues,
+  generatePermutations
 } from './../utilities';
 
 @Injectable()
 export class GeneratorService {
-
-  constructor() { }
-
-  generatePermutations(parametersArray: Variable[]): number[] {
-    const answerArray = parametersArray.slice(0, -1).reduce((possibleValues, parameter) => {
-      const result = [];
-      const rangeValues = getRangeValues(parameter);
-      possibleValues.forEach(possibleValue => {
-        rangeValues.forEach(value => {
-          result.push([...possibleValue, value]);
-        });
-      });
-      return result;
-    }, [[]]);
-    return answerArray;
-  }
 
   compareResultWithUserSpecification(currentValue: string, unknownVariable: Variable): boolean {
     const isImaginary = this.containsImaginary(currentValue) && unknownVariable.containsImaginary;
