@@ -1,4 +1,6 @@
 import { Variable } from './variable';
+import { variable } from '@angular/compiler/src/output/output_ast';
+import * as _ from 'lodash';
 
 declare var nerdamer: any;
 
@@ -8,13 +10,9 @@ export function findRange({ min, max, decPoint }: Variable): number {
 
 
 /* Takes array of numbers and Variable array and converts to a varialble object*/
-export function createVariableObject(randomSet: number[], variables: Variable[]): object {
-  const variablesObject = {};
-  for (let i = 0; i < variables.length - 1; i++) {
-    const objectName = variables[i].name;
-    variablesObject[objectName] = randomSet[i];
-  }
-  return variablesObject;
+export function createKnownValuesObject(randomSet: number[], variables: Variable[]): object {
+  const variableNamesArray = _.map(variables.slice(0, -1), 'name');
+  return _.zipObject(variableNamesArray, randomSet);
 }
 
 // tslint:disable-next-line:max-line-length
@@ -22,7 +20,7 @@ export function createVariableObject(randomSet: number[], variables: Variable[])
 export function solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
   const answerArray: any[] = [];
 
-  const variablesObject = createVariableObject(randomSet, variables);
+  const variablesObject = createKnownValuesObject(randomSet, variables);
 
   const answer: string = nerdamer(simplifiedEquation, variablesObject);
   // console.log('answer: ' + answer.toString());
