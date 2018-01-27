@@ -103,7 +103,7 @@ export class GeneratorService {
 
   generateValidVariablePermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     const result: any[] = [];
-    const permutationsList: any[] = this.generatePermutations(variables);
+    const permutationsList: any[] = generatePermutations(variables);
     // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
     const simplifiedEquation = simplifyEquation(equation, variables[variables.length - 1].name);
 

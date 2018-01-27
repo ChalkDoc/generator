@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 import { TestBed, inject } from '@angular/core/testing';
 
 import { GeneratorService } from './generator.service';
@@ -5,7 +6,8 @@ import {
   createKnownValuesObject,
   solveForVariable,
   simplifyEquation,
-  toArray
+  toArray,
+  generatePermutations
 } from './../utilities'
 import { Variable } from '../variable';
 
@@ -23,51 +25,51 @@ describe('GeneratorService and all of its methods', () => {
     });
   });
 
-  it('should be created', inject([GeneratorService], (_generatorService: GeneratorService) => {
-    expect(_generatorService).toBeTruthy();
+  it('should be created', inject([GeneratorService], (_gs: GeneratorService) => {
+    expect(_gs).toEqual(_generatorService);
   }));
 
   it('should return 125 when calling generatePermutations(4 variables)', () => {
-    const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
+    const generatedCombinations: any[] = generatePermutations(variables);
     expect(generatedCombinations.length).toBe(125);
   });
 
   it('should contain [1,1,1] when calling generatePermutations(4 variables)', () => {
-    const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
+    const generatedCombinations: any[] = generatePermutations(variables);
     expect(generatedCombinations).toContain([1, 1, 1]);
   });
 
   it('should return 125 when calling generatePermutations(3 variables)', () => {
-    const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
+    const generatedCombinations: any[] = generatePermutations(variables);
     expect(generatedCombinations.length).toBe(125);
   });
 
   it('should contain [1,1,1] when calling generatePermutations(3 variables)', () => {
-    const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
+    const generatedCombinations: any[] = generatePermutations(variables);
     expect(generatedCombinations).toContain([1, 1, 1]);
   });
 
   it('should return 25 when calling generatePermutations(2 variables)', () => {
     const variables: Variable[] = [a, b, x];
-    const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
+    const generatedCombinations: any[] = generatePermutations(variables);
     expect(generatedCombinations.length).toBe(25);
   });
 
   it('should contain [1,1] when calling generatePermutations(2 variables)', () => {
     const variables: Variable[] = [a, b, x];
-    const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
+    const generatedCombinations: any[] = generatePermutations(variables);
     expect(generatedCombinations).toContain([1, 1]);
   });
 
   it('should return 5 when calling generatePermutations(1 variable)', () => {
     const variables: Variable[] = [a, x];
-    const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
+    const generatedCombinations: any[] = generatePermutations(variables);
     expect(generatedCombinations.length).toBe(5);
   });
 
   it('should contain [1] when calling generatePermutations(1 variables)', () => {
     const variables: Variable[] = [a, x];
-    const generatedCombinations: any[] = _generatorService.generatePermutations(variables);
+    const generatedCombinations: any[] = generatePermutations(variables);
     expect(generatedCombinations).toContain([1]);
   });
 
@@ -104,21 +106,21 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should splice a random permutation set 1 time when calling splicePermutationSetRandomly(permutationsList)  decreasing the permutationList count by 1', () => {
-    const permutationsList: any[] = _generatorService.generatePermutations(variables);
+    const permutationsList: any[] = generatePermutations(variables);
 
     _generatorService.splicePermutationSetRandomly(permutationsList);
     expect(permutationsList.length).toBe(124);
   });
 
   it('should splice a random permutation set 2 times when calling splicePermutationSetRandomly(permutationsList)  decreasing the permutationList count by 2', () => {
-    const permutationsList: any[] = _generatorService.generatePermutations(variables);
+    const permutationsList: any[] = generatePermutations(variables);
     _generatorService.splicePermutationSetRandomly(permutationsList);
     _generatorService.splicePermutationSetRandomly(permutationsList);
     expect(permutationsList.length).toBe(123);
   });
 
   it('should splice a random permutation set 3 times when calling splicePermutationSetRandomly(permutationsList) decreasing the permutationList count by 3', () => {
-    const permutationsList: any[] = _generatorService.generatePermutations(variables);
+    const permutationsList: any[] = generatePermutations(variables);
     _generatorService.splicePermutationSetRandomly(permutationsList);
     _generatorService.splicePermutationSetRandomly(permutationsList);
     _generatorService.splicePermutationSetRandomly(permutationsList);

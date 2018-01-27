@@ -41,8 +41,7 @@ export function solveForVariable(randomSet: number[], simplifiedEquation: string
 
 /* This method simplifies an algebric equation and returns an expression */
 export function simplifyEquation(equation: string, variableToSolve: string): string {
-  const simplifiedEquation = nerdamer.solve(equation, variableToSolve);
-  return simplifiedEquation.toString();
+  return nerdamer.solve(equation, variableToSolve).toString();
 }
 
 export function getRangeValues({ min, max, decPoint }) {
