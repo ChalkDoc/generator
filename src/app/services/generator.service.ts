@@ -28,39 +28,21 @@ export class GeneratorService {
     return answerArray;
   }
 
-  compareResultWithUserSpecification(values: any[], unknownVariable: Variable): boolean {
-    let inRange = false;
-    let sameDataType = false;
-    // check if value is an integer/decimal.
-    for (let i = 0; i < values.length; i++) {
-      let currentValue = values[i];
-      // check if value is an imaginary number
-      // I am assuming that we dont check for the range if it is imaginary
-      if (this.containsImaginary(currentValue) && unknownVariable.containsImaginary) {
-        return true;
-      }
-      const currentValueDecPoint = this.calculateDecimalPlaces(currentValue);
-      currentValue = Number(values[i]);
-
-      if (unknownVariable.decPoint === 0 && this.isInt(currentValue)) {
-        sameDataType = true;
-      } else if (unknownVariable.decPoint > 0 && currentValueDecPoint === unknownVariable.decPoint) {
-        sameDataType = true;
-      }
-      // check if value is in range.
-      if (currentValue >= unknownVariable.min && currentValue <= unknownVariable.max) {
-        inRange = true;
-      } else {
-        inRange = false;
-      }
-    }
-
-    // if parameters are met, function will return true.
-    if (inRange && sameDataType) {
+  compareResultWithUserSpecification(currentValue: string, unknownVariable: Variable): boolean {
+    const isImaginary = this.containsImaginary(currentValue) && unknownVariable.containsImaginary;
+    // this code will check for imaginary once that is implemented
+    if (isImaginary) {
       return true;
-    } else {
-      return false;
     }
+
+    const numCurrentValue = Number(currentValue);
+    const currentValueDecPoint = this.calculateDecimalPlaces(numCurrentValue);
+    const hasNoDecPoint = unknownVariable.decPoint === 0 && _.isInteger(numCurrentValue);
+    const hasSameDecPoint = unknownVariable.decPoint > 0 && currentValueDecPoint === unknownVariable.decPoint;
+    const isWithinRange = _.inRange(numCurrentValue, unknownVariable.min, unknownVariable.max);
+
+    return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
+
   }
 
   splicePermutationSetRandomly(permutationsList: any[]): any[] {
@@ -69,21 +51,12 @@ export class GeneratorService {
     return result;
   }
 
-  isInt(input: any): boolean {
-    const parsedInput = Number(input);
-    if (parsedInput !== NaN && Math.floor(parsedInput) === parsedInput) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   containsImaginary(input: string) {
-    return input.includes('i') ? true : false;
+    return input.includes('i');
   }
 
-  calculateDecimalPlaces(input: string): number {
-    const inputArr = input.split('.');
+  calculateDecimalPlaces(input: string | number): number {
+    const inputArr = `${input}`.split('.');
     return inputArr.length === 1 ? 0 : inputArr[1].length;
   }
 
@@ -154,9 +127,8 @@ export class GeneratorService {
       // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
       const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);
       const answerArray = solveForVariable(randomSet[0], simplifiedEquation, variables);
-
       for (let i = 0; i < answerArray.length; i++) {
-        const currentAnswer = answerArray.slice(i, i + 1);
+        const currentAnswer = answerArray[i];
         // Check if it is valid set or not as per to the user's condition
         if (this.compareResultWithUserSpecification(currentAnswer, variables[variables.length - 1])) {
           randomSet[0].push(answerArray);

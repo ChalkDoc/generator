@@ -2,7 +2,7 @@ import { Variable } from './variable';
 
 declare var nerdamer: any;
 
-export function findRange({min, max, decPoint}: Variable): number {
+export function findRange({ min, max, decPoint }: Variable): number {
   return (max - min) * 10 ** decPoint + 1;
 }
 
@@ -38,7 +38,6 @@ export function solveForVariable(randomSet: number[], simplifiedEquation: string
       answerArray.push(decimalAnswerArray[i]);
     }
   }
-
   return answerArray;
 }
 
@@ -58,10 +57,10 @@ export function getRangeValues({ min, max, decPoint }) {
   }
   return rangeValues;
 }
-  /* This method takes an object as an argument and converts into an array. */
-  export function toArray(obj: object) {
-    const objArr = Object.keys(obj).map(function (key) {
-      return [String(key), obj[key]];
-    });
-    return objArr;
-  }
+/* This method takes an object as an argument and converts into an array. */
+export function toArray(obj: object) {
+  const objArr = Object.keys(obj).map(function (key) {
+    return [String(key), obj[key]];
+  });
+  return objArr;
+}

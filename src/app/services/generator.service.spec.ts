@@ -5,7 +5,8 @@ import {
   createVariableObject,
   solveForVariable,
   simplifyEquation,
-  toArray } from './../utilities'
+  toArray
+} from './../utilities'
 import { Variable } from '../variable';
 
 describe('GeneratorService and all of its methods', () => {
@@ -72,7 +73,7 @@ describe('GeneratorService and all of its methods', () => {
 
   it('should return "[-a]" when calling simplifyEquation(equation, variableToSolve)', () => {
     const equation = 'x + a = 0';
-    const variableToSolve: Variable = new Variable('x',  0, 0, 0);
+    const variableToSolve: Variable = new Variable('x', 0, 0, 0);
 
     const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
     expect(simplifiedEquation.toString()).toBe('[-a]');
@@ -80,7 +81,7 @@ describe('GeneratorService and all of its methods', () => {
 
   it('should return "[sqrt(-a), -sqrt(-a)]" when calling simplifyEquation(equation, variableToSolve)', () => {
     const equation = 'x^2 + a = 0';
-    const variableToSolve: Variable = new Variable('x',  0, 0, 0);
+    const variableToSolve: Variable = new Variable('x', 0, 0, 0);
 
     const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
     expect(simplifiedEquation.toString()).toBe('[sqrt(-a),-sqrt(-a)]');
@@ -88,7 +89,7 @@ describe('GeneratorService and all of its methods', () => {
 
   it('should return "[(-220328269/832788672)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((-138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3)]" when calling simplifyEquation(equation, variableToSolve)', () => {
     const equation = 'x^3 + a = 0';
-    const variableToSolve: Variable = new Variable('x',  0, 0, 0);
+    const variableToSolve: Variable = new Variable('x', 0, 0, 0);
 
     const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
     expect(simplifiedEquation.toString()).toBe('[(-220328269/832788672)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((-138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3)]');
@@ -96,7 +97,7 @@ describe('GeneratorService and all of its methods', () => {
 
   it('should return "[(1/2)*(-b+sqrt(-4*a*c+b^2))*a^(-1),(1/2)*(-b-sqrt(-4*a*c+b^2))*a^(-1)]" when calling simplifyEquation(equation, variableToSolve)', () => {
     const equation = 'a*x^2 + b*x + c = 0';
-    const variableToSolve: Variable = new Variable('x',  0, 0, 0);
+    const variableToSolve: Variable = new Variable('x', 0, 0, 0);
 
     const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
     expect(simplifiedEquation.toString()).toBe('[(1/2)*(-b+sqrt(-4*a*c+b^2))*a^(-1),(1/2)*(-b-sqrt(-4*a*c+b^2))*a^(-1)]');
@@ -141,7 +142,7 @@ describe('GeneratorService and all of its methods', () => {
 
     const simplifiedEquation = simplifyEquation('a*x^2 + b*x + c = 25', 'x');
 
-    const result =  solveForVariable(randomSet, simplifiedEquation, variables);
+    const result = solveForVariable(randomSet, simplifiedEquation, variables);
 
     expect(result[0]).toBe('5');
     expect(result[1]).toBe('-5');
@@ -153,33 +154,33 @@ describe('GeneratorService and all of its methods', () => {
 
     const simplifiedEquation = simplifyEquation('a*x^2 + b*x + c = -4', 'x');
 
-    const result =  solveForVariable(randomSet, simplifiedEquation, variables);
+    const result = solveForVariable(randomSet, simplifiedEquation, variables);
     expect(result.toString()).toBe('2*i,-2*i');
   });
 
-  it('should return true upon calling isInt(input)', () => {
-    const input = 4;
+  // it('should return true upon calling isInt(input)', () => {
+  //   const input = 4;
 
-    expect(_generatorService.isInt(input)).toBe(true);
-  });
+  //   expect(_generatorService.isInt(input)).toBe(true);
+  // });
 
-  it('should return true upon calling isInt(input)', () => {
-    const input = '4';
+  // it('should return true upon calling isInt(input)', () => {
+  //   const input = '4';
 
-    expect(_generatorService.isInt(input)).toBe(true);
-  });
+  //   expect(_generatorService.isInt(input)).toBe(true);
+  // });
 
-  it('should return false upon calling isInt(input)', () => {
-    const input = 4.4;
+  // it('should return false upon calling isInt(input)', () => {
+  //   const input = 4.4;
 
-    expect(_generatorService.isInt(input)).toBe(false);
-  });
+  //   expect(_generatorService.isInt(input)).toBe(false);
+  // });
 
-  it('should return false upon calling isInt(input)', () => {
-    const input = 'sqrt(5)';
+  // it('should return false upon calling isInt(input)', () => {
+  //   const input = 'sqrt(5)';
 
-    expect(_generatorService.isInt(input)).toBe(false);
-  });
+  //   expect(_generatorService.isInt(input)).toBe(false);
+  // });
 
   it('should return true upon calling containsImaginary("2i")', () => {
     const input = '2i';
@@ -219,7 +220,7 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return true upon calling compareResultWithUserSpecification("5", variables)', () => {
-    const values = ['5'];
+    const values = '5';
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
@@ -227,7 +228,7 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification("5i", variables)', () => {
-    const values = ['5i'];
+    const values = '5i';
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
@@ -235,7 +236,7 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const values = ['5i'];
+    const values = '5i';
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
@@ -246,7 +247,7 @@ describe('GeneratorService and all of its methods', () => {
     const x = new Variable('x', 0, -100, 100, true);
     const variables: Variable[] = [a, b, c, x];
 
-    const values = ['5i'];
+    const values = '5i';
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
@@ -254,7 +255,7 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const values = ['150'];
+    const values = '150';
 
     const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
 
