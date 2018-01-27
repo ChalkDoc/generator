@@ -135,35 +135,17 @@ export class GeneratorService {
         }
       }
     }
-
+    debugger;
     return result;
   }
   // Method examines parameters to determine how many variables can be decimals.
-  calculateTotalDecimals(variables) {
-    let decimals = 0;
-    for (let i = 0; i < variables.length; i++) {
-      if (variables[i].decPoint > 0) {
-        decimals++;
-      }
-    }
 
-    return decimals;
-  }
   // Determines solving course of action based on variables and decimals.
   solverDecisionTree(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    const totalDecimals = this.calculateTotalDecimals(variables);
-    let result = [];
+    const hasDecimals = variables.some(({ decPoint }) => decPoint > 0);
 
-    if (totalDecimals === 0) {
-      // All variables are to be integers.  Use permutations table.
-      result = this.generateValidVariablePermutations(variables, numberOfProblems, equation);
-
-      return result;
-    } else {
-      // All variable parameters are decimals.
-      result = this.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
-
-      return result;
+    if (hasDecimals) {
+      return this.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
     }
+    return this.generateValidVariablePermutations(variables, numberOfProblems, equation);
   }
-}

@@ -20,9 +20,9 @@ export function createKnownValuesObject(randomSet: number[], variables: Variable
 export function solveForVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
   const answerArray: any[] = [];
 
-  const variablesObject = createKnownValuesObject(randomSet, variables);
+  const variableValuesObject = createKnownValuesObject(randomSet, variables);
 
-  const answer: string = nerdamer(simplifiedEquation, variablesObject);
+  const answer: string = nerdamer(simplifiedEquation, variableValuesObject);
   // console.log('answer: ' + answer.toString());
   console.log(answer);
 
@@ -62,3 +62,5 @@ export function toArray(obj: object) {
   });
   return objArr;
 }
+
+
