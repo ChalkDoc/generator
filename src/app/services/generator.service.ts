@@ -23,13 +23,13 @@ export class GeneratorService {
       .map(val => val.toFixed(variableObj.decPoint));
   }
 
-  createTestSet(valueList: any[]): number[] {
+  createTestSet(knownVariableValueList: any[]): number[] {
     const testSet = [];
     const tempSetArray = [];
 
-    for (let i = 0; i < valueList.length; i++) {
-      const randomIndex = Math.floor(Math.random() * valueList[i].length);
-      testSet[i] = valueList[i][randomIndex];
+    for (let i = 0; i < knownVariableValueList.length; i++) {
+      const randomIndex = Math.floor(Math.random() * knownVariableValueList[i].length);
+      testSet[i] = knownVariableValueList[i][randomIndex];
     }
 
     return testSet;
@@ -37,18 +37,17 @@ export class GeneratorService {
 
   generateDecimalVariablesPermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     const result = [];
-    const valueList = [];
-    const numberOfLists = variables.length - 1; // Will take away last variable.
-    let count = 0;
+    const knownVariableValueList = [];
+    const numberOfKnownVariables = variables.length - 1; // Will take away last variable.
     const expression = simplifyEquation(equation, variables[variables.length - 1].name);
 
-    for (let i = 0; i < numberOfLists; i++) {
-      valueList[i] = this.generateRangeOfValues(variables[i]);
+    for (let i = 0; i < numberOfKnownVariables; i++) {
+      knownVariableValueList[i] = this.generateRangeOfValues(variables[i]);
     }
-
+    let count = 0;
     while (count < numberOfProblems) {
       let testSet: any[];
-      testSet = this.createTestSet(valueList);
+      testSet = this.createTestSet(knownVariableValueList);
 
       const answerArray = solveForUnknownVariable(testSet, expression, variables);
       console.log(answerArray);
@@ -62,6 +61,7 @@ export class GeneratorService {
       }
       result.push(testSet);
     }
+    debugger;
 
     return result;
   }
