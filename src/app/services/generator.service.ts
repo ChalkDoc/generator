@@ -1,48 +1,23 @@
-import { Variable } from './../variable';
-import { Injectable } from '@angular/core';
+import {
+  Variable
+} from './../variable';
+import {
+  Injectable
+} from '@angular/core';
 import * as _ from 'lodash';
 import {
   findRange,
-  solveForVariable,
+  solveForUnknownVariable,
   simplifyEquation,
   getRangeValues,
-  generatePermutations
+  generatePermutations,
+  meetsUnknownVariableSpecification,
+  containsImaginary,
+  pullRandomValue
 } from './../utilities';
 
 @Injectable()
 export class GeneratorService {
-
-  compareResultWithUserSpecification(currentValue: string, unknownVariable: Variable): boolean {
-    const isImaginary = this.containsImaginary(currentValue) && unknownVariable.containsImaginary;
-    // this code will check for imaginary once that is implemented
-    if (isImaginary) {
-      return true;
-    }
-
-    const numCurrentValue = Number(currentValue);
-    const currentValueDecPoint = this.calculateDecimalPlaces(numCurrentValue);
-    const hasNoDecPoint = unknownVariable.decPoint === 0 && _.isInteger(numCurrentValue);
-    const hasSameDecPoint = unknownVariable.decPoint > 0 && currentValueDecPoint === unknownVariable.decPoint;
-    const isWithinRange = _.inRange(numCurrentValue, unknownVariable.min, unknownVariable.max);
-
-    return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
-
-  }
-
-  splicePermutationSetRandomly(permutationsList: any[]): any[] {
-    const splicingIndex: number = _.random(0, permutationsList.length - 1);
-    const result = permutationsList.splice(splicingIndex, 1); // it returns [[...]]
-    return result;
-  }
-
-  containsImaginary(input: string) {
-    return input.includes('i');
-  }
-
-  calculateDecimalPlaces(input: string | number): number {
-    const inputArr = `${input}`.split('.');
-    return inputArr.length === 1 ? 0 : inputArr[1].length;
-  }
 
   generateRangeOfValues(variableObj: Variable): number[] {
     const values = [];
@@ -73,7 +48,7 @@ export class GeneratorService {
   generateDecimalVariablesPermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     const result = [];
     const valueList = [];
-    const numberOfLists = variables.length - 1;  // Will take away last variable.
+    const numberOfLists = variables.length - 1; // Will take away last variable.
     let count = 0;
     const expression = simplifyEquation(equation, variables[variables.length - 1].name);
 
@@ -85,7 +60,7 @@ export class GeneratorService {
       let testSet: any[];
       testSet = this.createTestSet(valueList);
 
-      const answerArray = solveForVariable(testSet, expression, variables);
+      const answerArray = solveForUnknownVariable(testSet, expression, variables);
       console.log(answerArray);
 
       // This for loop takes into account the fact that the answerArray is an array.
@@ -101,36 +76,35 @@ export class GeneratorService {
     return result;
   }
 
-  generateValidVariablePermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    const result: any[] = [];
-    const permutationsList: any[] = generatePermutations(variables);
-    // This runs only once per 'permutationsList', and we use the 'simplifiedEquation' to check the validity of each 'randomSet'.
-    const simplifiedEquation = simplifyEquation(equation, variables[variables.length - 1].name);
+  generateValidVariablePermutations(variables: Variable[], numberOfProblems: number, equation: string) {
+    const result = [];
+    const permutationsList = generatePermutations(variables);
+    const unknownVariable = _.last(variables);
+    const simplifiedEquation = simplifyEquation(equation, unknownVariable.name);
 
-    while (result.length !== numberOfProblems && permutationsList.length > 0) {
-      // From the 'permutationsList' generate a random set and save it in 'randomSet' varialble
-      const randomSet: any[] = this.splicePermutationSetRandomly(permutationsList);
-      const answerArray = solveForVariable(randomSet[0], simplifiedEquation, variables);
-      for (let i = 0; i < answerArray.length; i++) {
-        const currentAnswer = answerArray[i];
-        // Check if it is valid set or not as per to the user's condition
-        if (this.compareResultWithUserSpecification(currentAnswer, variables[variables.length - 1])) {
-          randomSet[0].push(answerArray);
-          result.push(randomSet[0]);
-        }
+    while (result.length < numberOfProblems && permutationsList.length > 0) {
+      const permutation = pullRandomValue(permutationsList);
+      const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables)[0];
+      const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
+
+      if (isValid) {
+        result.push([...permutation, [answer]]);
       }
     }
-    debugger;
+
     return result;
   }
   // Method examines parameters to determine how many variables can be decimals.
 
   // Determines solving course of action based on variables and decimals.
   solverDecisionTree(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    const hasDecimals = variables.some(({ decPoint }) => decPoint > 0);
+    const hasDecimals = variables.some(({
+      decPoint
+    }) => decPoint > 0);
 
     if (hasDecimals) {
       return this.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
     }
     return this.generateValidVariablePermutations(variables, numberOfProblems, equation);
   }
+}

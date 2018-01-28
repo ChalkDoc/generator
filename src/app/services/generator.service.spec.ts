@@ -4,10 +4,14 @@ import { TestBed, inject } from '@angular/core/testing';
 import { GeneratorService } from './generator.service';
 import {
   createKnownValuesObject,
-  solveForVariable,
+  solveForUnknownVariable,
   simplifyEquation,
   toArray,
-  generatePermutations
+  generatePermutations,
+  meetsUnknownVariableSpecification,
+  containsImaginary,
+  calculateDecimalPlaces,
+  pullRandomValue
 } from './../utilities'
 import { Variable } from '../variable';
 
@@ -105,25 +109,25 @@ describe('GeneratorService and all of its methods', () => {
     expect(simplifiedEquation.toString()).toBe('[(1/2)*(-b+sqrt(-4*a*c+b^2))*a^(-1),(1/2)*(-b-sqrt(-4*a*c+b^2))*a^(-1)]');
   });
 
-  it('should splice a random permutation set 1 time when calling splicePermutationSetRandomly(permutationsList)  decreasing the permutationList count by 1', () => {
+  it('should splice a random permutation set 1 time when calling pullRandomValue(permutationsList)  decreasing the permutationList count by 1', () => {
     const permutationsList: any[] = generatePermutations(variables);
 
-    _generatorService.splicePermutationSetRandomly(permutationsList);
+    pullRandomValue(permutationsList);
     expect(permutationsList.length).toBe(124);
   });
 
-  it('should splice a random permutation set 2 times when calling splicePermutationSetRandomly(permutationsList)  decreasing the permutationList count by 2', () => {
+  it('should splice a random permutation set 2 times when calling pullRandomValue(permutationsList)  decreasing the permutationList count by 2', () => {
     const permutationsList: any[] = generatePermutations(variables);
-    _generatorService.splicePermutationSetRandomly(permutationsList);
-    _generatorService.splicePermutationSetRandomly(permutationsList);
+    pullRandomValue(permutationsList);
+    pullRandomValue(permutationsList);
     expect(permutationsList.length).toBe(123);
   });
 
-  it('should splice a random permutation set 3 times when calling splicePermutationSetRandomly(permutationsList) decreasing the permutationList count by 3', () => {
+  it('should splice a random permutation set 3 times when calling pullRandomValue(permutationsList) decreasing the permutationList count by 3', () => {
     const permutationsList: any[] = generatePermutations(variables);
-    _generatorService.splicePermutationSetRandomly(permutationsList);
-    _generatorService.splicePermutationSetRandomly(permutationsList);
-    _generatorService.splicePermutationSetRandomly(permutationsList);
+    pullRandomValue(permutationsList);
+    pullRandomValue(permutationsList);
+    pullRandomValue(permutationsList);
     expect(permutationsList.length).toBe(122);
   });
 
@@ -139,24 +143,24 @@ describe('GeneratorService and all of its methods', () => {
     expect(variablesObjectArr[2][1]).toBe(1);
   });
 
-  it('should return -5 and 5 upon calling solveForVariable(randomSet, simplifiedEquation, variables)', () => {
+  it('should return -5 and 5 upon calling solveForUnknownVariable(randomSet, simplifiedEquation, variables)', () => {
     const randomSet = [1, 0, 0];
 
     const simplifiedEquation = simplifyEquation('a*x^2 + b*x + c = 25', 'x');
 
-    const result = solveForVariable(randomSet, simplifiedEquation, variables);
+    const result = solveForUnknownVariable(randomSet, simplifiedEquation, variables);
 
     expect(result[0]).toBe('5');
     expect(result[1]).toBe('-5');
     expect(result.toString()).toBe('5,-5');
   });
 
-  it('should return 2*i and -2*i upon calling solveForVariable(randomSet, simplifiedEquation, variables)', () => {
+  it('should return 2*i and -2*i upon calling solveForUnknownVariable(randomSet, simplifiedEquation, variables)', () => {
     const randomSet = [1, 0, 0];
 
     const simplifiedEquation = simplifyEquation('a*x^2 + b*x + c = -4', 'x');
 
-    const result = solveForVariable(randomSet, simplifiedEquation, variables);
+    const result = solveForUnknownVariable(randomSet, simplifiedEquation, variables);
     expect(result.toString()).toBe('2*i,-2*i');
   });
 
@@ -187,44 +191,44 @@ describe('GeneratorService and all of its methods', () => {
   it('should return true upon calling containsImaginary("2i")', () => {
     const input = '2i';
 
-    expect(_generatorService.containsImaginary(input)).toBe(true);
+    expect(containsImaginary(input)).toBe(true);
   });
 
   it('should return true upon calling containsImaginary("2i + 4")', () => {
     const input = '2i + 4';
 
-    expect(_generatorService.containsImaginary(input)).toBe(true);
+    expect(containsImaginary(input)).toBe(true);
   });
 
   it('should return false upon calling containsImaginary("4")', () => {
     const input = '4';
 
-    expect(_generatorService.containsImaginary(input)).toBe(false);
+    expect(containsImaginary(input)).toBe(false);
   });
 
 
   it('should return 0 upon calling calculateDecimalPlaces("4")', () => {
     const input = '4';
 
-    expect(_generatorService.calculateDecimalPlaces(input)).toBe(0);
+    expect(calculateDecimalPlaces(input)).toBe(0);
   });
 
   it('should return 1 upon calling calculateDecimalPlaces("4.0")', () => {
     const input = '4.0';
 
-    expect(_generatorService.calculateDecimalPlaces(input)).toBe(1);
+    expect(calculateDecimalPlaces(input)).toBe(1);
   });
 
   it('should return 2 upon calling calculateDecimalPlaces("4.05")', () => {
     const input = '4.05';
 
-    expect(_generatorService.calculateDecimalPlaces(input)).toBe(2);
+    expect(calculateDecimalPlaces(input)).toBe(2);
   });
 
   it('should return true upon calling compareResultWithUserSpecification("5", variables)', () => {
     const values = '5';
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(true);
   });
@@ -232,7 +236,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification("5i", variables)', () => {
     const values = '5i';
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -240,7 +244,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = '5i';
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -251,7 +255,7 @@ describe('GeneratorService and all of its methods', () => {
 
     const values = '5i';
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(true);
   });
@@ -259,7 +263,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = '150';
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -267,7 +271,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = ['-150'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -275,7 +279,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = ['-10.5'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -283,7 +287,7 @@ describe('GeneratorService and all of its methods', () => {
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
     const values = ['-10.5'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(false);
   });
@@ -294,7 +298,7 @@ describe('GeneratorService and all of its methods', () => {
 
     const values = ['-10.5'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
     expect(meetsUserSpecification).toBe(true);
   });
@@ -305,7 +309,7 @@ describe('GeneratorService and all of its methods', () => {
 
     const values = ['-10.05'];
 
-    const meetsUserSpecification = _generatorService.compareResultWithUserSpecification(values, variables[variables.length - 1]);
+    const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
     console.log(meetsUserSpecification);
     expect(meetsUserSpecification).toBe(true);
   });
@@ -397,7 +401,7 @@ describe('GeneratorService and all of its methods', () => {
 
     let results = _generatorService.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
 
-    let expectedResult = solveForVariable(results[0], expression, variables);
+    let expectedResult = solveForUnknownVariable(results[0], expression, variables);
 
     expect(results[0][2]).toEqual(expectedResult[0]);
   });
