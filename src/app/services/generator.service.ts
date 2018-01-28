@@ -6,7 +6,6 @@ import {
 } from '@angular/core';
 import * as _ from 'lodash';
 import {
-  findRange,
   solveForUnknownVariable,
   simplifyEquation,
   getRangeValues,
@@ -20,17 +19,8 @@ import {
 export class GeneratorService {
 
   generateRangeOfValues(variableObj: Variable): number[] {
-    const values = [];
-    let countingValue = variableObj.min;
-    const range = findRange(variableObj);
-
-    for (let i = 0; i < range; i++) {
-      // countingValue.toFixed(variable.decPoint);
-      values.push(countingValue.toFixed(variableObj.decPoint));
-      countingValue += 1 / (Math.pow(10, variableObj.decPoint));
-    }
-
-    return values;
+    return getRangeValues(variableObj)
+      .map(val => val.toFixed(variableObj.decPoint));
   }
 
   createTestSet(valueList: any[]): number[] {

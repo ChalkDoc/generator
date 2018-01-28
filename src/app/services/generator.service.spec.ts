@@ -269,7 +269,7 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const values = ['-150'];
+    const values = '-150';
 
     const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
@@ -277,7 +277,7 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const values = ['-10.5'];
+    const values = '-10.5';
 
     const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
@@ -285,7 +285,7 @@ describe('GeneratorService and all of its methods', () => {
   });
 
   it('should return false upon calling compareResultWithUserSpecification(values, variables)', () => {
-    const values = ['-10.5'];
+    const values = '-10.5';
 
     const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
@@ -296,7 +296,7 @@ describe('GeneratorService and all of its methods', () => {
     const x = new Variable('x', 1, -100, 100);
     const variables: Variable[] = [a, b, c, x];
 
-    const values = ['-10.5'];
+    const values = '-10.5';
 
     const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
 
@@ -307,7 +307,7 @@ describe('GeneratorService and all of its methods', () => {
     const x = new Variable('x', 2, -100, 100);
     const variables: Variable[] = [a, b, c, x];
 
-    const values = ['-10.05'];
+    const values = '-10.05';
 
     const meetsUserSpecification = meetsUnknownVariableSpecification(values, variables[variables.length - 1]);
     console.log(meetsUserSpecification);

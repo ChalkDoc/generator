@@ -4,9 +4,6 @@ import * as _ from 'lodash';
 
 declare var nerdamer: any;
 
-export function findRange({ min, max, decPoint }: Variable): number {
-  return (max - min) * 10 ** decPoint + 1;
-}
 
 export function containsImaginary(input: string) {
   return input.includes('i');
@@ -21,15 +18,10 @@ export function createKnownValuesObject(randomSet: number[], variables: Variable
 /* Solves the equation/expression using the nerdamer math  library by taking array of numbers, the simplified algebric equation and the variable array */
 export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
   const answerArray: any[] = [];
-
   const variableValuesObject = createKnownValuesObject(randomSet, variables);
-
   const answer: string = nerdamer(simplifiedEquation, variableValuesObject);
-  // console.log('answer: ' + answer.toString());
-  console.log(answer);
-
+  // console.log(answer);
   const decimalAnswer: string = nerdamer(answer).text('decimal');
-
   const decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
 
   for (let i = 0; i < decimalAnswerArray.length; i++) {
@@ -54,10 +46,10 @@ export function calculateDecimalPlaces(input: string | number): number {
 export function getRangeValues({ min, max, decPoint }) {
   const rangeValues = [];
   const increment = 10 ** -decPoint;
-  let num = min;
-  while (num <= max) {
-    rangeValues.push(num);
-    num += increment;
+  let number = min;
+  while (number <= max) {
+    rangeValues.push(number);
+    number += increment;
   }
   return rangeValues;
 }
