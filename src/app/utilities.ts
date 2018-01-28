@@ -53,7 +53,7 @@ export function calculateDecimalPlaces(input: string | number): number {
 
 export function getRangeValues({ min, max, decPoint }) {
   const rangeValues = [];
-  const increment = Math.pow(10, -decPoint);
+  const increment = 10 ** -decPoint;
   let num = min;
   while (num <= max) {
     rangeValues.push(num);
