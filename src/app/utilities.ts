@@ -8,14 +8,12 @@ declare var nerdamer: any;
 export function containsImaginary(input: string): boolean {
   return input.includes('i');
 }
-/* Takes array of numbers and Variable array and converts to a varialble object*/
+
 export function createKnownValuesObject(randomSet: number[], variables: Variable[]): object {
   const variableNamesArray = _.map(variables.slice(0, -1), 'name');
   return _.zipObject(variableNamesArray, randomSet);
 }
 
-// tslint:disable-next-line:max-line-length
-/* Solves the equation/expression using the nerdamer math  library by taking array of numbers, the simplified algebric equation and the variable array */
 export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
   const answerArray: any[] = [];
   const variableValuesObject = createKnownValuesObject(randomSet, variables);
@@ -53,16 +51,9 @@ export function getRangeValues({ min, max, decPoint }) {
   }
   return rangeValues;
 }
-/* This method takes an object as an argument and converts into an array. */
-export function toArray(obj: object) {
-  const objArr = Object.keys(obj).map(function (key) {
-    return [String(key), obj[key]];
-  });
-  return objArr;
-}
 
 export function generatePermutations(variables: Variable[]): number[] {
-  const answerArray = variables.slice(0, -1).reduce((possibleValues, parameter) => {
+  const permutations = variables.slice(0, -1).reduce((possibleValues, parameter) => {
     const result = [];
     const rangeValues = getRangeValues(parameter);
     possibleValues.forEach(possibleValue => {
@@ -72,7 +63,7 @@ export function generatePermutations(variables: Variable[]): number[] {
     });
     return result;
   }, [[]]);
-  return answerArray;
+  return permutations;
 }
 
 export function meetsUnknownVariableSpecification(currentValue: string, unknownVariable: Variable): boolean {
@@ -81,18 +72,25 @@ export function meetsUnknownVariableSpecification(currentValue: string, unknownV
   if (isImaginary) {
     return true;
   }
-
   const numCurrentValue = Number(currentValue);
   const currentValueDecPoint = calculateDecimalPlaces(numCurrentValue);
   const hasNoDecPoint = unknownVariable.decPoint === 0 && _.isInteger(numCurrentValue);
   const hasSameDecPoint = unknownVariable.decPoint > 0 && currentValueDecPoint === unknownVariable.decPoint;
   const isWithinRange = _.inRange(numCurrentValue, unknownVariable.min, unknownVariable.max);
-
   return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
-
 }
 
 export function pullRandomValue(arr: any[]) {
   const index: number = _.random(0, arr.length - 1);
   return arr.splice(index, 1)[0];
+}
+
+
+/* This method takes an object as an argument and converts into an array.
+used in test only */
+export function toArray(obj: object) {
+  const objArr = Object.keys(obj).map(function (key) {
+    return [String(key), obj[key]];
+  });
+  return objArr;
 }
