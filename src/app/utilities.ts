@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 declare var nerdamer: any;
 
 
-export function containsImaginary(input: string) {
+export function containsImaginary(input: string): boolean {
   return input.includes('i');
 }
 /* Takes array of numbers and Variable array and converts to a varialble object*/
