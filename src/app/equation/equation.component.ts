@@ -35,20 +35,7 @@ export class EquationComponent implements OnInit {
   ngOnInit() {
     Guppy.init_symbols(['/assets/symbols.json']);
   }
-  ngDoCheck() {
-    if (this.variableToSolve) {
-      for (let i = 0; i < this.variables.length; i++) {
-        let currentVarObj = this.variables[i];
-        if (currentVarObj.name === this.variableToSolve.name) {
-          this.variables[i].solveForThisVariable = true;
-          this.variables[i].containsImaginary = this.canContainImaginary;
-          this.variables[i].answerMeetsAllSpecification = this.meetParameterCondition;
-        }
-      }
-      // this takes the variable to solve to the end of the array.
-      this.switchParameterToSolve(this.variables, this.variableToSolve);
-    }
-  }
+
   ngAfterViewChecked() {
 
     if (!this.guppyBox) {
@@ -80,6 +67,18 @@ export class EquationComponent implements OnInit {
     this.generatedView = true;
     this.isLoading = true;
     this.numberOfProblems = formValue.numberOfProblems;
+    if (this.variableToSolve) {
+      for (let i = 0; i < this.variables.length; i++) {
+        let currentVarObj = this.variables[i];
+        if (currentVarObj.name === this.variableToSolve.name) {
+          this.variables[i].solveForThisVariable = true;
+          this.variables[i].containsImaginary = this.canContainImaginary;
+          this.variables[i].answerMeetsAllSpecification = this.meetParameterCondition;
+        }
+      }
+      // this takes the variable to solve to the end of the array.
+      this.switchParameterToSolve(this.variables, this.variableToSolve);
+    }
     let result = this._generatorService.solverDecisionTree(this.variables,this.numberOfProblems, this.equation);
     this.generatedCombinations = result;
     console.log(this.generatedCombinations);
