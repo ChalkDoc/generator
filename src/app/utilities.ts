@@ -48,7 +48,7 @@ export function getRangeValues({ min, max, decPoint }) {
   const increment = 10 ** -decPoint;
   let number = min;
   while (number <= max) {
-    rangeValues.push(number);
+    rangeValues.push(_.round(number, decPoint));
     number += increment;
   }
   return rangeValues;
@@ -61,8 +61,8 @@ export function toArray(obj: object) {
   return objArr;
 }
 
-export function generatePermutations(parametersArray: Variable[]): number[] {
-  const answerArray = parametersArray.slice(0, -1).reduce((possibleValues, parameter) => {
+export function generatePermutations(variables: Variable[]): number[] {
+  const answerArray = variables.slice(0, -1).reduce((possibleValues, parameter) => {
     const result = [];
     const rangeValues = getRangeValues(parameter);
     possibleValues.forEach(possibleValue => {
