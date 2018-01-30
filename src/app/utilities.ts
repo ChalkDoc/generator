@@ -1,25 +1,23 @@
 import { Variable } from './variable';
 import { variable } from '@angular/compiler/src/output/output_ast';
 import * as _ from 'lodash';
-
-declare var nerdamer: any;
+import * as nerdamer from 'nerdamer';
 
 
 export function containsImaginary(input: string): boolean {
   return input.includes('i');
 }
 
-export function createKnownValuesObject(randomSet: number[], variables: Variable[]): object {
+export function createKnownValuesObject(randomSet: number[], variables: Variable[]): { [name: string]: string } {
   const variableNamesArray = _.map(variables.slice(0, -1), 'name');
-  return _.zipObject(variableNamesArray, randomSet);
+  return _.zipObject(variableNamesArray, randomSet.map(_.toString));
 }
 
 export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
   const answerArray: any[] = [];
   const variableValuesObject = createKnownValuesObject(randomSet, variables);
-  const answer: string = nerdamer(simplifiedEquation, variableValuesObject);
-  // console.log(answer);
-  const decimalAnswer: string = nerdamer(answer).text('decimal');
+  const answer = nerdamer(simplifiedEquation, variableValuesObject);
+  const decimalAnswer = nerdamer(answer).text('decimals');
   const decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
 
   for (let i = 0; i < decimalAnswerArray.length; i++) {
@@ -31,9 +29,8 @@ export function solveForUnknownVariable(randomSet: number[], simplifiedEquation:
   return answerArray;
 }
 
-/* This method simplifies an algebric equation and returns an expression */
 export function simplifyEquation(equation: string, variableToSolve: string): string {
-  return nerdamer.solve(equation, variableToSolve).toString();
+  return (nerdamer as any).solve(equation, variableToSolve).toString();
 }
 
 export function calculateDecimalPlaces(input: string | number): number {
@@ -83,6 +80,39 @@ export function meetsUnknownVariableSpecification(currentValue: string, unknownV
 export function pullRandomValue(arr: any[]) {
   const index: number = _.random(0, arr.length - 1);
   return arr.splice(index, 1)[0];
+}
+
+export function getVariableValuesCount({ min, max, decPoint }): number {
+  return (max - min + 1) * 10 ** decPoint;
+}
+
+export function getVariablesValuesCount(variables: Variable[]): number {
+  return variables.reduce((acc, variableObj) =>
+    acc * getVariableValuesCount(variableObj)
+    , 1);
+}
+
+export function getCollisionRisk(variables, problems): number {
+  const possibleValues = getVariablesValuesCount(variables);
+
+  return 1 - Math.pow(Math.E, (-problems * (problems - 1) / (2 * possibleValues)));
+}
+
+
+export function genRandomPermutation(variables: Variable[]): number[] {
+  return variables.slice(0, -1).map((variableOji) => getRandomValue(variableOji));
+}
+
+function getRandomValue({ min, max, decPoint }) {
+  return parseFloat(_.random(min, max, true).toFixed(decPoint));
+}
+
+export function isVariableInArray(knownVariableValues: number[], existingValues: any[]): boolean {
+  return existingValues.some((existingVariableArr) =>
+    knownVariableValues.every((knownValue, index) =>
+      knownValue === existingVariableArr[index]
+    )
+  );
 }
 
 

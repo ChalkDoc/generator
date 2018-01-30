@@ -16,7 +16,7 @@
         </div>
         <h6 class="grayFont">Type any Equation/Expression Imaginable and click proceed.</h6>
         <div *ngIf="parameterDiv">
-          <form #variableForm="ngForm" (ngSubmit)="onSubmit(variableForm.value)">
+          <form #variableForm="ngForm" (ngSubmit)="onSubmit(variableForm)">
             <br>
             <br>
             <div class="row">
@@ -38,15 +38,13 @@
                 <p>{{v.name}}</p>
               </div>
               <div class="col-md-4">
-                <input type="number" min="0" class="form-control" name="decPoint{{v.name}}" [(ngModel)]="v.decPoint" [ngModelOptions]="{standalone: true}"
-                  required/>
+                <input type="number" min="0" class="form-control" name="decPoint{{v.name}}" [(ngModel)]="v.decPoint" required/>
               </div>
               <div class="col-md-3">
-                <input type="number" class="form-control" min="{{v.name}}" max="{{v.min}}" [(ngModel)]="v.min" [ngModelOptions]="{standalone: true}"
-                  required/>
+                <input type="number" class="form-control" name="min{{v.name}}" [(ngModel)]="v.min" max="{{v.max}}" required/>
               </div>
               <div class="col-md-3">
-                <input type="number" class="form-control" name="max{{v.name}}" [(ngModel)]="v.max" required/>
+                <input type="number" class="form-control" name="max{{v.name}}" [(ngModel)]="v.max" min="{{v.min}}" required/>
               </div>
             </div>
             <!-- additional requirements -->
@@ -75,7 +73,7 @@
             <div class="row">
               <div class="col-md-12">
                 <br>
-                <button id="generate" type="submit" class="btn btn-success" style="width: 100%" [disabled]="!variableForm.form.valid">
+                <button id="generate" type="submit" class="btn btn-success" style="width: 100%" [disabled]="variableForm.form.invalid">
                   <i class="fa fa-paper-plane-o" aria-hidden="true"> Generate</i>
                 </button>
                 <br>

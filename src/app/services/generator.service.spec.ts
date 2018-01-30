@@ -136,11 +136,11 @@ describe('GeneratorService and all of its methods', () => {
     let variablesObject = createKnownValuesObject(randomSet, variables);
     let variablesObjectArr = toArray(variablesObject);
     expect(variablesObjectArr[0][0]).toBe('a');
-    expect(variablesObjectArr[0][1]).toBe(1);
+    expect(variablesObjectArr[0][1]).toBe('1');
     expect(variablesObjectArr[1][0]).toBe('b');
-    expect(variablesObjectArr[1][1]).toBe(1);
+    expect(variablesObjectArr[1][1]).toBe('1');
     expect(variablesObjectArr[2][0]).toBe('c');
-    expect(variablesObjectArr[2][1]).toBe(1);
+    expect(variablesObjectArr[2][1]).toBe('1');
   });
 
   it('should return -5 and 5 upon calling solveForUnknownVariable(randomSet, simplifiedEquation, variables)', () => {

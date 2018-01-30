@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 import {
   Variable
 } from './../variable';
@@ -12,30 +13,35 @@ import {
   generatePermutations,
   meetsUnknownVariableSpecification,
   containsImaginary,
-  pullRandomValue
+  pullRandomValue,
+  getCollisionRisk,
+  genRandomPermutation,
+  isVariableInArray
 } from './../utilities';
+
+const COLLISION_THRESHOLD = 0.9;
 
 @Injectable()
 export class GeneratorService {
 
-  generateDecimalVariablesPermutations(variables: Variable[], numberOfProblems: number, equation: string): any[] {
+  generatePermutationsByRandom(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     const result = [];
-    const permutationsList = generatePermutations(variables);
     const simplifiedEquation = simplifyEquation(equation, variables[variables.length - 1].name);
     while (result.length < numberOfProblems) {
-      const permutation = pullRandomValue(permutationsList);
+      const permutation = genRandomPermutation(variables);
       const unknownVariable = _.last(variables);
       const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables)[0];
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
+      const isNew = !isVariableInArray(permutation, result);
 
-      if (isValid) {
+      if (isValid && isNew) {
         result.push([...permutation, [answer]]);
       }
     }
     return result;
   }
 
-  generateValidVariablePermutations(variables: Variable[], numberOfProblems: number, equation: string) {
+  generatePermutationsFromList(variables: Variable[], numberOfProblems: number, equation: string) {
     const result = [];
     const permutationsList = generatePermutations(variables);
     const unknownVariable = _.last(variables);
@@ -50,20 +56,20 @@ export class GeneratorService {
         result.push([...permutation, [answer]]);
       }
     }
-
     return result;
   }
-  // Method examines parameters to determine how many variables can be decimals.
-
-  // Determines solving course of action based on variables and decimals.
+  /**
+   * There could be a very large number of possible solutions (e.g. many decimal, number of problems, large range)
+   * when that happens, we pick a permutations at random
+   * but when the possibilities are small or we want a large fraction of them, we pick them from the full list otherwise the collision risk is too high.
+   */
   solverDecisionTree(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    const hasDecimals = variables.some(({
-      decPoint
-    }) => decPoint > 0);
-
-    if (hasDecimals) {
-      return this.generateDecimalVariablesPermutations(variables, numberOfProblems, equation);
+    const collisionRisk = getCollisionRisk(variables, numberOfProblems);
+    numberOfProblems = Math.min(numberOfProblems, 500);
+    if (collisionRisk > COLLISION_THRESHOLD) {
+      return this.generatePermutationsFromList(variables, numberOfProblems, equation);
     }
-    return this.generateValidVariablePermutations(variables, numberOfProblems, equation);
+    return this.generatePermutationsByRandom(variables, numberOfProblems, equation);
   }
+
 }

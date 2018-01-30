@@ -3,13 +3,14 @@ import { NgForm } from '@angular/forms';
 import { Variable } from '../variable';
 import { GeneratorService } from '../services/generator.service';
 import * as _ from 'lodash';
+import * as nerdamer from 'nerdamer';
 
 import './../../../node_modules/nerdamer/Solve.js';
 import './../../../node_modules/nerdamer/Algebra.js';
 import './../../../node_modules/nerdamer/Calculus.js';
 import './../../../node_modules/nerdamer/Extra.js';
 
-declare var nerdamer: any; // declaring nerdamer
+
 
 declare var Guppy: any;   // declaring Guppy
 declare var GuppyOSK: any;
@@ -69,7 +70,7 @@ export class EquationComponent implements OnInit {
     _.delay(() => {
       this.generatedView = true;
 
-      this.numberOfProblems = formValue.numberOfProblems;
+      this.numberOfProblems = formValue.value.numberOfProblems;
       if (this.variableToSolve) {
         for (let i = 0; i < this.variables.length; i++) {
           const currentVarObj = this.variables[i];
@@ -85,6 +86,7 @@ export class EquationComponent implements OnInit {
       const result = this._generatorService.solverDecisionTree(this.variables, this.numberOfProblems, this.equation);
       this.generatedCombinations = result;
       console.log(this.generatedCombinations);
+      console.log(formValue);
       this.isLoading = false;
     }, 100);
   }
