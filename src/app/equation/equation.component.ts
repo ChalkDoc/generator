@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Variable } from '../variable';
 import { GeneratorService } from '../services/generator.service';
 
@@ -18,6 +19,7 @@ declare var GuppyOSK: any;
   styleUrls: ['./equation.component.css']
 })
 export class EquationComponent implements OnInit {
+  error = null;
   guppyBox = false;
   parameterDiv = false;
   generatedView = false;
@@ -34,42 +36,41 @@ export class EquationComponent implements OnInit {
 
   ngOnInit() {
     Guppy.init_symbols(['/assets/symbols.json']);
+    const guppy = new Guppy('equationBox');
   }
 
-  ngAfterViewChecked() {
-
-    if (!this.guppyBox) {
-      this.guppyBox = true;
-    let guppy = new Guppy('equationBox');
-    }
-  }
   /* this is to get the content of the guppy box,
     it also converts the mathematical equation/expression into the desired format type(latex, asciimath, text, ast, eqns, function, xml)*/
-  output (){
+  output() {
     try {
+      this.error = null;
       this.equation = Guppy.instances['equationBox'].backend.get_content('text');
-      let extractedVars = nerdamer(this.equation).variables();
+      const extractedVars = nerdamer(this.equation).variables();
       /* creating variable instance and pushing each variable instance into the variables array*/
       for (let i = 0; i < extractedVars.length; i++) {
-        let varName: string = extractedVars[i];
-        let newVar = new Variable(varName);
+        const varName: string = extractedVars[i];
+        const newVar = new Variable(varName);
         this.variables.push(newVar);
       }
       console.log(this.variables);
       this.parameterDiv = true;
     } catch (e) {
-      alert('Parsing error!' + e);
+
+      this.error = 'Parsing error!' + e;
     }
   }
 
   onSubmit(formValue) {
+
     // this logic updates the variables array value using the data obtained from the form
+
     this.generatedView = true;
+
     this.isLoading = true;
     this.numberOfProblems = formValue.numberOfProblems;
     if (this.variableToSolve) {
       for (let i = 0; i < this.variables.length; i++) {
-        let currentVarObj = this.variables[i];
+        const currentVarObj = this.variables[i];
         if (currentVarObj.name === this.variableToSolve.name) {
           this.variables[i].solveForThisVariable = true;
           this.variables[i].containsImaginary = this.canContainImaginary;
@@ -79,7 +80,7 @@ export class EquationComponent implements OnInit {
       // this takes the variable to solve to the end of the array.
       this.switchParameterToSolve(this.variables, this.variableToSolve);
     }
-    let result = this._generatorService.solverDecisionTree(this.variables,this.numberOfProblems, this.equation);
+    const result = this._generatorService.solverDecisionTree(this.variables, this.numberOfProblems, this.equation);
     this.generatedCombinations = result;
     console.log(this.generatedCombinations);
 
@@ -87,9 +88,9 @@ export class EquationComponent implements OnInit {
   }
 
   switchParameterToSolve(variables: Variable[], variableToSolve: Variable): void {
-    let lastVariable = variables[variables.length-1];
+    const lastVariable = variables[variables.length - 1];
     for (let i = 0; i < variables.length; i++) {
-      let currentVar = variables[i];
+      const currentVar = variables[i];
       if (currentVar.solveForThisVariable === true) {
         variables[variables.length - 1] = currentVar;
         variables[i] = lastVariable;

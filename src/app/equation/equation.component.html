@@ -1,5 +1,10 @@
-<br><br><br>
+<br>
+<br>
+<br>
 <div class="container">
+  <!-- <div *ngIf="error">
+    <h1>{{error}}</h1>
+  </div> -->
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
@@ -11,86 +16,96 @@
         </div>
         <h6 class="grayFont">Type any Equation/Expression Imaginable and click proceed.</h6>
         <div *ngIf="parameterDiv">
-          <form #variableForm = "ngForm" (ngSubmit) = "onSubmit(variableForm.value)">
-            <br><br>
-              <div class="row">
-                <div class="col-md-6">
-                  <p>Number of problems:</p>
-                </div>
-                <div class="col-md-6">
-                  <input type="number" min="1" class="form-control" ngModel name="numberOfProblems" required>
-                </div>
+          <form #variableForm="ngForm" (ngSubmit)="onSubmit(variableForm.value)">
+            <br>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Number of problems:</p>
               </div>
-              <div class="row">
-                <div class="col-md-2">Variable(s)</div>
-                <div class="col-md-4">Dec. point</div>
-                <div class="col-md-3">Min</div>
-                <div class="col-md-3">Max</div>
+              <div class="col-md-6">
+                <input type="number" min="1" class="form-control" ngModel name="numberOfProblems" required>
               </div>
-              <div class="row" *ngFor="let v of variables" ngModelGroup="variables">
-                <div class="col-md-2">
-                  <p>{{v.name}}</p>
-                </div>
-                <div class="col-md-4">
-                  <input type="number" min="0" class="form-control" name="decPoint{{v.name}}" [(ngModel)] = "v.decPoint" required/>
-                </div>
-                <div class="col-md-3">
-                  <input type="number"  class="form-control" name="min{{v.name}}" [(ngModel)] = "v.min" required/>
-                </div>
-                <div class="col-md-3">
-                  <input type="number"  class="form-control" name="max{{v.name}}" [(ngModel)] = "v.max" required/>
-                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2">Variable(s)</div>
+              <div class="col-md-4">Dec. point</div>
+              <div class="col-md-3">Min</div>
+              <div class="col-md-3">Max</div>
+            </div>
+            <div class="row" *ngFor="let v of variables" ngModelGroup="variables">
+              <div class="col-md-2">
+                <p>{{v.name}}</p>
               </div>
-                <!-- additional requirements --><br><br>
-              <div class="row" id="parameterToSolveDiv" >
-                <div class="col-md-4">
-                  <label>Which variable to solve for?</label>
-                  <select [(ngModel)]="variableToSolve" class="form-control" name="variableToSolve">
-                    <option *ngFor="let variable of variables" [ngValue]="variable">
-                      {{variable.name}}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-md-5" *ngIf="variableToSolve">
-                  <label>Are answers with imaginary number ok?</label>
-                  <input  type="radio" name="imaginaryAnswer" [value]="false"  [(ngModel)]="canContainImaginary"> No
-                  <input  type="radio" name="imaginaryAnswer" [value]="true" [(ngModel)]="canContainImaginary"> Yes
-                </div>
-                <div class="col-md-3" *ngIf="variableToSolve">
-                  <label>Returned answer</label>
-                  <input  type="radio" name="meetParameterCondition" [value]="false" [(ngModel)]="meetParameterCondition"> All
-                  <input  type="radio" name="meetParameterCondition" [value]="true" [(ngModel)]="meetParameterCondition"> Positive
-                </div>
+              <div class="col-md-4">
+                <input type="number" min="0" class="form-control" name="decPoint{{v.name}}" [(ngModel)]="v.decPoint" [ngModelOptions]="{standalone: true}"
+                  required/>
               </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <br>
-                  <button id="generate" type="submit" class="btn btn-success" style="width: 100%" [disabled] = "!variableForm.form.valid">
-                    <i class="fa fa-paper-plane-o" aria-hidden="true"> Generate</i>
-                  </button>
-                  <br><br><br>
-                </div>
+              <div class="col-md-3">
+                <input type="number" class="form-control" min="{{v.name}}" max="{{v.min}}" [(ngModel)]="v.min" [ngModelOptions]="{standalone: true}"
+                  required/>
               </div>
+              <div class="col-md-3">
+                <input type="number" class="form-control" name="max{{v.name}}" [(ngModel)]="v.max" required/>
+              </div>
+            </div>
+            <!-- additional requirements -->
+            <br>
+            <br>
+            <div class="row" id="parameterToSolveDiv">
+              <div class="col-md-4">
+                <label>Which variable to solve for?</label>
+                <select [(ngModel)]="variableToSolve" class="form-control" name="variableToSolve" required>
+                  <option *ngFor="let variable of variables" [ngValue]="variable">
+                    {{variable.name}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-5" *ngIf="variableToSolve">
+                <label>Are answers with imaginary number ok?</label>
+                <input type="radio" name="imaginaryAnswer" [value]="false" [(ngModel)]="canContainImaginary"> No
+                <input type="radio" name="imaginaryAnswer" [value]="true" [(ngModel)]="canContainImaginary"> Yes
+              </div>
+              <div class="col-md-3" *ngIf="variableToSolve">
+                <label>Returned answer</label>
+                <input type="radio" name="meetParameterCondition" [value]="false" [(ngModel)]="meetParameterCondition"> All
+                <input type="radio" name="meetParameterCondition" [value]="true" [(ngModel)]="meetParameterCondition"> Positive
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <br>
+                <button id="generate" type="submit" class="btn btn-success" style="width: 100%" [disabled]="!variableForm.form.valid">
+                  <i class="fa fa-paper-plane-o" aria-hidden="true"> Generate</i>
+                </button>
+                <br>
+                <br>
+                <br>
+              </div>
+            </div>
           </form>
         </div>
       </div>
     </div>
-    <div class="col-md-6" *ngIf="generatedView">
+    <div class="col-md-6">
       <div *ngIf="isLoading">
         <img src="../assets/img/loadingGear.gif">
       </div>
-      <table>
-         <thead>
-           <tr>
-             <th  *ngFor="let v of variables">{{v.name}} </th>
-           </tr>
-         </thead>
-         <tbody *ngFor="let gc of generatedCombinations">
-           <tr>
-             <td *ngFor="let element of gc">{{element}}</td>
-           </tr>
-         </tbody>
-       </table> <br><br><br>
+      <table *ngIf="generatedView">
+        <thead>
+          <tr>
+            <th *ngFor="let v of variables">{{v.name}} </th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let gc of generatedCombinations">
+          <tr>
+            <td *ngFor="let element of gc">{{element}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <br>
+      <br>
     </div>
   </div>
 </div>
