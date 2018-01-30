@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Variable } from '../variable';
 import { GeneratorService } from '../services/generator.service';
+import * as _ from 'lodash';
 
 import './../../../node_modules/nerdamer/Solve.js';
 import './../../../node_modules/nerdamer/Algebra.js';
@@ -63,28 +64,29 @@ export class EquationComponent implements OnInit {
   onSubmit(formValue) {
 
     // this logic updates the variables array value using the data obtained from the form
-
-    this.generatedView = true;
-
+    this.generatedView = false;
     this.isLoading = true;
-    this.numberOfProblems = formValue.numberOfProblems;
-    if (this.variableToSolve) {
-      for (let i = 0; i < this.variables.length; i++) {
-        const currentVarObj = this.variables[i];
-        if (currentVarObj.name === this.variableToSolve.name) {
-          this.variables[i].solveForThisVariable = true;
-          this.variables[i].containsImaginary = this.canContainImaginary;
-          this.variables[i].answerMeetsAllSpecification = this.meetParameterCondition;
-        }
-      }
-      // this takes the variable to solve to the end of the array.
-      this.switchParameterToSolve(this.variables, this.variableToSolve);
-    }
-    const result = this._generatorService.solverDecisionTree(this.variables, this.numberOfProblems, this.equation);
-    this.generatedCombinations = result;
-    console.log(this.generatedCombinations);
+    _.delay(() => {
+      this.generatedView = true;
 
-    this.isLoading = false;
+      this.numberOfProblems = formValue.numberOfProblems;
+      if (this.variableToSolve) {
+        for (let i = 0; i < this.variables.length; i++) {
+          const currentVarObj = this.variables[i];
+          if (currentVarObj.name === this.variableToSolve.name) {
+            this.variables[i].solveForThisVariable = true;
+            this.variables[i].containsImaginary = this.canContainImaginary;
+            this.variables[i].answerMeetsAllSpecification = this.meetParameterCondition;
+          }
+        }
+        // this takes the variable to solve to the end of the array.
+        this.switchParameterToSolve(this.variables, this.variableToSolve);
+      }
+      const result = this._generatorService.solverDecisionTree(this.variables, this.numberOfProblems, this.equation);
+      this.generatedCombinations = result;
+      console.log(this.generatedCombinations);
+      this.isLoading = false;
+    }, 100);
   }
 
   switchParameterToSolve(variables: Variable[], variableToSolve: Variable): void {
