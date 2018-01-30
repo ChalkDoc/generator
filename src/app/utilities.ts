@@ -82,11 +82,11 @@ export function pullRandomValue(arr: any[]) {
   return arr.splice(index, 1)[0];
 }
 
-export function getVariableValuesCount({ min, max, decPoint }): number {
+function getVariableValuesCount({ min, max, decPoint }): number {
   return (max - min + 1) * 10 ** decPoint;
 }
 
-export function getVariablesValuesCount(variables: Variable[]): number {
+function getVariablesValuesCount(variables: Variable[]): number {
   return variables.reduce((acc, variableObj) =>
     acc * getVariableValuesCount(variableObj)
     , 1);
