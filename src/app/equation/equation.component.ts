@@ -33,6 +33,7 @@ export class EquationComponent implements OnInit {
   meetParameterCondition = false;
   generatedCombinations: any[] = [];
   numberOfProblems: number;
+  errorsView = false;
 
   constructor(private _generatorService: GeneratorService) { }
 
@@ -64,12 +65,16 @@ export class EquationComponent implements OnInit {
 
   onSubmit(formValue) {
 
-    // this logic updates the variables array value using the data obtained from the form
+    // this logic updates the variables array value using the data obtained from the for
     this.generatedView = false;
     this.isLoading = true;
     _.delay(() => {
-      this.generatedView = true;
-
+      for (let i = 0; i < this.variables.length - 1; i++) {
+        if (this.variables[i].min >= this.variables[i].max) {
+          this.isLoading = false;
+          return this.errorsView = true;
+        }
+      }
       this.numberOfProblems = formValue.value.numberOfProblems;
       if (this.variableToSolve) {
         for (let i = 0; i < this.variables.length; i++) {

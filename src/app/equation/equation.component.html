@@ -101,6 +101,9 @@
           </tr>
         </tbody>
       </table>
+      <div *ngIf="errorsView">
+        <p>Oops! One of your minimums was greater than one of your maximums! Check your inputs.</p>
+      </div>
       <br>
       <br>
       <br>
