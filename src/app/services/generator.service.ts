@@ -33,6 +33,7 @@ export class GeneratorService {
       const permutation = genRandomPermutation(variables);
       const unknownVariable = _.last(variables);
       const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables)[0];
+      debugger;
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
       const isNew = !isVariableInArray(permutation, result);
 
@@ -51,7 +52,6 @@ export class GeneratorService {
     const permutationsList = generatePermutations(variables);
     const unknownVariable = _.last(variables);
     const simplifiedEquation = simplifyEquation(equation, unknownVariable.name);
-    
     while (result.length < numberOfProblems && permutationsList.length > 0) {
       const permutation = pullRandomValue(permutationsList);
       const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables)[0];

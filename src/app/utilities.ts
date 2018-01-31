@@ -19,10 +19,7 @@ export function solveForUnknownVariable(randomSet: number[], simplifiedEquation:
     const answerArray: any[] = [];
     const variablesObject = createKnownValuesObject(randomSet, variables);
     const answer = nerdamer(simplifiedEquation, variablesObject);
-
-    const decimal = eval(nerdamer(answer).text());
-    answerArray.push(decimal);
-    return answerArray;
+    return eval(nerdamer(answer).text());
 }
 
 export function simplifyEquation(equation: string, variableToSolve: string): string {
