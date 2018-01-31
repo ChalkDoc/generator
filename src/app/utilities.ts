@@ -4,9 +4,9 @@ import * as _ from 'lodash';
 import * as nerdamer from 'nerdamer';
 
 
-export function containsImaginary(input: string): boolean {
-  return input.includes('i');
-}
+// export function containsImaginary(input: string): boolean {
+//   return input.includes('i');
+// }
 
 export function createKnownValuesObject(randomSet: number[], variables: Variable[]): { [name: string]: string } {
   const variableNamesArray = _.map(variables.slice(0, -1), 'name');
@@ -15,8 +15,7 @@ export function createKnownValuesObject(randomSet: number[], variables: Variable
   return _.zipObject(variableNamesArray, randomSet.map(_.toString));
 }
 
-export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
-    const answerArray: any[] = [];
+export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): number {
     const variablesObject = createKnownValuesObject(randomSet, variables);
     const answer = nerdamer(simplifiedEquation, variablesObject);
     return eval(nerdamer(answer).text());
@@ -56,12 +55,12 @@ export function generatePermutations(variables: Variable[]): number[] {
   return permutations;
 }
 
-export function meetsUnknownVariableSpecification(currentValue: string, unknownVariable: Variable): boolean {
-  const isImaginary = containsImaginary(currentValue) && unknownVariable.containsImaginary;
+export function meetsUnknownVariableSpecification(currentValue: number, unknownVariable: Variable): boolean {
+  // const isImaginary = containsImaginary(currentValue) && unknownVariable.containsImaginary;
   // this code will check for imaginary once that is implemented
-  if (isImaginary) {
-    return true;
-  }
+  // if (isImaginary) {
+  //   return true;
+  // }
   const numCurrentValue = Number(currentValue);
   const currentValueDecPoint = calculateDecimalPlaces(numCurrentValue);
   const hasNoDecPoint = unknownVariable.decPoint === 0 && _.isInteger(numCurrentValue);

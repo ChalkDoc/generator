@@ -12,7 +12,7 @@ import {
   getRangeValues,
   generatePermutations,
   meetsUnknownVariableSpecification,
-  containsImaginary,
+  // containsImaginary,
   pullRandomValue,
   getCollisionRisk,
   genRandomPermutation,
@@ -32,8 +32,7 @@ export class GeneratorService {
     while (result.length < numberOfProblems && invalidCounter < MAX_INVALID_COUNTER) {
       const permutation = genRandomPermutation(variables);
       const unknownVariable = _.last(variables);
-      const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables)[0];
-      debugger;
+      const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables);
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
       const isNew = !isVariableInArray(permutation, result);
 
@@ -54,7 +53,7 @@ export class GeneratorService {
     const simplifiedEquation = simplifyEquation(equation, unknownVariable.name);
     while (result.length < numberOfProblems && permutationsList.length > 0) {
       const permutation = pullRandomValue(permutationsList);
-      const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables)[0];
+      const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables);
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
 
       if (isValid) {
