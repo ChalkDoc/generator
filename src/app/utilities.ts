@@ -15,16 +15,14 @@ export function createKnownValuesObject(randomSet: number[], variables: Variable
   return _.zipObject(variableNamesArray, randomSet.map(_.toString));
 }
 
-export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): [string] {
-  const variableValuesObject = createKnownValuesObject(randomSet, variables);
-  const answer = nerdamer(simplifiedEquation, variableValuesObject);
-  const decimalAnswer = nerdamer(answer).text();
-  const decimalAnswerArray = decimalAnswer.match(/\[(.*)\]/); // https://regex101.com/r/Os8qsd/3
-  if (decimalAnswerArray) {
-    return [decimalAnswerArray[1]];
-  }
+export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
+    const answerArray: any[] = [];
+    const variablesObject = createKnownValuesObject(randomSet, variables);
+    const answer = nerdamer(simplifiedEquation, variablesObject);
 
-  return [''];
+    const decimal = eval(nerdamer(answer).text());
+    answerArray.push(decimal);
+    return answerArray;
 }
 
 export function simplifyEquation(equation: string, variableToSolve: string): string {

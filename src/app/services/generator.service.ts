@@ -51,7 +51,7 @@ export class GeneratorService {
     const permutationsList = generatePermutations(variables);
     const unknownVariable = _.last(variables);
     const simplifiedEquation = simplifyEquation(equation, unknownVariable.name);
-
+    
     while (result.length < numberOfProblems && permutationsList.length > 0) {
       const permutation = pullRandomValue(permutationsList);
       const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables)[0];
@@ -72,8 +72,10 @@ export class GeneratorService {
     const collisionRisk = getCollisionRisk(variables, numberOfProblems);
     numberOfProblems = Math.min(numberOfProblems, 500);
     if (collisionRisk > COLLISION_THRESHOLD) {
+      console.log('List');
       return this.generatePermutationsFromList(variables, numberOfProblems, equation);
     }
+    console.log('Random');
     return this.generatePermutationsByRandom(variables, numberOfProblems, equation);
   }
 
