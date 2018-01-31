@@ -93,6 +93,7 @@ export class EquationComponent implements OnInit {
       console.log(this.generatedCombinations);
       console.log(formValue);
       this.isLoading = false;
+      this.generatedView = true;
     }, 100);
   }
 
