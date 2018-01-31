@@ -46,7 +46,9 @@
               <div class="col-md-3">
                 <input type="number" class="form-control" name="max{{v.name}}" [(ngModel)]="v.max" min="{{v.min}}" required/>
               </div>
-              <div class="row"><p *ngIf="v.max<v.min">Max must be greater than min</p></div>
+              <div class="row">
+                <p *ngIf="v.max<v.min">Max must be greater than min</p>
+              </div>
             </div>
             <!-- additional requirements -->
             <br>

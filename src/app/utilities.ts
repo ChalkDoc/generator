@@ -10,23 +10,21 @@ export function containsImaginary(input: string): boolean {
 
 export function createKnownValuesObject(randomSet: number[], variables: Variable[]): { [name: string]: string } {
   const variableNamesArray = _.map(variables.slice(0, -1), 'name');
+  console.log(variableNamesArray);
+  console.log(randomSet.map(_.toString));
   return _.zipObject(variableNamesArray, randomSet.map(_.toString));
 }
 
-export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): any[] {
-  const answerArray: any[] = [];
+export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): [string] {
   const variableValuesObject = createKnownValuesObject(randomSet, variables);
   const answer = nerdamer(simplifiedEquation, variableValuesObject);
-  const decimalAnswer = nerdamer(answer).text('decimals');
-  const decimalAnswerArray: string[] = decimalAnswer.split(/[\[,\]]/);
-
-  for (let i = 0; i < decimalAnswerArray.length; i++) {
-    if (decimalAnswerArray[i] !== '') {
-      console.log(decimalAnswerArray[i]);
-      answerArray.push(decimalAnswerArray[i]);
-    }
+  const decimalAnswer = nerdamer(answer).text();
+  const decimalAnswerArray = decimalAnswer.match(/\[(.*)\]/); // https://regex101.com/r/Os8qsd/3
+  if (decimalAnswerArray) {
+    return [decimalAnswerArray[1]];
   }
-  return answerArray;
+
+  return [''];
 }
 
 export function simplifyEquation(equation: string, variableToSolve: string): string {

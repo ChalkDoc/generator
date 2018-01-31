@@ -20,14 +20,16 @@ import {
 } from './../utilities';
 
 const COLLISION_THRESHOLD = 0.9;
+const MAX_INVALID_COUNTER = 100;
 
 @Injectable()
 export class GeneratorService {
 
   generatePermutationsByRandom(variables: Variable[], numberOfProblems: number, equation: string): any[] {
     const result = [];
+    let invalidCounter = 0;
     const simplifiedEquation = simplifyEquation(equation, variables[variables.length - 1].name);
-    while (result.length < numberOfProblems) {
+    while (result.length < numberOfProblems && invalidCounter < MAX_INVALID_COUNTER) {
       const permutation = genRandomPermutation(variables);
       const unknownVariable = _.last(variables);
       const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables)[0];
@@ -35,7 +37,10 @@ export class GeneratorService {
       const isNew = !isVariableInArray(permutation, result);
 
       if (isValid && isNew) {
+        invalidCounter = 0;
         result.push([...permutation, [answer]]);
+      } else {
+        invalidCounter++;
       }
     }
     return result;
