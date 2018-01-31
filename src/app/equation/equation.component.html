@@ -2,9 +2,9 @@
 <br>
 <br>
 <div class="container">
-  <!-- <div *ngIf="error">
-    <h1>{{error}}</h1>
-  </div> -->
+  <div *ngIf="error">
+    <h1 class="text-danger">{{error}}</h1>
+  </div>
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
@@ -38,16 +38,18 @@
                 <p>{{v.name}}</p>
               </div>
               <div class="col-md-4">
-                <input type="number" min="0" class="form-control" name="decPoint{{v.name}}" [(ngModel)]="v.decPoint" required/>
+                <input type="number" class="form-control" name="decPoint{{v.name}}" #decPoint{{v.name}}='ngModel' [(ngModel)]="v.decPoint"
+                  required>
+                <p *ngIf="v.decPoint < 0" class="text-danger">Decimal point must be greater than 0.</p>
               </div>
               <div class="col-md-3">
-                <input type="number" class="form-control" name="min{{v.name}}" [(ngModel)]="v.min" max="{{v.max}}" required/>
+                <input type="number" class="form-control" name="min{{v.name}}" [(ngModel)]="v.min" max="{{v.max}}" required>
               </div>
               <div class="col-md-3">
-                <input type="number" class="form-control" name="max{{v.name}}" [(ngModel)]="v.max" min="{{v.min}}" required/>
+                <input type="number" class="form-control" name="max{{v.name}}" [(ngModel)]="v.max" min="{{v.min}}" required>
               </div>
               <div class="row">
-                <p *ngIf="v.max<v.min">Max must be greater than min</p>
+                <p *ngIf="v.max<v.min" class="text-danger">Max must be greater than min</p>
               </div>
             </div>
             <!-- additional requirements -->
