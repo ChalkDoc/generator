@@ -108,4 +108,20 @@ export class EquationComponent implements OnInit {
       }
     }
   }
+  //Determine if equation contains (> or <) sign
+  isInequalityEquation(string) {
+    if(string.includes(">") || string.includes("<")){
+      return true;
+    }
+    else return false;
+  }
+
+  changeEquation(equation){
+    equation = equation.replace('>' , '=').replace('<' , '=');
+    return equation;
+  }
+
+  returns
+
+
 }
