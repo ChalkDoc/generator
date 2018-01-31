@@ -5,12 +5,10 @@ import { GeneratorService } from '../services/generator.service';
 import * as _ from 'lodash';
 import * as nerdamer from 'nerdamer';
 
-import './../../../node_modules/nerdamer/Solve.js';
-import './../../../node_modules/nerdamer/Algebra.js';
-import './../../../node_modules/nerdamer/Calculus.js';
-import './../../../node_modules/nerdamer/Extra.js';
-
-
+import 'nerdamer/Solve';
+import 'nerdamer/Algebra';
+import 'nerdamer/Calculus';
+import 'nerdamer/Extra';
 
 declare var Guppy: any;   // declaring Guppy
 declare var GuppyOSK: any;
@@ -40,6 +38,8 @@ export class EquationComponent implements OnInit {
   ngOnInit() {
     Guppy.init_symbols(['/assets/symbols.json']);
     const guppy = new Guppy('equationBox');
+    // window.G = Guppy
+    // window.g = guppy
   }
 
   /* this is to get the content of the guppy box,
