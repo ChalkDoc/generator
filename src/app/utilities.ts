@@ -18,7 +18,10 @@ export function createKnownValuesObject(randomSet: number[], variables: Variable
 export function solveForUnknownVariable(randomSet: number[], simplifiedEquation: string, variables: Variable[]): number {
     const variablesObject = createKnownValuesObject(randomSet, variables);
     const answer = nerdamer(simplifiedEquation, variablesObject);
-    return eval(nerdamer(answer).text());
+    const nerdamerResult = nerdamer(answer).text();
+    const fraction = nerdamerResult.substring(1, nerdamerResult.length - 1);
+    const numbers = fraction.split('/');
+    return Number(numbers[0]) / Number(numbers[1]);
 }
 
 export function simplifyEquation(equation: string, variableToSolve: string): string {
