@@ -77,7 +77,7 @@ export function meetsUnknownVariableSpecification(currentValue: string, unknownV
   return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
 }
 
-export function pullRandomValue(arr: any[]): number[] {
+export function pullRandomValue(arr: any[]): number {
   const index: number = _.random(0, arr.length - 1);
   return arr.splice(index, 1)[0];
 }
