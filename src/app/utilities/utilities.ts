@@ -77,7 +77,7 @@ export function meetsUnknownVariableSpecification(currentValue: string, unknownV
   return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
 }
 
-export function pullRandomValue(arr: any[]) {
+export function pullRandomValue(arr: any[]): number[] {
   const index: number = _.random(0, arr.length - 1);
   return arr.splice(index, 1)[0];
 }
@@ -100,7 +100,7 @@ export function getCollisionRisk(variables, problems): number {
 
 
 export function genRandomPermutation(variables: Variable[]): number[] {
-  return variables.slice(0, -1).map((variableOji) => getRandomValue(variableOji));
+  return variables.slice(0, -1).map((variableObj) => getRandomValue(variableObj));
 }
 
 function getRandomValue({ min, max, decPoint }) {

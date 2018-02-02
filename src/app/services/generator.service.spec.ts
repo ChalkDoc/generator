@@ -12,7 +12,7 @@ import {
   containsImaginary,
   calculateDecimalPlaces,
   pullRandomValue
-} from './../utilities'
+} from './../utilities/utilities';
 import { Variable } from '../variable';
 
 describe('GeneratorService and all of its methods', () => {
