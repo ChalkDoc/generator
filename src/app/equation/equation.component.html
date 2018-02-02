@@ -1,11 +1,10 @@
 <br>
 <br>
 <br>
-<guppy-input></guppy-input>
 <div class="row">
   <div class="col-md-6">
     <div class="form-group">
-      <div *ngIf="parameterDiv">
+      <div *ngIf="childParameterDiv">
         <form #variableForm="ngForm" (ngSubmit)="onSubmit(variableForm)">
           <br>
           <br>
@@ -23,23 +22,23 @@
             <div class="col-md-3">Min</div>
             <div class="col-md-3">Max</div>
           </div>
-          <div class="row" *ngFor="let v of variables" ngModelGroup="variables">
+          <div class="row" *ngFor="let variable of childVariables" ngModelGroup="variables">
             <div class="col-md-2">
-              <p>{{v.name}}</p>
+              <p>{{variable.name}}</p>
             </div>
             <div class="col-md-4">
-              <input type="number" class="form-control" name="decPoint{{v.name}}" #decPoint{{v.name}}='ngModel' [(ngModel)]="v.decPoint"
+              <input type="number" class="form-control" name="decPoint{{variable.name}}" #decPoint{{variable.name}}='ngModel' [(ngModel)]="variable.decPoint"
                 required>
-              <p *ngIf="v.decPoint < 0" class="text-danger">Decimal point must be greater than 0.</p>
+              <p *ngIf="variable.decPoint < 0" class="text-danger">Decimal point must be greater than 0.</p>
             </div>
             <div class="col-md-3">
-              <input type="number" class="form-control" name="min{{v.name}}" [(ngModel)]="v.min" max="{{v.max}}" required>
+              <input type="number" class="form-control" name="min{{variable.name}}" [(ngModel)]="variable.min" max="{{variable.max}}" required>
             </div>
             <div class="col-md-3">
-              <input type="number" class="form-control" name="max{{v.name}}" [(ngModel)]="v.max" min="{{v.min}}" required>
+              <input type="number" class="form-control" name="max{{variable.name}}" [(ngModel)]="variable.max" min="{{variable.min}}" required>
             </div>
             <div class="row">
-              <p *ngIf="v.max<v.min" class="text-danger">Max must be greater than min</p>
+              <p *ngIf="variable.max<variable.min" class="text-danger">Max must be greater than min</p>
             </div>
           </div>
           <!-- additional requirements -->
@@ -49,7 +48,7 @@
             <div class="col-md-4">
               <label>Which variable to solve for?</label>
               <select [(ngModel)]="variableToSolve" class="form-control" name="variableToSolve" required>
-                <option *ngFor="let variable of variables" [ngValue]="variable">
+                <option *ngFor="let variable of childVariables" [ngValue]="variable">
                   {{variable.name}}
                 </option>
               </select>
@@ -87,7 +86,7 @@
     <table *ngIf="generatedView">
       <thead>
         <tr>
-          <th *ngFor="let v of variables">{{v.name}} </th>
+          <th *ngFor="let variable of childVariables">{{variable.name}} </th>
         </tr>
       </thead>
       <tbody *ngFor="let gc of generatedCombinations">

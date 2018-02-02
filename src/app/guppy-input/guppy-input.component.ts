@@ -17,9 +17,9 @@ declare var Guppy: any;
 })
 export class GuppyInputComponent implements OnInit {
   error: string;
-  parameterDiv = false;
-  variables: Variable[] = [];
-  equation: string;
+  guppyParameterDiv = false;
+  guppyVariables: Variable[] = [];
+  guppyEquation: string;
 
   constructor() {}
 
@@ -33,18 +33,19 @@ export class GuppyInputComponent implements OnInit {
   output() {
     try {
       this.error = "";
-      this.equation = Guppy.instances["equationBox"].backend.get_content(
+      this.guppyEquation = Guppy.instances["equationBox"].backend.get_content(
         "text"
       );
-      const extractedVars = nerdamer(this.equation).variables();
+      const extractedVars = nerdamer(this.guppyEquation).variables();
       /* creating variable instance and pushing each variable instance into the variables array*/
       for (let i = 0; i < extractedVars.length; i++) {
         const varName: string = extractedVars[i];
         const newVar = new Variable(varName);
-        this.variables.push(newVar);
+        this.guppyVariables.push(newVar);
       }
-      console.log(this.variables);
-      this.parameterDiv = true;
+      console.log(this.guppyVariables);
+      debugger;
+      this.guppyParameterDiv = true;
     } catch (e) {
       this.error = "Parsing error!" + e;
     }
