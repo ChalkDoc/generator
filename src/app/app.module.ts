@@ -7,11 +7,13 @@ import { AppComponent } from './app.component';
 
 import { HttpModule } from '@angular/http';
 import { EquationComponent } from './equation/equation.component';
+import { GuppyInputComponent } from './guppy-input/guppy-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EquationComponent
+    EquationComponent,
+    GuppyInputComponent
   ],
   imports: [
     BrowserModule,
