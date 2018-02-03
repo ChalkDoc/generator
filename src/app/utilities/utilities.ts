@@ -49,7 +49,7 @@ export function getRangeValues({ min, max, decPoint }) {
   return rangeValues;
 }
 
-export function generatePermutations(variables: Variable[]): number[] {
+export function generatePermutations(variables: Variable[]): [number[]] {
   const permutations = variables.slice(0, -1).reduce((possibleValues, parameter) => {
     const result = [];
     const rangeValues = getRangeValues(parameter);

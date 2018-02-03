@@ -75,10 +75,32 @@ describe('Utilities methods', () => {
       });
       it('should check getRangeValues when Variables contains > 0 decimals', () =>  {
         const newVariable: Variable = new Variable('q', 1, 1, 2);
-        expect(getRangeValues(newVariable)).toEqual([1.0, 1.1, 1.2,  1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]);
+        expect(getRangeValues(newVariable)).toEqual([1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]);
       });
     });
 
+    describe('generatePermutations', () => {
+      describe('Cases where parameters contain no decimals', () => {
+        const firstVariable: Variable = new Variable('p', 0, 1, 2);
+        const secondVariable: Variable = new Variable('z', 0, 3, 5);
+        const thirdVariable: Variable = new Variable('d', 0, 1, 2);
+        const variablesTestSet: Variable [] = [firstVariable, secondVariable, thirdVariable];
+        const generatedSet: [number []] = generatePermutations(variablesTestSet);
+        it('should generate permutations for cases where variables contain no decimals', () => {
+          expect(generatedSet).toEqual([[1, 3], [1, 4], [1, 5], [2, 3], [2, 4], [2, 5]]);
+        });
+        it('should check that generatePermutations returns [[]]', () => {
+          expect(generatedSet).toEqual(jasmine.any(Array));
+          expect(generatedSet[0]).toEqual(jasmine.any(Array));
+        });
+      });
+
+      describe('cases where parameters contain decimals', () => {
+        it('should test for cases where variables contain > 0 decimals', () => {
+
+        });
+      });
+    });
   });
 
 
