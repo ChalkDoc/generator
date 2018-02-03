@@ -21,12 +21,11 @@ declare var GuppyOSK: any;
 export class EquationComponent implements OnInit {
   @Input() childEquation: string;
   @Input() childParameterDiv: boolean;
-  @Input() childVariables: Variable[] = [];
+  @Input() childVariables: Variable[];
   generatedView = false;
   isLoading = false;
   variableToSolve: Variable = null;
   canContainImaginary = false;
-  meetParameterCondition = false;
   generatedCombinations: any[] = [];
   numberOfProblems: number;
   errorsView = false;
@@ -53,14 +52,10 @@ export class EquationComponent implements OnInit {
           if (currentVarObj.name === this.variableToSolve.name) {
             this.childVariables[i].solveForThisVariable = true;
             this.childVariables[i].containsImaginary = this.canContainImaginary;
-            this.childVariables[
-              i
-            ].answerMeetsAllSpecification = this.meetParameterCondition;
           }
         }
         // this takes the variable to solve to the end of the array.
         this.switchParameterToSolve(this.childVariables, this.variableToSolve);
-        debugger;
       }
       const result = this._generatorService.solverDecisionTree(
         this.childVariables,
