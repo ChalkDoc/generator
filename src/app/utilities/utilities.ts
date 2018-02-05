@@ -37,19 +37,19 @@ export function calculateDecimalPlaces(input: string | number): number {
   return inputArr.length === 1 ? 0 : inputArr[1].length;
 }
 
-export function getRangeValues({ min, max, decPoint }) {
+export function getRangeValues(variableObj: Variable ) {
   const rangeValues = [];
-  const increment = 10 ** -decPoint;
-  let number = min;
-  while (number <= max) {
-    rangeValues.push(_.round(number, decPoint));
+  const increment = 10 ** - variableObj.decPoint;
+  let number = variableObj.min;
+  while (number <= variableObj.max) {
+    rangeValues.push(_.round(number, variableObj.decPoint));
     number += increment;
   }
   return rangeValues;
 }
 
-export function generatePermutations(variables: Variable[]): any[] {
-  const permutations: any[] = variables.slice(0, -1).reduce((possibleValues, parameter) => {
+export function generatePermutations(variables: Variable[]): [number[]] {
+  const permutations: any = variables.slice(0, -1).reduce((possibleValues, parameter) => {
     const result = [];
     const rangeValues = getRangeValues(parameter);
     possibleValues.forEach(possibleValue => {
