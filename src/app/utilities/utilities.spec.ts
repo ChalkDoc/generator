@@ -10,12 +10,13 @@ import {
   toArray,
   generatePermutations,
   meetsUnknownVariableSpecification,
-  containsImaginary,
+  // containsImaginary,
   calculateDecimalPlaces,
   pullRandomValue,
   genRandomPermutation,
   getRangeValues,
-  isVariableInArray
+  isVariableInArray,
+  getRandomValue
 } from './utilities';
 import * as _ from 'lodash';
 import { Variable } from '../variable';
@@ -127,12 +128,17 @@ describe('Utilities methods', () => {
             const checkVariableIsInArray = isVariableInArray([3.4, 4.2, 5.9], [[3.4, 5.8, 6.8], [3.4, 4.2, 5.9]]);
             expect(checkVariableIsInArray).toBe(true);
           });
-        })
+        });
       });
 
 
       describe('getRandomValue', () => {
-        it('', )
+        it('should verify that getRandomValue lies between min and max', () => {
+          const firstVariable: Variable = new Variable('p', 0, 1, 4);
+          const randomValue = getRandomValue(firstVariable);
+          expect(randomValue).toBeGreaterThan(firstVariable.min);
+          expect(randomValue).not.toBeGreaterThan(firstVariable.max);
+        });
       })
 
 
