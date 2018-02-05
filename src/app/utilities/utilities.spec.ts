@@ -40,13 +40,13 @@ describe('Utilities methods', () => {
       expect(knownVarsObj).toEqual({[varObjA.name]: String(randomSet[0]), [varObjB.name]: String(randomSet[1]), [varObjC.name]: String(randomSet[2])});
     });
 
-    describe('solveForUnknownVariable ', () => {
-      it('should take a set of variables and reurn an equation in terms of the last variable in the set', () => {
-        const simplifiedEquation = simplifyEquation(equation, 'x');
-        const solvedForUnknownVariable = solveForUnknownVariable(randomSet, simplifiedEquation, variables);
+    // describe('solveForUnknownVariable ', () => {
+    //   it('should take a set of variables and reurn an equation in terms of the last variable in the set', () => {
+    //     const simplifiedEquation = simplifyEquation(equation, 'x');
+    //     const solvedForUnknownVariable = solveForUnknownVariable(randomSet, simplifiedEquation, variables);
 
-        expect(solvedForUnknownVariable).toEqual([ String(randomSet[0] * randomSet[1] + randomSet[2]]));
-    });
+    //     expect(solvedForUnknownVariable).toEqual([ String(randomSet[0] * randomSet[1] + randomSet[2]]));
+    // });
 
     // describe('simplifyEquation', () => {
     //   it('should return the equation in terms of variable being solved for', () => {
@@ -86,9 +86,11 @@ describe('Utilities methods', () => {
         const thirdVariable: Variable = new Variable('d', 0, 1, 2);
         const variablesTestSet: Variable [] = [firstVariable, secondVariable, thirdVariable];
         const generatedSet: [number []] = generatePermutations(variablesTestSet);
+
         it('should generate permutations for cases where variables contain no decimals', () => {
           expect(generatedSet).toEqual([[1, 3], [1, 4], [1, 5], [2, 3], [2, 4], [2, 5]]);
         });
+
         it('should check that generatePermutations returns [[]]', () => {
           expect(generatedSet).toEqual(jasmine.any(Array));
           expect(generatedSet[0]).toEqual(jasmine.any(Array));
@@ -103,29 +105,6 @@ describe('Utilities methods', () => {
     });
   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //   describe('The containsImaginary utility method', () => {
 //     it('should return false if input contains an "i" for imaginary', () => {
 //       const expression: string = 'x + y = z';
@@ -137,4 +116,4 @@ describe('Utilities methods', () => {
 //       expect(containsImaginary(imaginaryExpression)).toBe(true);
 //     });
 //   });
-// });
+ });

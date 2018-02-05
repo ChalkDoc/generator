@@ -49,8 +49,8 @@ export function getRangeValues({ min, max, decPoint }) {
   return rangeValues;
 }
 
-export function generatePermutations(variables: Variable[]): [number[]] {
-  const permutations: [number[]] = variables.slice(0, -1).reduce((possibleValues, parameter) => {
+export function generatePermutations(variables: Variable[]): any[] {
+  const permutations: any[] = variables.slice(0, -1).reduce((possibleValues, parameter) => {
     const result = [];
     const rangeValues = getRangeValues(parameter);
     possibleValues.forEach(possibleValue => {
@@ -77,7 +77,7 @@ export function meetsUnknownVariableSpecification(currentValue: string, unknownV
   return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
 }
 
-export function pullRandomValue(arr: any[]): number {
+export function pullRandomValue(arr: any[]): number[] {
   const index: number = _.random(0, arr.length - 1);
   return arr.splice(index, 1)[0];
 }

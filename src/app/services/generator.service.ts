@@ -47,7 +47,7 @@ export class GeneratorService {
     const unknownVariable = _.last(variables);
     const simplifiedEquation = simplifyEquation(equation, unknownVariable.name);
     while (result.length < numberOfProblems && permutationsList.length > 0) {
-      const permutation = pullRandomValue(permutationsList);
+      const permutation: number[] = pullRandomValue(permutationsList);
       const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables)[0];
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
 
