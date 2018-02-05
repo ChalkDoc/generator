@@ -102,8 +102,8 @@ export function genRandomPermutation(variables: Variable[]): number[] {
   return variables.slice(0, -1).map((variableObj) => getRandomValue(variableObj));
 }
 
-function getRandomValue(variable: Variable) {
-  return parseFloat(_.random(variable.min, variable.max, true).toFixed(variable.decPoint));
+export function getRandomValue(variableObj: Variable): number {
+  return parseFloat(_.random(variableObj.min, variableObj.max, true).toFixed(variableObj.decPoint));
 }
 
 export function isVariableInArray(knownVariableValues: number[], existingValues: any[]): boolean {
