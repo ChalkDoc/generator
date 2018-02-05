@@ -1,4 +1,4 @@
-import { Variable } from './variable';
+import { Variable } from './../variable';
 import { variable } from '@angular/compiler/src/output/output_ast';
 import * as _ from 'lodash';
 import * as nerdamer from 'nerdamer';
@@ -48,8 +48,8 @@ export function getRangeValues({ min, max, decPoint }) {
   return rangeValues;
 }
 
-export function generatePermutations(variables: Variable[]): number[] {
-  const permutations = variables.slice(0, -1).reduce((possibleValues, parameter) => {
+export function generatePermutations(variables: Variable[]): any[] {
+  const permutations: any[] = variables.slice(0, -1).reduce((possibleValues, parameter) => {
     const result = [];
     const rangeValues = getRangeValues(parameter);
     possibleValues.forEach(possibleValue => {
@@ -76,7 +76,7 @@ export function meetsUnknownVariableSpecification(currentValue: number, unknownV
   return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
 }
 
-export function pullRandomValue(arr: any[]) {
+export function pullRandomValue(arr: any[]): number[] {
   const index: number = _.random(0, arr.length - 1);
   return arr.splice(index, 1)[0];
 }
@@ -99,7 +99,7 @@ export function getCollisionRisk(variables, problems): number {
 
 
 export function genRandomPermutation(variables: Variable[]): number[] {
-  return variables.slice(0, -1).map((variableOji) => getRandomValue(variableOji));
+  return variables.slice(0, -1).map((variableObj) => getRandomValue(variableObj));
 }
 
 function getRandomValue({ min, max, decPoint }) {

@@ -12,7 +12,7 @@ import {
   containsImaginary,
   calculateDecimalPlaces,
   pullRandomValue
-} from './../utilities'
+} from './../utilities/utilities';
 import { Variable } from '../variable';
 
 describe('GeneratorService and all of its methods', () => {
@@ -28,7 +28,6 @@ describe('GeneratorService and all of its methods', () => {
       providers: [GeneratorService]
     });
   });
-
   it('should be created', inject([GeneratorService], (_gs: GeneratorService) => {
     expect(_gs).toEqual(_generatorService);
   }));
