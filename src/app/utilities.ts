@@ -19,9 +19,13 @@ export function solveForUnknownVariable(randomSet: number[], simplifiedEquation:
     const variablesObject = createKnownValuesObject(randomSet, variables);
     const answer = nerdamer(simplifiedEquation, variablesObject);
     const nerdamerResult = nerdamer(answer).text();
-    const fraction = nerdamerResult.substring(1, nerdamerResult.length - 1);
-    const numbers = fraction.split('/');
-    return Number(numbers[0]) / Number(numbers[1]);
+    if (variables[variables.length - 1].decPoint !== 0) {
+      const fraction = nerdamerResult.substring(1, nerdamerResult.length - 1);
+      const numbers = fraction.split('/');
+      return Number(numbers[0]) / Number(numbers[1]);
+    } else {
+      return Number(nerdamerResult.substring(1, nerdamerResult.length - 1));
+    }
 }
 
 export function simplifyEquation(equation: string, variableToSolve: string): string {
