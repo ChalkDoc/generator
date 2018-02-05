@@ -133,13 +133,19 @@ describe('Utilities methods', () => {
 
 
       describe('getRandomValue', () => {
-        it('should verify that getRandomValue lies between min and max', () => {
-          const firstVariable: Variable = new Variable('p', 0, 1, 4);
-          const randomValue = getRandomValue(firstVariable);
-          expect(randomValue).toBeGreaterThan(firstVariable.min);
-          expect(randomValue).not.toBeGreaterThan(firstVariable.max);
+        it('should verify that getRandomValue lies between min and max for non-decimal variables', () => {
+          const randomValue = getRandomValue(varObjA);
+          expect(randomValue).toBeGreaterThan(varObjA.min);
+          expect(randomValue).not.toBeGreaterThan(varObjA.max);
         });
-      })
+
+        it('should verify that getRandomValue lies between min and max for non-decimal variables', () => {
+          const varObj: Variable = new Variable('p', 1, 1.8, 4.7);
+          const randomValue = getRandomValue(varObj);
+          expect(randomValue).toBeGreaterThan(varObj.min);
+          expect(randomValue).not.toBeGreaterThan(varObj.max);
+        });
+      });
 
 
 
