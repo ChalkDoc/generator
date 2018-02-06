@@ -81,11 +81,11 @@ export function pullRandomValue(arr: any[]): number[] {
   return arr.splice(index, 1)[0];
 }
 
-function getVariableValuesCount({ min, max, decPoint }): number {
+export function getVariableValuesCount({ min, max, decPoint }): number {
   return (max - min + 1) * 10 ** decPoint;
 }
 
-function getVariablesValuesCount(variables: Variable[]): number {
+export function getVariablesValuesCount(variables: Variable[]): number {
   return variables.reduce((acc, variableObj) =>
     acc * getVariableValuesCount(variableObj)
     , 1);
@@ -93,7 +93,6 @@ function getVariablesValuesCount(variables: Variable[]): number {
 
 export function getCollisionRisk(variables, problems): number {
   const possibleValues = getVariablesValuesCount(variables);
-
   return 1 - Math.pow(Math.E, (-problems * (problems - 1) / (2 * possibleValues)));
 }
 
