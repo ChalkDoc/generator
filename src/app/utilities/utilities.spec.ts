@@ -143,7 +143,6 @@ describe('All Utilities methods', () => {
         });
       });
 
-
       describe('getRandomValue', () => {
         it('should verify that getRandomValue lies between min and max for non-decimal variables', () => {
           const randomValue = getRandomValue(varObjA);
@@ -195,7 +194,7 @@ describe('All Utilities methods', () => {
         });
       });
 
-      describe('', () => {
+      describe('getVariablesValuesCount', () => {
         const intVarValuesCount = getVariablesValuesCount(variables);
         const varCountA = getVariableValuesCount(varObjA);
         const varCountB = getVariableValuesCount(varObjB);
@@ -209,22 +208,22 @@ describe('All Utilities methods', () => {
         const varCountK = getVariableValuesCount(decVarObjK);
 
 
-        describe('getVariablesValuesCount', () => {
+        describe('getVariablesValuesCount for Non-decimal cases', () => {
           it('should check Non-decimal cases and return an integer count of number of variables', () => {
             expect(intVarValuesCount).toEqual(varCountA * varCountB * varCountC * varCountX);
           });
-  
-          it('should check Decimal cases and return an integer count of number of variables', () => {
+
+          it('getVariablesValuesCount should check Decimal cases and return an integer count of number of variables', () => {
             expect(decVarValuesCount).toEqual(varCountH * varCountI * varCountJ  * varCountK);
           });
         });
-  
+
         describe('getVariableValuesCount', () => {
           it('should check non-decimal Variables ', () => {
-            expect(varCountA).toEqual(varObjA.max - varObjA.min +1);
-            expect(varCountB).toEqual(varObjB.max - varObjB.min +1);
-            expect(varCountC).toEqual(varObjC.max - varObjC.min +1);
-            expect(varCountX).toEqual(varObjX.max - varObjX.min +1);
+            expect(varCountA).toEqual(varObjA.max - varObjA.min + 1);
+            expect(varCountB).toEqual(varObjB.max - varObjB.min + 1);
+            expect(varCountC).toEqual(varObjC.max - varObjC.min + 1);
+            expect(varCountX).toEqual(varObjX.max - varObjX.min + 1);
           });
 
           it('should check Decimal Variables cases', () => {
@@ -268,9 +267,24 @@ describe('All Utilities methods', () => {
 
       describe('meetsUnknownVariableSpecification', () => {
 
+        describe('Non-decimal Cases', () => {
+          it('should Verify that a non-decimal value meets parameters of a Variable', () => {
+            expect(meetsUnknownVariableSpecification(6, varObjA)).toBe(true);
+          });
+          it('should Verify that a non-decimal value meets parameters of a Variable', () => {
+            expect(meetsUnknownVariableSpecification(21, varObjA)).toBe(false);
+          });
+        });
+
+        describe('Decimal Cases', () => {
+          it('should check if a non-decimal value does not meet parameters of a Variable', () => {
+            expect(meetsUnknownVariableSpecification(6.5, decVarObjH)).toBe(true);
+          });
+          it('should check if a Decimal value does not meet parameters of a Variable', () => {
+            expect(meetsUnknownVariableSpecification(26.5, decVarObjH)).toBe(false);
+          });
+        });
       });
-
-
     });
   });
 
