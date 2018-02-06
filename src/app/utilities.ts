@@ -1,7 +1,7 @@
-import { Variable } from "./variable";
-import { variable } from "@angular/compiler/src/output/output_ast";
-import * as _ from "lodash";
-import * as nerdamer from "nerdamer";
+import { Variable } from './variable';
+import { variable } from '@angular/compiler/src/output/output_ast';
+import * as _ from 'lodash';
+import * as nerdamer from 'nerdamer';
 
 // export function containsImaginary(input: string): boolean {
 //   return input.includes('i');
@@ -11,7 +11,7 @@ export function createKnownValuesObject(
   randomSet: number[],
   variables: Variable[]
 ): { [name: string]: string } {
-  const variableNamesArray = _.map(variables.slice(0, -1), "name");
+  const variableNamesArray = _.map(variables.slice(0, -1), 'name');
   return _.zipObject(variableNamesArray, randomSet.map(_.toString));
 }
 
@@ -22,14 +22,14 @@ export function solveForUnknownVariable(
 ): number {
   const variablesObject = createKnownValuesObject(randomSet, variables);
   const answer = nerdamer(simplifiedEquation, variablesObject);
-  const decimalAnswer = nerdamer(answer).text();
-  const decimalAnswerArray = decimalAnswer.match(/\[(.*)\]/); // https://regex101.com/r/Os8qsd/3
-  debugger;
-  if (decimalAnswerArray) {
-    return [decimalAnswerArray[1]];
+  const nerdamerResult = nerdamer(answer).text();
+  if (variables[variables.length - 1].decPoint !== 0) {
+    const fraction = nerdamerResult.substring(1, nerdamerResult.length - 1);
+    const numbers = fraction.split('/');
+    return Number(numbers[0]) / Number(numbers[1]);
+  } else {
+    return Number(nerdamerResult.substring(1, nerdamerResult.length - 1));
   }
-
-  return [""];
 }
 
 export function simplifyEquation(
@@ -40,7 +40,7 @@ export function simplifyEquation(
 }
 
 export function calculateDecimalPlaces(input: string | number): number {
-  const inputArr = `${input}`.split(".");
+  const inputArr = `${input}`.split('.');
   return inputArr.length === 1 ? 0 : inputArr[1].length;
 }
 
