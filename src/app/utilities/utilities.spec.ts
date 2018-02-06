@@ -219,7 +219,7 @@ describe('All Utilities methods', () => {
         });
 
         describe('getVariableValuesCount', () => {
-          it('should check non-decimal Variables ', () => {
+          it('should check non-decimal Variables cases', () => {
             expect(varCountA).toEqual(varObjA.max - varObjA.min + 1);
             expect(varCountB).toEqual(varObjB.max - varObjB.min + 1);
             expect(varCountC).toEqual(varObjC.max - varObjC.min + 1);
