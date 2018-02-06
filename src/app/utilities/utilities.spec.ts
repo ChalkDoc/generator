@@ -195,29 +195,45 @@ describe('Utilities methods', () => {
         });
       });
 
-      describe('getVariablesValuesCount', () => {
-        it('should check for Non-decimal cases and return an integer count of number of variables', () => {
-          const variablesValuesCount = getVariablesValuesCount(variables);
-          const varCountA = getVariableValuesCount(varObjA);
-          const varCountB = getVariableValuesCount(varObjB);
-          const varCountC = getVariableValuesCount(varObjC);
-          const varCountX = getVariableValuesCount(varObjX);
+      describe('', () => {
+        const intVarValuesCount = getVariablesValuesCount(variables);
+        const varCountA = getVariableValuesCount(varObjA);
+        const varCountB = getVariableValuesCount(varObjB);
+        const varCountC = getVariableValuesCount(varObjC);
+        const varCountX = getVariableValuesCount(varObjX);
 
-          expect(variablesValuesCount).toEqual(varCountA * varCountB * varCountC * varCountX);
+        const decVarValuesCount = getVariablesValuesCount(decVariables);
+        const varCountH = getVariableValuesCount(decVarObjH);
+        const varCountI = getVariableValuesCount(decVarObjI);
+        const varCountJ = getVariableValuesCount(decVarObjJ);
+        const varCountK = getVariableValuesCount(decVarObjK);
+
+
+        describe('getVariablesValuesCount', () => {
+          it('should check Non-decimal cases and return an integer count of number of variables', () => {
+            expect(intVarValuesCount).toEqual(varCountA * varCountB * varCountC * varCountX);
+          });
+  
+          it('should check Decimal cases and return an integer count of number of variables', () => {
+            expect(decVarValuesCount).toEqual(varCountH * varCountI * varCountJ  * varCountK);
+          });
         });
+  
+        describe('getVariableValuesCount', () => {
+          it('should check non-decimal Variables ', () => {
+            expect(varCountA).toEqual(varObjA.max - varObjA.min +1);
+            expect(varCountB).toEqual(varObjB.max - varObjB.min +1);
+            expect(varCountC).toEqual(varObjC.max - varObjC.min +1);
+            expect(varCountX).toEqual(varObjX.max - varObjX.min +1);
+          });
 
-        it('should check for Decimal cases and return an integer count of number of variables', () => {
-          const variablesValuesCount = getVariablesValuesCount(decVariables);
-          const varCountH = getVariableValuesCount(decVarObjH);
-          const varCountI = getVariableValuesCount(decVarObjI);
-          const varCountJ = getVariableValuesCount(decVarObjJ);
-          const varCountK = getVariableValuesCount(decVarObjK);
-          expect(variablesValuesCount).toEqual(varCountH * varCountI * varCountJ  * varCountK);
-        }):
-      });
-
-      describe('getVariableValuesCount', () => {
-
+          it('should check Decimal Variables cases', () => {
+            expect(varCountH).toEqual((decVarObjH.max - decVarObjH.min + 1) * 10 ** decVarObjH.decPoint);
+            expect(varCountI).toEqual((decVarObjI.max - decVarObjI.min + 1) * 10 ** decVarObjH.decPoint);
+            expect(varCountJ).toEqual((decVarObjJ.max - decVarObjJ.min + 1) * 10 ** decVarObjJ.decPoint);
+            expect(varCountK).toEqual((decVarObjK.max - decVarObjK.min + 1) * 10 ** decVarObjH.decPoint);
+          });
+        });
       });
 
       describe('pullRandomValue', () => {
