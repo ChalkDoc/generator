@@ -26,7 +26,7 @@ import { Variable } from '../variable';
 import { randomBytes } from 'crypto';
 import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 
-describe('Utilities methods', () => {
+describe('All Utilities methods', () => {
   const varObjA = new Variable('a', 0, _.random(0, 5, false), _.random(15, 20, false));
   const varObjB = new Variable('b', 0, _.random(0, 5, false), _.random(15, 20, false));
   const varObjC = new Variable('c', 0, _.random(0, 5, false), _.random(15, 20, false));
@@ -147,13 +147,13 @@ describe('Utilities methods', () => {
       describe('getRandomValue', () => {
         it('should verify that getRandomValue lies between min and max for non-decimal variables', () => {
           const randomValue = getRandomValue(varObjA);
-          expect(randomValue).toBeGreaterThan(varObjA.min);
+          expect(randomValue).toBeGreaterThanOrEqual(varObjA.min);
           expect(randomValue).not.toBeGreaterThan(varObjA.max);
         });
 
         it('should verify that getRandomValue lies between min and max for non-decimal variables', () => {
           const randomValue = getRandomValue(decVarObjH);
-          expect(randomValue).toBeGreaterThan(decVarObjH.min);
+          expect(randomValue).toBeGreaterThanOrEqual(decVarObjH.min);
           expect(randomValue).not.toBeGreaterThan(decVarObjH.max);
         });
       });
@@ -237,11 +237,37 @@ describe('Utilities methods', () => {
       });
 
       describe('pullRandomValue', () => {
+        const testSet = [ [1, 2], [2, 4], [7, 4], [9, 9] ];
+        const refTestSet = testSet.slice();
+        const splicedPermutation = pullRandomValue(testSet);
 
+        const decTestSet = [ [1.1, 3.3], [2.4], [4.9] ];
+        const decRefTestSet = decTestSet.slice();
+        const decSplicedPermutation = pullRandomValue(decTestSet);
+
+        it('should check that a permutation is removed from a set of possible permutations', () => {
+
+          const permutationIncluded = testSet.includes(splicedPermutation);
+          expect(permutationIncluded).toBe(false);
+        });
+        it('', () => {
+          const randomValIncluded = refTestSet.includes(splicedPermutation)
+          expect(randomValIncluded).toBe(true);
+        });
+
+        it('should check that the random set that is spliced is present in a copy of the original array', () => {
+          const permutationIncluded = decTestSet.includes(splicedPermutation);
+          expect(permutationIncluded).toBe(false);
+        });
+
+        it('should check that the random set that is spliced is present in a copy of the original array', () => {
+          const randomValIncluded = decRefTestSet.includes(decSplicedPermutation)
+          expect(randomValIncluded).toBe(true);
+        });
       });
 
       describe('meetsUnknownVariableSpecification', () => {
-        
+
       });
 
 
