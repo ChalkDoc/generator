@@ -68,6 +68,36 @@ describe('All Utilities methods', () => {
         const simplifiedEquation = simplifyEquation(equation, 'b');
         expect(simplifiedEquation).toEqual('[-(-x+c)*a^(-1)]');
       });
+
+      it('should return "[-a]" when calling simplifyEquation(equation, variableToSolve)', () => {
+        const notSimplifiedEquation = 'x + a = 0';
+        const variableToSolve: Variable = new Variable('x', 0, 10, 16);
+        const simplifiedEquation: string = simplifyEquation(notSimplifiedEquation, variableToSolve.name);
+        expect(simplifiedEquation.toString()).toBe('[-a]');
+      });
+      it('should return "[sqrt(-a), -sqrt(-a)]" when calling simplifyEquation(equation, variableToSolve)', () => {
+        const squaredEquation = 'x^2 + a = 0';
+        const variableToSolve: Variable = new Variable('x', 0, 0, 0);
+
+        const simplifiedEquation: string = simplifyEquation(squaredEquation, variableToSolve.name);
+        expect(simplifiedEquation.toString()).toBe('[sqrt(-a),-sqrt(-a)]');
+      });
+      it('should return "[(-220328269/832788672)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((-138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3)]" when calling simplifyEquation(equation, variableToSolve)', () => {
+        const equation = 'x^3 + a = 0';
+        const variableToSolve: Variable = new Variable('x', 0, 0, 0);
+
+        const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
+        expect(simplifiedEquation.toString()).toBe('[(-220328269/832788672)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3),(220328269/1665577344)*((-138907099/80198051)*i+1)*(27*a+27*abs(a))^(1/3)]');
+      });
+
+      it('should return "[(1/2)*(-b+sqrt(-4*a*c+b^2))*a^(-1),(1/2)*(-b-sqrt(-4*a*c+b^2))*a^(-1)]" when calling simplifyEquation(equation, variableToSolve) testing cases for quadratic equations', () => {
+        const equation = 'a*x^2 + b*x + c = 0';
+        const variableToSolve: Variable = new Variable('x', 0, 0, 0);
+    
+        const simplifiedEquation: string = simplifyEquation(equation, variableToSolve.name);
+        expect(simplifiedEquation.toString()).toBe('[(1/2)*(-b+sqrt(-4*a*c+b^2))*a^(-1),(1/2)*(-b-sqrt(-4*a*c+b^2))*a^(-1)]');
+      });
+
     });
 
     describe('calculateDecimalPlaces', () => {
@@ -76,10 +106,23 @@ describe('All Utilities methods', () => {
         const calculatedDecimal: number = calculateDecimalPlaces(stringAsParameter);
         expect(calculatedDecimal).toBe(5);
       });
-      it('checks the value returned by calculateDecimalPlaces when a string is given as parameter', () => {
+
+      it('checks the value returned by calculateDecimalPlaces when a number with decimals is given as parameter', () => {
         const numberAsParameter: number = 4.49854;
         const calculatedDecimal: number = calculateDecimalPlaces(numberAsParameter);
         expect(calculatedDecimal).toBe(5);
+      });
+
+      it('checks the value returned by calculateDecimalPlaces when a number without decimals is given as parameter', () => {
+        const numberAsParameter: number = 4;
+        const calculatedDecimal: number = calculateDecimalPlaces(numberAsParameter);
+        expect(calculatedDecimal).toBe(0);
+      });
+
+      it('checks the value returned by calculateDecimalPlaces when a string is given as parameter', () => {
+        const numberAsParameter: string = '4';
+        const calculatedDecimal: number = calculateDecimalPlaces(numberAsParameter);
+        expect(calculatedDecimal).toBe(0);
       });
     });
 
@@ -105,7 +148,13 @@ describe('All Utilities methods', () => {
         it('should generate permutations for cases where variables contain no decimals', () => {
           expect(generatedSet).toEqual([[1, 3], [1, 4], [1, 5], [2, 3], [2, 4], [2, 5]]);
         });
+        it('should check that the generated set contains [1,5] when calling generatePermutations', () => {
+          expect(generatedSet).toContain([1, 5]);
+        });
 
+        it('should check the length of the array of permutations generated', () => {
+          expect(generatedSet.length).toEqual(6);
+        });
         it('should check that generatePermutations returns [[]]', () => {
           expect(generatedSet).toEqual(jasmine.any(Array));
           expect(generatedSet[0]).toEqual(jasmine.any(Array));
@@ -249,8 +298,8 @@ describe('All Utilities methods', () => {
           const permutationIncluded = testSet.includes(splicedPermutation);
           expect(permutationIncluded).toBe(false);
         });
-        it('', () => {
-          const randomValIncluded = refTestSet.includes(splicedPermutation)
+        it('should verify that a permutation is present in a copy of the original array', () => {
+          const randomValIncluded = refTestSet.includes(splicedPermutation);
           expect(randomValIncluded).toBe(true);
         });
 
@@ -287,31 +336,4 @@ describe('All Utilities methods', () => {
       });
     });
   });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//   describe('The containsImaginary utility method', () => {
-//     it('should return false if input contains an "i" for imaginary', () => {
-//       const expression: string = 'x + y = z';
-//       expect(containsImaginary(expression)).toBe(false);
-//     });
-
-//     it('should return true if expression contains "i"', () => {
-//       const imaginaryExpression: string = '3i + 4x = z';
-//       expect(containsImaginary(imaginaryExpression)).toBe(true);
-//     });
-//   });
- });
 });
