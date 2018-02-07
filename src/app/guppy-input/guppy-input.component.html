@@ -10,14 +10,17 @@
       <div class="form-group">
         <div class="input-group">
           <div class="form-control" id={{equation}}></div>
-          <button class="btn btn-danger" (click)="output()">
-            <i class="fa fa-sign-in" aria-hidden="true"> Proceed</i>
+          <button class="btn btn-danger" (click)="removeGuppyBox(equation)" *ngIf="equationIds.length > 1">
+            <i class="fa fa-times" aria-hidden="true"></i>
           </button>
-          <button (click)="addGuppyBox()" type="button" class="btn btn-success">Add Guppy Box</button>
         </div>
         <h6>Type an Equation/Expression click proceed.</h6>
       </div>
     </div>
   </div>
 </div>
+<button class="btn btn-danger" (click)="output()">
+  <i class="fa fa-sign-in" aria-hidden="true"> Proceed</i>
+</button>
+<button (click)="addGuppyBox()" type="button" class="btn btn-success">Add Guppy Box</button>
 <app-equation [childEquation]="guppyEquation" [childParameterDiv]="guppyParameterDiv" [childVariables]="guppyVariables"></app-equation>

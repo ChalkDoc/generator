@@ -25,6 +25,7 @@ export class GuppyInputComponent implements AfterViewChecked {
 
   constructor() {
     this.equationIds = [];
+    console.log(this.equationIds.length);
     Guppy.init_symbols(['/assets/symbols.json']);
     this.addGuppyBox();
   }
@@ -79,5 +80,9 @@ export class GuppyInputComponent implements AfterViewChecked {
   addGuppyBox() {
     const guppy = _.uniqueId('equationBox_');
     this.equationIds.push(guppy);
+  }
+
+  removeGuppyBox(equation: string) {
+    _.pull(this.equationIds, equation);
   }
 }
