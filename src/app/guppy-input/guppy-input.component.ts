@@ -73,7 +73,8 @@ export class GuppyInputComponent implements AfterViewChecked {
       console.log(this.guppyVariables, 'guppy');
       this.guppyParameterDiv = true;
     } catch (e) {
-      this.error = 'Parsing error!' + e;
+      this.error =
+        'Unable to handle that equation at this time. Sorry for the inconvenience.';
     }
   }
 

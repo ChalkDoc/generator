@@ -33,7 +33,7 @@ export function solveForUnknownVariable(
 }
 
 export function simplifyEquation(
-  equation: string,
+  equation: string[],
   variableToSolve: string
 ): string {
   return (nerdamer as any).solve(equation, variableToSolve).toString();

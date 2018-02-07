@@ -28,7 +28,7 @@ export class GeneratorService {
     const result = [];
     let invalidCounter = 0;
     const simplifiedEquation = simplifyEquation(
-      equation[0],
+      equation,
       variables[variables.length - 1].name
     );
     while (
@@ -66,10 +66,7 @@ export class GeneratorService {
     const result = [];
     const permutationsList = generatePermutations(variables);
     const unknownVariable = _.last(variables);
-    const simplifiedEquation = simplifyEquation(
-      equation[0],
-      unknownVariable.name
-    );
+    const simplifiedEquation = simplifyEquation(equation, unknownVariable.name);
     while (result.length < numberOfProblems && permutationsList.length > 0) {
       const permutation = pullRandomValue(permutationsList);
       const answer = solveForUnknownVariable(
