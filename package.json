@@ -8,7 +8,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   },
   "private": true,
   "dependencies": {
@@ -38,6 +40,7 @@
     "@types/jasmine": "^2.5.54",
     "@types/jasminewd2": "~2.0.2",
     "@types/jquery": "^3.2.16",
+    "all-contributors-cli": "^4.10.1",
     "codelyzer": "^4.0.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
