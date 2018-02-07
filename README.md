@@ -1,6 +1,8 @@
 # Generator
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.5.
+Angular application that allows the user to enter an equation, set parameters for variables (decimal point, minimum value, maximum value), choose the variable to sovle for, number of problems desired and then displays a table of values for each variable.
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.0.
 
 <img align="left" src="https://www.excitor.com/sites/default/files/Document-Icon-small_3.png" /><br><br><br>
 
@@ -22,7 +24,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Running unit tests
+## Running Unit Tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
@@ -61,31 +63,41 @@ followed by
 ```
 npm install --save-dev @angular/cli@latest
 ```
-## Technologies used
-* Angular cli
-* Savascript
-* Typescript
-* Jasmine
-* Bower
-* npm
-* Node Js
-* Karma
-* Guppy WYSIWYG editor
-* jQuery
-* Bootstrap 4
-* Nerdamer math library
+## Technologies Used
+* [Angular CLI](https://cli.angular.io/)
+* [JavaScript](https://www.javascript.com/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [Jasmine](https://jasmine.github.io/)
+* [Bower](https://bower.io/)
+* [npm](https://www.npmjs.com/)
+* [Node Js](https://nodejs.org/en/)
+* [Karma](https://karma-runner.github.io/2.0/index.html)
+* [Guppy](https://www.npmjs.com/package/guppymath)
+* [Bootstrap 4](https://v4-alpha.getbootstrap.com/)
+* [Nerdamer](http://nerdamer.com/)
+* [Lodash](https://lodash.com/)
 
-## Further Work:
-* Handling decimal Answer
-* Writing more unit test to include as many test cases as possible.
-* Error handling for user inputs
-* Refactoring existing code for better performance
+## Notes
 
-## Bugs
+* We used [hash collision probailities](http://preshing.com/20110504/hash-collision-probabilities/) in order to determine how the program should obtain possible variable values.
+* Right now the guppy icons are commented out(assets/scripts/guppy.min.js line 1128). We are currently using version 1.1. May want to consider using newer version in the future.
 
-* No known Bugs
 
-## Further help
+## Future Work:
+* Add integration tests.
+* Taking in additional parameters.
+* Supporting other inputs (ex. system of equations).
+* Displaying output to user specification(LaTeX).
+* Specify what the answer should look like (ex. pair, number, simplified equations)
+* Include multiple choice functionality.
+
+## Known Bugs
+
+* User can enter negative number for number of problems.
+* Can't take all equations (-x^2 = y)
+* In generator.service.ts max invalid counter is set to a hard coded number, however needs to be dynamic or else the results are restrictive.
+
+## Further Help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
