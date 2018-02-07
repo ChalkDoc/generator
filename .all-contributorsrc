@@ -13,10 +13,54 @@
       "avatar_url": "https://avatars1.githubusercontent.com/u/20192033?v=4",
       "profile": "https://github.com/ElreyB",
       "contributions": [
-        "docs",
+        "doc",
         "code",
-        "bug",
-        "doc"
+        "bug"
+      ]
+    },
+    {
+      "login": "mwlong23",
+      "name": "Mitch Long",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/30602856?v=4",
+      "profile": "https://github.com/mwlong23",
+      "contributions": [
+        "test",
+        "code",
+        "doc",
+        "bug"
+      ]
+    },
+    {
+      "login": "kristenmarie",
+      "name": "Kristen Marie Kulha",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/15882954?v=4",
+      "profile": "https://github.com/kristenmarie",
+      "contributions": [
+        "code",
+        "doc",
+        "bug"
+      ]
+    },
+    {
+      "login": "kayschulze",
+      "name": "Kim Schulze",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/22184995?v=4",
+      "profile": "https://github.com/kayschulze",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "mwoldemedihin",
+      "name": "mwoldemedihin",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/21222181?v=4",
+      "profile": "https://github.com/mwoldemedihin",
+      "contributions": [
+        "doc",
+        "code",
+        "test",
+        "design"
       ]
     }
   ]
