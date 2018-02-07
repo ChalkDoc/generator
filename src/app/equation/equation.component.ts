@@ -36,7 +36,7 @@ export class EquationComponent implements OnInit {
   ngOnInit() {}
 
   onSubmit(formValue) {
-    // this logic updates the variables array value using the data obtained from the for
+    // this logic updates the variables array value using the data obtained from the form
     this.generatedView = false;
     this.isLoading = true;
     _.delay(() => {
@@ -58,7 +58,7 @@ export class EquationComponent implements OnInit {
             ].answerMeetsAllSpecification = this.meetParameterCondition;
           }
         }
-        // this takes the variable to solve to the end of the array.
+        // this moves the variable to solve to the end of the array.
         this.switchParameterToSolve(this.childVariables, this.variableToSolve);
       }
       const result = this._generatorService.solverDecisionTree(

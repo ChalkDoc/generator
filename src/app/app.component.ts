@@ -18,9 +18,6 @@ export class AppComponent implements OnInit {
   title = 'app';
   constructor(private _generatorService: GeneratorService) {}
 
-  ngOnInit() {
-    // let valuesArray = this._generatorService.findValues('x^3 + x^2 + 5=-25', 'x', 2);
-    // console.log(valuesArray);
-  }
+  ngOnInit() {}
 
 }

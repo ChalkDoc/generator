@@ -3,11 +3,6 @@ import { NgForm } from '@angular/forms';
 import { Variable } from '../variable';
 import * as nerdamer from 'nerdamer';
 
-// import 'nerdamer/Solve';
-// import 'nerdamer/Algebra';
-// import 'nerdamer/Calculus';
-// import 'nerdamer/Extra';
-
 declare var Guppy: any;
 
 @Component({
@@ -28,8 +23,7 @@ export class GuppyInputComponent implements OnInit {
     const guppy = new Guppy('equationBox');
   }
 
-  /* this is to get the content of the guppy box,
-    it also converts the mathematical equation/expression into the desired format type(latex, asciimath, text, ast, eqns, function, xml)*/
+  /* this is to get the content of the guppy box*/
   output() {
     try {
       this.error = '';
