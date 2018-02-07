@@ -15,24 +15,28 @@
           </div>
           <div class="row">
             <div class="col-md-2">Variable(s)</div>
-            <div class="col-md-4">Dec. point</div>
-            <div class="col-md-3">Min</div>
-            <div class="col-md-3">Max</div>
+            <div class="col-md-2">Dec. point</div>
+            <div class="col-md-2">Min</div>
+            <div class="col-md-2">Max</div>
+            <div class="col-md-2">Coef?</div>
           </div>
           <div class="row" *ngFor="let variable of childVariables" ngModelGroup="variables">
             <div class="col-md-2">
               <p>{{variable.name}}</p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
               <input type="number" class="form-control" name="decPoint{{variable.name}}" #decPoint{{variable.name}}='ngModel' [(ngModel)]="variable.decPoint"
                 required>
               <p *ngIf="variable.decPoint < 0" class="text-danger">Decimal point must be greater than 0.</p>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <input type="number" class="form-control" name="min{{variable.name}}" [(ngModel)]="variable.min" max="{{variable.max}}" required>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <input type="number" class="form-control" name="max{{variable.name}}" [(ngModel)]="variable.max" min="{{variable.min}}" required>
+            </div>
+            <div class="col-md-2">
+                <input type="checkbox" [checked]="variable.isCoef" (change)="variable.isCoef = !variable.isCoef" [(ngModel)]="variable.isCoef" >
             </div>
             <div class="row">
               <p *ngIf="variable.max<variable.min" class="text-danger">Max must be greater than min</p>
