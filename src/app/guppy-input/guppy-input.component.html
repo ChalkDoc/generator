@@ -4,16 +4,19 @@
 <div *ngIf="error">
   <h1 class="text-danger">{{error}}</h1>
 </div>
-<div class="row">
-  <div class="col-md-6 col-offset-md-6">
-    <div class="form-group">
-      <div class="input-group">
-        <div class="form-control" id="equationBox"> </div>
-        <button class="btn btn-danger" (click)="output()">
-          <i class="fa fa-sign-in" aria-hidden="true"> Proceed</i>
-        </button>
+<div *ngFor="let equation of equations">
+  <div class="row">
+    <div class="col-md-6 col-offset-md-6">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="form-control" id="equationBox"> </div>
+          <button class="btn btn-danger" (click)="output(equation)">
+            <i class="fa fa-sign-in" aria-hidden="true"> Proceed</i>
+          </button>
+          <button (click)="addGuppyBox()" type="button" class="btn btn-success">Add Guppy Box</button>
+        </div>
+        <h6>Type an Equation/Expression click proceed.</h6>
       </div>
-      <h6>Type an Equation/Expression click proceed.</h6>
     </div>
   </div>
 </div>
