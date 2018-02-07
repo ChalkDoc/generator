@@ -12,7 +12,6 @@ import {
   getRangeValues,
   generatePermutations,
   meetsUnknownVariableSpecification,
-  // containsImaginary,
   pullRandomValue,
   getCollisionRisk,
   genRandomPermutation,
