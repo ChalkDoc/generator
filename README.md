@@ -88,3 +88,15 @@ npm install --save-dev @angular/cli@latest
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+| [<img src="https://avatars1.githubusercontent.com/u/20192033?v=4" width="100px;"/><br /><sub><b>ElreyB</b></sub>](https://github.com/ElreyB)<br />[🐛](https://github.com/ChalkDoc/generator/issues?q=author%3AElreyB "Bug reports") [💻](https://github.com/ChalkDoc/generator/commits?author=ElreyB "Code") [🎨](#design-ElreyB "Design") [🤔](#ideas-ElreyB "Ideas, Planning, & Feedback") |
+| :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!

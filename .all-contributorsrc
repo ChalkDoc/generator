@@ -1,0 +1,23 @@
+{
+  "projectName": "generator",
+  "projectOwner": "ChalkDoc",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "ElreyB",
+      "name": "ElreyB",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/20192033?v=4",
+      "profile": "https://github.com/ElreyB",
+      "contributions": [
+        "bug",
+        "code",
+        "design",
+        "ideas"
+      ]
+    }
+  ]
+}
