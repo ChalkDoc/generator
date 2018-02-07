@@ -1,22 +1,22 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { Variable } from "../variable";
-import { GeneratorService } from "../services/generator.service";
-import * as _ from "lodash";
-import * as nerdamer from "nerdamer";
+import { Component, OnInit, Input } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Variable } from '../variable';
+import { GeneratorService } from '../services/generator.service';
+import * as _ from 'lodash';
+import * as nerdamer from 'nerdamer';
 
-import "nerdamer/Solve";
-import "nerdamer/Algebra";
-import "nerdamer/Calculus";
-import "nerdamer/Extra";
+import 'nerdamer/Solve';
+import 'nerdamer/Algebra';
+import 'nerdamer/Calculus';
+import 'nerdamer/Extra';
 
 declare var Guppy: any; // declaring Guppy
 declare var GuppyOSK: any;
 
 @Component({
-  selector: "app-equation",
-  templateUrl: "./equation.component.html",
-  styleUrls: ["./equation.component.css"]
+  selector: 'app-equation',
+  templateUrl: './equation.component.html',
+  styleUrls: ['./equation.component.css']
 })
 export class EquationComponent implements OnInit {
   @Input() childEquation: string;
@@ -29,6 +29,7 @@ export class EquationComponent implements OnInit {
   generatedCombinations: any[] = [];
   numberOfProblems: number;
   errorsView = false;
+  meetParameterCondition = false;
 
   constructor(private _generatorService: GeneratorService) {}
 
@@ -52,6 +53,9 @@ export class EquationComponent implements OnInit {
           if (currentVarObj.name === this.variableToSolve.name) {
             this.childVariables[i].solveForThisVariable = true;
             this.childVariables[i].containsImaginary = this.canContainImaginary;
+            this.childVariables[
+              i
+            ].answerMeetsAllSpecification = this.meetParameterCondition;
           }
         }
         // this takes the variable to solve to the end of the array.
