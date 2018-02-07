@@ -2,17 +2,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { GeneratorService } from './generator.service';
-import {
-  createKnownValuesObject,
-  solveForUnknownVariable,
-  simplifyEquation,
-  toArray,
-  generatePermutations,
-  meetsUnknownVariableSpecification,
-  containsImaginary,
-  calculateDecimalPlaces,
-  pullRandomValue
-} from './../utilities/utilities';
+
 import { Variable } from '../variable';
 
 describe('GeneratorService and all of its methods', () => {
