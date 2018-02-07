@@ -1,10 +1,6 @@
 /* tslint:disable:max-line-length */
-import {
-  Variable
-} from './../variable';
-import {
-  Injectable
-} from '@angular/core';
+import { Variable } from './../variable';
+import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import {
   solveForUnknownVariable,
@@ -24,16 +20,32 @@ const MAX_INVALID_COUNTER = 100;
 
 @Injectable()
 export class GeneratorService {
-
-  generatePermutationsByRandom(variables: Variable[], numberOfProblems: number, equation: string): any[] {
+  generatePermutationsByRandom(
+    variables: Variable[],
+    numberOfProblems: number,
+    equation: string[]
+  ): any[] {
     const result = [];
     let invalidCounter = 0;
-    const simplifiedEquation = simplifyEquation(equation, variables[variables.length - 1].name);
-    while (result.length < numberOfProblems && invalidCounter < MAX_INVALID_COUNTER) {
+    const simplifiedEquation = simplifyEquation(
+      equation[0],
+      variables[variables.length - 1].name
+    );
+    while (
+      result.length < numberOfProblems &&
+      invalidCounter < MAX_INVALID_COUNTER
+    ) {
       const permutation = genRandomPermutation(variables);
       const unknownVariable = _.last(variables);
-      const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables);
-      const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
+      const answer = solveForUnknownVariable(
+        permutation,
+        simplifiedEquation,
+        variables
+      );
+      const isValid = meetsUnknownVariableSpecification(
+        answer,
+        unknownVariable
+      );
       const isNew = !isVariableInArray(permutation, result);
 
       if (isValid && isNew) {
@@ -46,15 +58,29 @@ export class GeneratorService {
     return result;
   }
 
-  generatePermutationsFromList(variables: Variable[], numberOfProblems: number, equation: string) {
+  generatePermutationsFromList(
+    variables: Variable[],
+    numberOfProblems: number,
+    equation: string[]
+  ) {
     const result = [];
     const permutationsList = generatePermutations(variables);
     const unknownVariable = _.last(variables);
-    const simplifiedEquation = simplifyEquation(equation, unknownVariable.name);
+    const simplifiedEquation = simplifyEquation(
+      equation[0],
+      unknownVariable.name
+    );
     while (result.length < numberOfProblems && permutationsList.length > 0) {
       const permutation = pullRandomValue(permutationsList);
-      const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables);
-      const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
+      const answer = solveForUnknownVariable(
+        permutation,
+        simplifiedEquation,
+        variables
+      );
+      const isValid = meetsUnknownVariableSpecification(
+        answer,
+        unknownVariable
+      );
 
       if (isValid) {
         result.push([...permutation, [answer]]);
@@ -67,15 +93,26 @@ export class GeneratorService {
    * when that happens, we pick a permutations at random
    * but when the possibilities are small or we want a large fraction of them, we pick them from the full list otherwise the collision risk is too high.
    */
-  solverDecisionTree(variables: Variable[], numberOfProblems: number, equation: string): any[] {
+  solverDecisionTree(
+    variables: Variable[],
+    numberOfProblems: number,
+    equation: string[]
+  ): any[] {
     const collisionRisk = getCollisionRisk(variables, numberOfProblems);
     numberOfProblems = Math.min(numberOfProblems, 500);
     if (collisionRisk > COLLISION_THRESHOLD) {
       console.log('List');
-      return this.generatePermutationsFromList(variables, numberOfProblems, equation);
+      return this.generatePermutationsFromList(
+        variables,
+        numberOfProblems,
+        equation
+      );
     }
     console.log('Random');
-    return this.generatePermutationsByRandom(variables, numberOfProblems, equation);
+    return this.generatePermutationsByRandom(
+      variables,
+      numberOfProblems,
+      equation
+    );
   }
-
 }

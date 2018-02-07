@@ -1,27 +1,27 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { Variable } from "../variable";
-import { GeneratorService } from "../services/generator.service";
-import * as _ from "lodash";
-import * as nerdamer from "nerdamer";
+import { Component, OnInit, Input } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Variable } from '../variable';
+import { GeneratorService } from '../services/generator.service';
+import * as _ from 'lodash';
+import * as nerdamer from 'nerdamer';
 
-import "nerdamer/Solve";
-import "nerdamer/Algebra";
-import "nerdamer/Calculus";
-import "nerdamer/Extra";
+import 'nerdamer/Solve';
+import 'nerdamer/Algebra';
+import 'nerdamer/Calculus';
+import 'nerdamer/Extra';
 
 declare var Guppy: any; // declaring Guppy
 declare var GuppyOSK: any;
 
 @Component({
-  selector: "app-equation",
-  templateUrl: "./equation.component.html",
-  styleUrls: ["./equation.component.css"]
+  selector: 'app-equation',
+  templateUrl: './equation.component.html',
+  styleUrls: ['./equation.component.css']
 })
 export class EquationComponent implements OnInit {
-  @Input() childEquation: string;
   @Input() childParameterDiv: boolean;
   @Input() childVariables: Variable[];
+  @Input() childEquation: string[];
   generatedView = false;
   isLoading = false;
   variableToSolve: Variable = null;
@@ -63,7 +63,7 @@ export class EquationComponent implements OnInit {
         this.childEquation
       );
       this.generatedCombinations = result;
-      console.log(this.generatedCombinations);
+      console.log(this.generatedCombinations, 'results');
       console.log(formValue);
       this.isLoading = false;
       this.generatedView = true;
