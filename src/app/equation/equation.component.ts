@@ -29,6 +29,7 @@ export class EquationComponent implements OnInit {
   generatedCombinations: any[] = [];
   numberOfProblems: number;
   errorsView = false;
+  isInequality = false;
 
   constructor(private _generatorService: GeneratorService) {}
 

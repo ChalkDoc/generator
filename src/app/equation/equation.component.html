@@ -42,16 +42,16 @@
           <br>
           <br>
           <div class="row" id="parameterToSolveDiv">
-            <div class="col-md-4">
-              <label>Which variable to solve for?</label>
+            <div class="col-md-3">
+              <label>Variable to solve for?</label>
               <select [(ngModel)]="variableToSolve" class="form-control" name="variableToSolve" required>
                 <option *ngFor="let variable of childVariables" [ngValue]="variable">
                   {{variable.name}}
                 </option>
               </select>
             </div>
-            <div class="col-md-5" *ngIf="variableToSolve">
-              <label>Are answers with imaginary number ok?</label>
+            <div class="col-md-3" *ngIf="variableToSolve">
+              <label>Imaginary numbers?</label>
               <input type="radio" name="imaginaryAnswer" [value]="false" [(ngModel)]="canContainImaginary"> No
               <input type="radio" name="imaginaryAnswer" [value]="true" [(ngModel)]="canContainImaginary"> Yes
             </div>
@@ -59,6 +59,11 @@
               <label>Returned answer</label>
               <input type="radio" name="meetParameterCondition" [value]="false" [(ngModel)]="meetParameterCondition"> All
               <input type="radio" name="meetParameterCondition" [value]="true" [(ngModel)]="meetParameterCondition"> Positive
+            </div>
+            <div class="col-md-3" *ngIf="variableToSolve">
+              <label>Is inequality?</label>
+              <input type="radio" name="isInequality" [value]="false" [(ngModel)]="isInequality"> No
+              <input type="radio" name="isInequality" [value]="true" [(ngModel)]="isInequality"> Yes
             </div>
           </div>
           <div class="row">
