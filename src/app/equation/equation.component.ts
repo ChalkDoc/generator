@@ -67,8 +67,6 @@ export class EquationComponent implements OnInit {
         this.childEquation
       );
       this.generatedCombinations = result;
-      console.log(this.generatedCombinations);
-      console.log(formValue);
       this.isLoading = false;
       this.generatedView = true;
     }, 100);

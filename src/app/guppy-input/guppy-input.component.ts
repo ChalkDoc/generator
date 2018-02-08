@@ -37,7 +37,6 @@ export class GuppyInputComponent implements OnInit {
         const newVar = new Variable(varName);
         this.guppyVariables.push(newVar);
       }
-      console.log(this.guppyVariables, 'guppy');
       this.guppyParameterDiv = true;
     } catch (e) {
       this.error =
