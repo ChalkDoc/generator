@@ -44,14 +44,13 @@ export function getRangeValues(variableObj: Variable ) {
   const rangeValues = [];
   const increment = 10 ** - variableObj.decPoint;
   let number = variableObj.min;
-  while (number <= variableObj.max) {
+  while (_.round(number, variableObj.decPoint) <= variableObj.max) {
     rangeValues.push(_.round(number, variableObj.decPoint));
     number += increment;
   }
   return rangeValues;
 }
 
-<<<<<<< HEAD:src/app/utilities.ts
 export function generatePermutations(variables: Variable[]): number[] {
   const permutations = variables.slice(0, -1).reduce(
     (possibleValues, parameter) => {
@@ -61,15 +60,6 @@ export function generatePermutations(variables: Variable[]): number[] {
         rangeValues.forEach(value => {
           result.push([...possibleValue, value]);
         });
-=======
-export function generatePermutations(variables: Variable[]): [number[]] {
-  const permutations: any = variables.slice(0, -1).reduce((possibleValues, parameter) => {
-    const result = [];
-    const rangeValues = getRangeValues(parameter);
-    possibleValues.forEach(possibleValue => {
-      rangeValues.forEach(value => {
-        result.push([...possibleValue, value]);
->>>>>>> more-test-refactoring:src/app/utilities/utilities.ts
       });
       return result;
     },
@@ -106,38 +96,23 @@ export function getVariableValuesCount({ min, max, decPoint }): number {
   return (max - min + 1) * 10 ** decPoint;
 }
 
-<<<<<<< HEAD:src/app/utilities.ts
-function getVariablesValuesCount(variables: Variable[]): number {
+export function getVariablesValuesCount(variables: Variable[]): number {
   return variables.reduce(
     (acc, variableObj) => acc * getVariableValuesCount(variableObj),
     1
   );
-=======
-export function getVariablesValuesCount(variables: Variable[]): number {
-  return variables.reduce((acc, variableObj) =>
-    acc * getVariableValuesCount(variableObj)
-    , 1);
->>>>>>> more-test-refactoring:src/app/utilities/utilities.ts
 }
 
 export function getCollisionRisk(variables, problems): number {
   const possibleValues = getVariablesValuesCount(variables);
-<<<<<<< HEAD:src/app/utilities.ts
 
   return (
     1 - Math.pow(Math.E, -problems * (problems - 1) / (2 * possibleValues))
   );
-=======
-  return 1 - Math.pow(Math.E, (-problems * (problems - 1) / (2 * possibleValues)));
->>>>>>> more-test-refactoring:src/app/utilities/utilities.ts
 }
 
 export function genRandomPermutation(variables: Variable[]): number[] {
-<<<<<<< HEAD:src/app/utilities.ts
-  return variables.slice(0, -1).map(variableOji => getRandomValue(variableOji));
-=======
   return variables.slice(0, -1).map((variableObj) => getRandomValue(variableObj));
->>>>>>> more-test-refactoring:src/app/utilities/utilities.ts
 }
 
 export function getRandomValue(variableObj: Variable): number {
