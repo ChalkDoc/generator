@@ -96,6 +96,7 @@ npm install --save-dev @angular/cli@latest
 * User can enter negative number for number of problems.
 * Can't take all equations (-x^2 = y)
 * In generator.service.ts max invalid counter is set to a hard coded number, however needs to be dynamic or else the results are restrictive.
+* Each variable varialble must require the same number of decimals, otherwise no solutions are generated. The program should be able to handle cases where the variables decPoint property varies. 
 
 ## Further Help
 
