@@ -16,8 +16,8 @@ import {
   isVariableInArray,
   getRandomValue,
   getCollisionRisk,
-  getVariablesValuesCount,
-  getVariableValuesCount
+  getVariablesValueTotal,
+  getValueTotal
 } from './utilities';
 import * as _ from 'lodash';
 import { Variable } from '../variable';
@@ -241,31 +241,31 @@ describe('All Utilities methods', () => {
           });
         });
 
-        describe('getVariablesValuesCount', () => {
-          const intVarValuesCount = getVariablesValuesCount(variables);
-          const varCountA = getVariableValuesCount(varObjA);
-          const varCountB = getVariableValuesCount(varObjB);
-          const varCountC = getVariableValuesCount(varObjC);
-          const varCountX = getVariableValuesCount(varObjX);
+        describe('getVariablesValueTotal', () => {
+          const intVarValuesCount = getVariablesValueTotal(variables);
+          const varCountA = getValueTotal(varObjA);
+          const varCountB = getValueTotal(varObjB);
+          const varCountC = getValueTotal(varObjC);
+          const varCountX = getValueTotal(varObjX);
 
-          const decVarValuesCount = getVariablesValuesCount(decVariables);
-          const varCountH = getVariableValuesCount(decVarObjH);
-          const varCountI = getVariableValuesCount(decVarObjI);
-          const varCountJ = getVariableValuesCount(decVarObjJ);
-          const varCountK = getVariableValuesCount(decVarObjK);
+          const decVarValuesCount = getVariablesValueTotal(decVariables);
+          const varCountH = getValueTotal(decVarObjH);
+          const varCountI = getValueTotal(decVarObjI);
+          const varCountJ = getValueTotal(decVarObjJ);
+          const varCountK = getValueTotal(decVarObjK);
 
 
-          describe('getVariablesValuesCount for Non-decimal cases', () => {
+          describe('getVariablesValueTotal for Non-decimal cases', () => {
             it('should check Non-decimal cases and return an integer count of number of variables', () => {
               expect(intVarValuesCount).toEqual(varCountA * varCountB * varCountC * varCountX);
             });
 
-            it('getVariablesValuesCount should check Decimal cases and return an integer count of number of variables', () => {
+            it('getVariablesValueTotal should check Decimal cases and return an integer count of number of variables', () => {
               expect(decVarValuesCount).toEqual(varCountH * varCountI * varCountJ  * varCountK);
             });
           });
 
-          describe('getVariableValuesCount', () => {
+          describe('getValueTotal', () => {
             it('should check non-decimal Variables cases', () => {
               expect(varCountA).toEqual(varObjA.max - varObjA.min + 1);
               expect(varCountB).toEqual(varObjB.max - varObjB.min + 1);

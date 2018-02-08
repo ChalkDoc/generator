@@ -36,6 +36,7 @@ export function simplifyEquation(
 }
 
 export function calculateDecimalPlaces(input: string | number): number {
+  debugger;
   const inputArr = `${input}`.split('.');
   return inputArr.length === 1 ? 0 : inputArr[1].length;
 }
@@ -51,7 +52,7 @@ export function getRangeValues(variableObj: Variable ) {
   return rangeValues;
 }
 
-export function generatePermutations(variables: Variable[]): number[] {
+export function generatePermutations(variables: Variable[]): any[] {
   const permutations = variables.slice(0, -1).reduce(
     (possibleValues, parameter) => {
       const result = [];
@@ -92,19 +93,19 @@ export function pullRandomValue(arr: any[]): number[] {
   return arr.splice(index, 1)[0];
 }
 
-export function getVariableValuesCount({ min, max, decPoint }): number {
+export function getValueTotal({ min, max, decPoint }): number {
   return (max - min + 1) * 10 ** decPoint;
 }
 
-export function getVariablesValuesCount(variables: Variable[]): number {
+export function getVariablesValueTotal(variables: Variable[]): number {
   return variables.reduce(
-    (acc, variableObj) => acc * getVariableValuesCount(variableObj),
+    (acc, variableObj) => acc * getValueTotal(variableObj),
     1
   );
 }
 
 export function getCollisionRisk(variables, problems): number {
-  const possibleValues = getVariablesValuesCount(variables);
+  const possibleValues = getVariablesValueTotal(variables);
 
   return (
     1 - Math.pow(Math.E, -problems * (problems - 1) / (2 * possibleValues))
