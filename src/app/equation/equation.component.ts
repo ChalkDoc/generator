@@ -44,22 +44,26 @@ export class EquationComponent implements OnInit {
 
   /* this is to get the content of the guppy box,
     it also converts the mathematical equation/expression into the desired format type(latex, asciimath, text, ast, eqns, function, xml)*/
-  output() {
+  output (){
     try {
-      this.error = null;
       this.equation = Guppy.instances['equationBox'].backend.get_content('text');
-      const extractedVars = nerdamer(this.equation).variables();
+      if(this._generatorService.isInequalityEquation(this.equation))
+      {
+        this.equation = (this._generatorService.changeEquation(this.equation));
+      }
+      let extractedVars = nerdamer(this.equation).variables();
+
+      console.log(extractedVars);
       /* creating variable instance and pushing each variable instance into the variables array*/
       for (let i = 0; i < extractedVars.length; i++) {
-        const varName: string = extractedVars[i];
-        const newVar = new Variable(varName);
+        let varName: string = extractedVars[i];
+        let newVar = new Variable(varName);
         this.variables.push(newVar);
       }
       console.log(this.variables);
       this.parameterDiv = true;
     } catch (e) {
-
-      this.error = 'Parsing error!' + e;
+      alert('Parsing error!' + e);
     }
   }
 
@@ -108,20 +112,4 @@ export class EquationComponent implements OnInit {
       }
     }
   }
-  //Determine if equation contains (> or <) sign
-  isInequalityEquation(string) {
-    if(string.includes(">") || string.includes("<")){
-      return true;
-    }
-    else return false;
   }
-
-  changeEquation(equation){
-    equation = equation.replace('>' , '=').replace('<' , '=');
-    return equation;
-  }
-
-  returns
-
-
-}

@@ -77,4 +77,6 @@ export class GeneratorService {
     return this.generatePermutationsByRandom(variables, numberOfProblems, equation);
   }
 
+ 
+
 }
