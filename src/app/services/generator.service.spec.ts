@@ -10,8 +10,10 @@ describe('GeneratorService and all of its methods', () => {
   const a = new Variable('a', 0, 1, 5);
   const b = new Variable('b', 0, 1, 5);
   const c = new Variable('c', 0, 1, 5);
-  const x = new Variable('x', 0, -100, 100);
+  const x = new Variable('x', 0, -10, 10);
   const variables: Variable[] = [a, b, c, x];
+  const numberOfProblems: number = 100;
+  const basicEquation: string = ' a*b/c=x';
 
   beforeEach(() => {
     _generatorService = new GeneratorService();
@@ -20,13 +22,7 @@ describe('GeneratorService and all of its methods', () => {
     });
   });
 
-  it('should be created', inject([GeneratorService], (_gs: GeneratorService) => {
+  it('should verify that the Generator service is be created', inject([GeneratorService], (_gs: GeneratorService) => {
     expect(_gs).toEqual(_generatorService);
   }));
-
-
-
-
-
-
 });

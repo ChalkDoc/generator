@@ -71,10 +71,10 @@ export class GeneratorService {
     const collisionRisk = getCollisionRisk(variables, numberOfProblems);
     numberOfProblems = Math.min(numberOfProblems, 500);
     if (collisionRisk > COLLISION_THRESHOLD) {
-      console.log('List');
+
       return this.generatePermutationsFromList(variables, numberOfProblems, equation);
     }
-    console.log('Random');
+
     return this.generatePermutationsByRandom(variables, numberOfProblems, equation);
   }
 
