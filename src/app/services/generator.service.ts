@@ -16,7 +16,7 @@ import {
   getCollisionRisk,
   genRandomPermutation,
   isVariableInArray
-} from './../utilities';
+} from './../utilities/utilities';
 
 const COLLISION_THRESHOLD = 0.9;
 const MAX_INVALID_COUNTER = 100;
@@ -51,6 +51,7 @@ export class GeneratorService {
     const unknownVariable = _.last(variables);
     const simplifiedEquation = simplifyEquation(equation, unknownVariable.name);
     while (result.length < numberOfProblems && permutationsList.length > 0) {
+
       const permutation = pullRandomValue(permutationsList);
       const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables);
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
@@ -70,10 +71,10 @@ export class GeneratorService {
     const collisionRisk = getCollisionRisk(variables, numberOfProblems);
     numberOfProblems = Math.min(numberOfProblems, 500);
     if (collisionRisk > COLLISION_THRESHOLD) {
-      console.log('List');
+
       return this.generatePermutationsFromList(variables, numberOfProblems, equation);
     }
-    console.log('Random');
+
     return this.generatePermutationsByRandom(variables, numberOfProblems, equation);
   }
 

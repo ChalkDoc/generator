@@ -1,4 +1,4 @@
-import { Variable } from './variable';
+import { Variable } from './../variable';
 import { variable } from '@angular/compiler/src/output/output_ast';
 import * as _ from 'lodash';
 import * as nerdamer from 'nerdamer';
@@ -40,17 +40,18 @@ export function calculateDecimalPlaces(input: string | number): number {
   return inputArr.length === 1 ? 0 : inputArr[1].length;
 }
 
-export function getRangeValues({ min, max, decPoint }) {
+export function getRangeValues(variableObj: Variable ) {
   const rangeValues = [];
-  const increment = 10 ** -decPoint;
-  let number = min;
-  while (number <= max) {
-    rangeValues.push(_.round(number, decPoint));
+  const increment = 10 ** - variableObj.decPoint;
+  let number = variableObj.min;
+  while (number <= variableObj.max) {
+    rangeValues.push(_.round(number, variableObj.decPoint));
     number += increment;
   }
   return rangeValues;
 }
 
+<<<<<<< HEAD:src/app/utilities.ts
 export function generatePermutations(variables: Variable[]): number[] {
   const permutations = variables.slice(0, -1).reduce(
     (possibleValues, parameter) => {
@@ -60,6 +61,15 @@ export function generatePermutations(variables: Variable[]): number[] {
         rangeValues.forEach(value => {
           result.push([...possibleValue, value]);
         });
+=======
+export function generatePermutations(variables: Variable[]): [number[]] {
+  const permutations: any = variables.slice(0, -1).reduce((possibleValues, parameter) => {
+    const result = [];
+    const rangeValues = getRangeValues(parameter);
+    possibleValues.forEach(possibleValue => {
+      rangeValues.forEach(value => {
+        result.push([...possibleValue, value]);
+>>>>>>> more-test-refactoring:src/app/utilities/utilities.ts
       });
       return result;
     },
@@ -87,36 +97,51 @@ export function meetsUnknownVariableSpecification(
   return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
 }
 
-export function pullRandomValue(arr: any[]) {
+export function pullRandomValue(arr: any[]): number[] {
   const index: number = _.random(0, arr.length - 1);
   return arr.splice(index, 1)[0];
 }
 
-function getVariableValuesCount({ min, max, decPoint }): number {
+export function getVariableValuesCount({ min, max, decPoint }): number {
   return (max - min + 1) * 10 ** decPoint;
 }
 
+<<<<<<< HEAD:src/app/utilities.ts
 function getVariablesValuesCount(variables: Variable[]): number {
   return variables.reduce(
     (acc, variableObj) => acc * getVariableValuesCount(variableObj),
     1
   );
+=======
+export function getVariablesValuesCount(variables: Variable[]): number {
+  return variables.reduce((acc, variableObj) =>
+    acc * getVariableValuesCount(variableObj)
+    , 1);
+>>>>>>> more-test-refactoring:src/app/utilities/utilities.ts
 }
 
 export function getCollisionRisk(variables, problems): number {
   const possibleValues = getVariablesValuesCount(variables);
+<<<<<<< HEAD:src/app/utilities.ts
 
   return (
     1 - Math.pow(Math.E, -problems * (problems - 1) / (2 * possibleValues))
   );
+=======
+  return 1 - Math.pow(Math.E, (-problems * (problems - 1) / (2 * possibleValues)));
+>>>>>>> more-test-refactoring:src/app/utilities/utilities.ts
 }
 
 export function genRandomPermutation(variables: Variable[]): number[] {
+<<<<<<< HEAD:src/app/utilities.ts
   return variables.slice(0, -1).map(variableOji => getRandomValue(variableOji));
+=======
+  return variables.slice(0, -1).map((variableObj) => getRandomValue(variableObj));
+>>>>>>> more-test-refactoring:src/app/utilities/utilities.ts
 }
 
-function getRandomValue({ min, max, decPoint }) {
-  return parseFloat(_.random(min, max, true).toFixed(decPoint));
+export function getRandomValue(variableObj: Variable): number {
+  return parseFloat(_.random(variableObj.min, variableObj.max, true).toFixed(variableObj.decPoint));
 }
 
 export function isVariableInArray(
