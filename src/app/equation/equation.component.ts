@@ -59,7 +59,7 @@ export class EquationComponent implements OnInit {
           }
         }
         // this moves the variable to solve to the end of the array.
-        this.switchParameterToSolve(this.childVariables, this.variableToSolve);
+        this.switchParameterToSolve(this.childVariables);
       }
       const result = this._generatorService.solverDecisionTree(
         this.childVariables,
@@ -73,8 +73,7 @@ export class EquationComponent implements OnInit {
   }
 
   switchParameterToSolve(
-    variables: Variable[],
-    variableToSolve: Variable
+    variables: Variable[]
   ): void {
     const lastVariable = variables[variables.length - 1];
     for (let i = 0; i < variables.length; i++) {
