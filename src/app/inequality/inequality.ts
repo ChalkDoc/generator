@@ -21,7 +21,37 @@ export function solveInequalityEquation(hash :any, variableToSolve: string): str
   return inEqResult;
 }
 
-export function flipSign() 
+export function checkToflipSign(hash :any, variableToSolve: string){
+
+	let array = hash["equation"].split("");
+
+	if (array.indexOf("=") <  array.indexOf(variableToSolve))
+	{
+		flipSign(variableToSolve);
+	}
+} 
+
+export function flipSign(sign){
+	switch(sign){
+		case ">=" :
+		sign = "<=" ;
+		break;
+
+		case "<=" :
+		sign = ">=" ;
+		break;
+
+		case ">" :
+		sign = "<" ;
+		break;
+
+		case "<" :
+		sign = ">" ;
+		break;
+	}
+}
+
+
 
 
 
