@@ -12,7 +12,7 @@ import {
   getCollisionRisk,
   genRandomPermutation,
   isVariableInArray
-} from './../utilities';
+} from './../utilities/utilities';
 
 const COLLISION_THRESHOLD = 0.9;
 const MAX_INVALID_COUNTER = 100;

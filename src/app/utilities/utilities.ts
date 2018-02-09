@@ -44,7 +44,7 @@ export function getRangeValues({ min, max, decPoint }) {
   const rangeValues = [];
   const increment = 10 ** -decPoint;
   let number = min;
-  while (number <= max) {
+  while (_.round(number, decPoint) <= max) {
     rangeValues.push(_.round(number, decPoint));
     number += increment;
   }
@@ -92,11 +92,11 @@ export function pullRandomValue(arr: any[]) {
   return arr.splice(index, 1)[0];
 }
 
-function getValueTotal({ min, max, decPoint }): number {
+export function getValueTotal({ min, max, decPoint }): number {
   return (max - min + 1) * 10 ** decPoint;
 }
 
-function getVariablesValueTotal(variables: Variable[]): number {
+export function getVariablesValueTotal(variables: Variable[]): number {
   return variables.reduce(
     (acc, variableObj) => acc * getValueTotal(variableObj),
     1
@@ -115,7 +115,7 @@ export function genRandomPermutation(variables: Variable[]): number[] {
   return variables.slice(0, -1).map(variableOji => getRandomValue(variableOji));
 }
 
-function getRandomValue({ min, max, decPoint }) {
+export function getRandomValue({ min, max, decPoint }) {
   return parseFloat(_.random(min, max, true).toFixed(decPoint));
 }
 
