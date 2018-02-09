@@ -4,11 +4,6 @@ import { Variable } from '../variable';
 import * as nerdamer from 'nerdamer';
 import * as _ from 'lodash';
 
-// import 'nerdamer/Solve';
-// import 'nerdamer/Algebra';
-// import 'nerdamer/Calculus';
-// import 'nerdamer/Extra';
-
 declare var Guppy: any;
 
 @Component({
@@ -37,7 +32,6 @@ export class GuppyInputComponent implements AfterViewChecked {
         const guppy = new Guppy(id, {
           events: {
             ready: () => {
-              console.log('ready');
               // workaround for Guppy bug
               Guppy.ready = true;
             }
@@ -47,8 +41,7 @@ export class GuppyInputComponent implements AfterViewChecked {
     });
   }
 
-  /* this is to get the content of the guppy box,
-    it also converts the mathematical equation/expression into the desired format type(latex, asciimath, text, ast, eqns, function, xml)*/
+  /* this is to get the content of the guppy box*/
   output() {
     try {
       this.error = '';
@@ -70,7 +63,6 @@ export class GuppyInputComponent implements AfterViewChecked {
         return acc;
       }, []);
 
-      console.log(this.guppyVariables, 'guppy');
       this.guppyParameterDiv = true;
     } catch (e) {
       this.error =

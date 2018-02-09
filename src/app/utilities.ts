@@ -3,10 +3,6 @@ import { variable } from '@angular/compiler/src/output/output_ast';
 import * as _ from 'lodash';
 import * as nerdamer from 'nerdamer';
 
-// export function containsImaginary(input: string): boolean {
-//   return input.includes('i');
-// }
-
 export function createKnownValuesObject(
   randomSet: number[],
   variables: Variable[]
@@ -76,11 +72,6 @@ export function meetsUnknownVariableSpecification(
   currentValue: number,
   unknownVariable: Variable
 ): boolean {
-  // const isImaginary = containsImaginary(currentValue) && unknownVariable.containsImaginary;
-  // this code will check for imaginary once that is implemented
-  // if (isImaginary) {
-  //   return true;
-  // }
   const numCurrentValue = Number(currentValue);
   const currentValueDecPoint = calculateDecimalPlaces(numCurrentValue);
   const hasNoDecPoint =
@@ -101,19 +92,19 @@ export function pullRandomValue(arr: any[]) {
   return arr.splice(index, 1)[0];
 }
 
-function getVariableValuesCount({ min, max, decPoint }): number {
+function getValueTotal({ min, max, decPoint }): number {
   return (max - min + 1) * 10 ** decPoint;
 }
 
-function getVariablesValuesCount(variables: Variable[]): number {
+function getVariablesValueTotal(variables: Variable[]): number {
   return variables.reduce(
-    (acc, variableObj) => acc * getVariableValuesCount(variableObj),
+    (acc, variableObj) => acc * getValueTotal(variableObj),
     1
   );
 }
 
 export function getCollisionRisk(variables, problems): number {
-  const possibleValues = getVariablesValuesCount(variables);
+  const possibleValues = getVariablesValueTotal(variables);
 
   return (
     1 - Math.pow(Math.E, -problems * (problems - 1) / (2 * possibleValues))
@@ -139,11 +130,3 @@ export function isVariableInArray(
   );
 }
 
-/* This method takes an object as an argument and converts into an array.
-used in test only */
-export function toArray(obj: object) {
-  const objArr = Object.keys(obj).map(function(key) {
-    return [String(key), obj[key]];
-  });
-  return objArr;
-}
