@@ -30,14 +30,18 @@ export class GuppyInputComponent implements OnInit {
       this.guppyEquation = Guppy.instances['equationBox'].backend.get_content(
         'text'
       );
+      console.log(this.guppyEquation);
       const extractedVars = nerdamer(this.guppyEquation).variables();
+      console.log(extractedVars);
       /* creating variable instance and pushing each variable instance into the variables array*/
       for (let i = 0; i < extractedVars.length; i++) {
         const varName: string = extractedVars[i];
+        console.log(varName);
         const newVar = new Variable(varName);
         this.guppyVariables.push(newVar);
       }
       this.guppyParameterDiv = true;
+      console.log(this.guppyVariables);
     } catch (e) {
       this.error =
         'Unable to handle that equation at this time. Sorry for the inconvenience.';

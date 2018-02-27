@@ -26,6 +26,7 @@ export class EquationComponent implements OnInit {
   isLoading = false;
   variableToSolve: Variable = null;
   canContainImaginary = false;
+  varEqualsToZero = false;
   generatedCombinations: any[] = [];
   numberOfProblems: number;
   errorsView = false;
@@ -37,6 +38,7 @@ export class EquationComponent implements OnInit {
 
   onSubmit(formValue) {
     // this logic updates the variables array value using the data obtained from the form
+    console.log(formValue);
     this.generatedView = false;
     this.isLoading = true;
     _.delay(() => {
@@ -47,7 +49,9 @@ export class EquationComponent implements OnInit {
         }
       }
       this.numberOfProblems = formValue.value.numberOfProblems;
+      console.log(this.variableToSolve);
       if (this.variableToSolve) {
+          console.log(this.childVariables);
         for (let i = 0; i < this.childVariables.length; i++) {
           const currentVarObj = this.childVariables[i];
           if (currentVarObj.name === this.variableToSolve.name) {
@@ -75,6 +79,7 @@ export class EquationComponent implements OnInit {
   switchParameterToSolve(
     variables: Variable[]
   ): void {
+      console.log(variables);
     const lastVariable = variables[variables.length - 1];
     for (let i = 0; i < variables.length; i++) {
       const currentVar = variables[i];

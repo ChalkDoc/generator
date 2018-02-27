@@ -38,6 +38,7 @@ export class GeneratorService {
       if (isValid && isNew) {
         invalidCounter = 0;
         result.push([...permutation, [answer]]);
+        console.log(result);
       } else {
         invalidCounter++;
       }

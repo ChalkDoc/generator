@@ -6,6 +6,7 @@ export class Variable {
 	  public max: number = 5,
 	  public containsImaginary = false,
 	  public solveForThisVariable = false,
+      public equalsToZero: boolean,
 	  public answerMeetsAllSpecification = false,
   ) { }
 }

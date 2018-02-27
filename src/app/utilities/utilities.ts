@@ -17,8 +17,11 @@ export function solveForUnknownVariable(
   variables: Variable[]
 ): number {
   const variablesObject = createKnownValuesObject(randomSet, variables);
+  console.log(variablesObject);
   const answer = nerdamer(simplifiedEquation, variablesObject);
+  console.log("result"+ answer);
   const nerdamerResult = nerdamer(answer).text();
+  console.log(nerdamerResult);
   if (variables[variables.length - 1].decPoint !== 0) {
     const fraction = nerdamerResult.substring(1, nerdamerResult.length - 1);
     const numbers = fraction.split('/');
@@ -36,7 +39,6 @@ export function simplifyEquation(
 }
 
 export function calculateDecimalPlaces(input: string | number): number {
-  debugger;
   const inputArr = `${input}`.split('.');
   return inputArr.length === 1 ? 0 : inputArr[1].length;
 }
@@ -66,6 +68,7 @@ export function generatePermutations(variables: Variable[]): any[] {
     },
     [[]]
   );
+  console.log(permutations);
   return permutations;
 }
 
