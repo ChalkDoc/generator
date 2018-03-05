@@ -18,7 +18,7 @@
             <div class="col-md-3">Dec. point</div>
             <div class="col-md-2">Min</div>
             <div class="col-md-2">Max</div>
-            <div class="col-md-3">Non Zero</div>
+            <div class="col-md-3">Allow Zero</div>
           </div>
           <div class="row" *ngFor="let variable of childVariables" ngModelGroup="variables">
             <div class="col-md-2">
@@ -36,12 +36,13 @@
               <input type="number" class="form-control" name="max{{variable.name}}" [(ngModel)]="variable.max" min="{{variable.min}}" required>
             </div>
             <div class="col-md-3">
-              <input type="checkbox" class="form-control" name="isZero"  [(ngModel)]="variable.equalsToZero">
+              <input type="checkbox" class="form-control" name="isZeroAllowed{{variable.name}}"  [(ngModel)]="variable.allowZero" checked={{variable.allowZero}}>
             </div>
             <div class="row">
               <p *ngIf="variable.max<variable.min" class="text-danger">Max must be greater than min</p>
             </div>
           </div>
+
           <!-- additional requirements -->
           <br>
           <br>

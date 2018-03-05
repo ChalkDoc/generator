@@ -8,6 +8,7 @@ export function createKnownValuesObject(
   variables: Variable[]
 ): { [name: string]: string } {
   const variableNamesArray = _.map(variables.slice(0, -1), 'name');
+  console.log("variableNamesArray",variableNamesArray);
   return _.zipObject(variableNamesArray, randomSet.map(_.toString));
 }
 
@@ -17,11 +18,11 @@ export function solveForUnknownVariable(
   variables: Variable[]
 ): number {
   const variablesObject = createKnownValuesObject(randomSet, variables);
-  console.log(variablesObject);
+  console.log("variablesObject",variablesObject);
   const answer = nerdamer(simplifiedEquation, variablesObject);
-  console.log("result"+ answer);
+  console.log("answer"+ answer);
   const nerdamerResult = nerdamer(answer).text();
-  console.log(nerdamerResult);
+  console.log("nerdamerResult",nerdamerResult);
   if (variables[variables.length - 1].decPoint !== 0) {
     const fraction = nerdamerResult.substring(1, nerdamerResult.length - 1);
     const numbers = fraction.split('/');
@@ -59,6 +60,7 @@ export function generatePermutations(variables: Variable[]): any[] {
     (possibleValues, parameter) => {
       const result = [];
       const rangeValues = getRangeValues(parameter);
+      console.log("rangeValues",rangeValues);
       possibleValues.forEach(possibleValue => {
         rangeValues.forEach(value => {
           result.push([...possibleValue, value]);
@@ -68,8 +70,28 @@ export function generatePermutations(variables: Variable[]): any[] {
     },
     [[]]
   );
-  console.log(permutations);
+  console.log("generate permutations",permutations);
   return permutations;
+}
+
+export function multiZeroCheck(
+  permutation: number[],
+  variables: Variable[]
+): boolean {
+  for (var i=0; i < permutation.length; i++){
+    if(permutation[i] === 0 && variables[i].allowZero === false){
+        return false;
+    }
+  };
+  return true;
+}
+
+export function singleZeroCheck(
+  currentValue: number,
+  unknownVariable: Variable
+): boolean {
+
+  return !(unknownVariable.allowZero === false && currentValue === 0);
 }
 
 export function meetsUnknownVariableSpecification(

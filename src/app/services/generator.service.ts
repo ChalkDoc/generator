@@ -15,7 +15,9 @@ import {
   pullRandomValue,
   getCollisionRisk,
   genRandomPermutation,
-  isVariableInArray
+  isVariableInArray,
+  singleZeroCheck,
+  multiZeroCheck
 } from './../utilities/utilities';
 
 const COLLISION_THRESHOLD = 0.9;
@@ -28,21 +30,34 @@ export class GeneratorService {
     const result = [];
     let invalidCounter = 0;
     const simplifiedEquation = simplifyEquation(equation, variables[variables.length - 1].name);
+    console.log("simplifiedEquation",simplifiedEquation);
     while (result.length < numberOfProblems && invalidCounter < MAX_INVALID_COUNTER) {
       const permutation = genRandomPermutation(variables);
+      console.log("permutation",permutation);
       const unknownVariable = _.last(variables);
+      console.log("unknownVariable ",unknownVariable);
       const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables);
+      console.log("answer",answer);
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
+      console.log("isValid",isValid);
       const isNew = !isVariableInArray(permutation, result);
+      console.log("isNew",isNew);
+      const knownCheckZero = multiZeroCheck(permutation, variables);
+      console.log("knownCheckZero: ",knownCheckZero);
+      const unknownCheckZero = singleZeroCheck(answer, unknownVariable);
+      console.log("unknownCheckZero: ",unknownCheckZero);
 
-      if (isValid && isNew) {
+      if (isValid && isNew && knownCheckZero && unknownCheckZero) {
         invalidCounter = 0;
         result.push([...permutation, [answer]]);
-        console.log(result);
+
+        console.log("final??",result);
       } else {
         invalidCounter++;
       }
     }
+
+    console.log("final final??",result);
     return result;
   }
 

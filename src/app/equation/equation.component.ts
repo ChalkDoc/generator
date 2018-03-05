@@ -26,7 +26,6 @@ export class EquationComponent implements OnInit {
   isLoading = false;
   variableToSolve: Variable = null;
   canContainImaginary = false;
-  varEqualsToZero = false;
   generatedCombinations: any[] = [];
   numberOfProblems: number;
   errorsView = false;

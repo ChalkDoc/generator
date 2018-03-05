@@ -32,7 +32,7 @@ export class GuppyInputComponent implements OnInit {
       );
       console.log(this.guppyEquation);
       const extractedVars = nerdamer(this.guppyEquation).variables();
-      console.log(extractedVars);
+      console.log("ext",extractedVars);
       /* creating variable instance and pushing each variable instance into the variables array*/
       for (let i = 0; i < extractedVars.length; i++) {
         const varName: string = extractedVars[i];
