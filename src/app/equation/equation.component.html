@@ -67,6 +67,13 @@
             </div>
           </div>
           <div class="row">
+            <div class="col-md-12" *ngIf="variableToSolve">
+              <label>Add Additional Parameters?</label>
+              <input type="radio" name="addParams" [value]="false" [(ngModel)]="canAddParams"> No
+              <input type="radio" name="addParams" [value]="true" [(ngModel)]="canAddParams"> Yes
+            </div>
+          </div>
+          <div class="row">
             <div class="col-md-12">
               <br>
               <button id="generate" type="submit" class="btn btn-success" style="width: 100%" [disabled]="variableForm.form.invalid">

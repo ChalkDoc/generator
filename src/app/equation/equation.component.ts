@@ -26,6 +26,7 @@ export class EquationComponent implements OnInit {
   isLoading = false;
   variableToSolve: Variable = null;
   canContainImaginary = false;
+  canAddParams = false;
   generatedCombinations: any[] = [];
   numberOfProblems: number;
   errorsView = false;
@@ -56,9 +57,8 @@ export class EquationComponent implements OnInit {
           if (currentVarObj.name === this.variableToSolve.name) {
             this.childVariables[i].solveForThisVariable = true;
             this.childVariables[i].containsImaginary = this.canContainImaginary;
-            this.childVariables[
-              i
-            ].answerMeetsAllSpecification = this.meetParameterCondition;
+            this.childVariables[i].answerMeetsAllSpecification = this.meetParameterCondition;
+            this.childVariables[i].additionalParamaters = this.canAddParams;
           }
         }
         // this moves the variable to solve to the end of the array.
