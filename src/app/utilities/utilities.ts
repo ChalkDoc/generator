@@ -21,7 +21,7 @@ export function solveForUnknownVariable(
   const variablesObject = createKnownValuesObject(randomSet, variables);
   console.log("variablesObject",variablesObject); //variablesObject: {"a", "b", "x", "y"}
 
-  const answer = nerdamer(simplifiedEquation, variablesObject);
+  const answer = nerdamer(simplifiedEquation, variablesObject, 'numer');
   console.log("answer"+ answer);
 
   const nerdamerResult = nerdamer(answer).text();
@@ -109,12 +109,26 @@ for(let i=0; i< currentValue.length; i++){
 }
 }
 
+export function convertToDecimal(input: any): any {
+  if(input.includes("/")){
+    const numberSplit = input.split('/');
+    var result = parseInt(numberSplit[0], 10) / parseInt(numberSplit[1], 10);
+    return result;
+  } else {
+    return input;
+  }
+}
+
+//for isValid
 export function meetsUnknownVariableSpecification(currentValue: number[], unknownVariable: Variable): boolean {
   for(let i=0; i<currentValue.length; i++){
     const numCurrentValue = Number(currentValue[i]);
+    console.log("The format of Number is : "+numCurrentValue);
+    const numInDecimal = convertToDecimal(numCurrentValue);
     const currentValueDecPoint = calculateDecimalPlaces(numCurrentValue);
+    console.log("currentValueDecPoint: "+currentValueDecPoint);
     const hasNoDecPoint = unknownVariable.decPoint === 0 && _.isInteger(numCurrentValue);
-    const hasSameDecPoint = unknownVariable.decPoint > 0 && currentValueDecPoint === unknownVariable.decPoint;
+    const hasSameDecPoint = unknownVariable.decPoint > 0 && currentValueDecPoint > 0;
     const isWithinRange = _.inRange(numCurrentValue, unknownVariable.min, unknownVariable.max);
     return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
   }
