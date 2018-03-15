@@ -16,20 +16,34 @@ export function solveForUnknownVariable(
   randomSet: number[],
   simplifiedEquation: string,
   variables: Variable[]
-): number {
+): any[] {
+  let answerArray: any[] =[];
   const variablesObject = createKnownValuesObject(randomSet, variables);
-  console.log("variablesObject",variablesObject);
+  console.log("variablesObject",variablesObject); //variablesObject: {"a", "b", "x", "y"}
+
   const answer = nerdamer(simplifiedEquation, variablesObject);
   console.log("answer"+ answer);
+
   const nerdamerResult = nerdamer(answer).text();
   console.log("nerdamerResult",nerdamerResult);
-  if (variables[variables.length - 1].decPoint !== 0) {
-    const fraction = nerdamerResult.substring(1, nerdamerResult.length - 1);
-    const numbers = fraction.split('/');
-    return Number(numbers[0]) / Number(numbers[1]);
-  } else {
-    return Number(nerdamerResult.substring(1, nerdamerResult.length - 1));
+
+  let decimalAnswerArray: string[] = nerdamerResult.split(/[\[,\]]/);
+
+  for (let i = 0; i< decimalAnswerArray.length; i++) {
+    if(decimalAnswerArray[i] !== ''){
+      console.log("decimalAnswerArray["+i+"]: "+decimalAnswerArray[i]);
+      answerArray.push(decimalAnswerArray[i]);
+    }
   }
+  return answerArray; //[121, 12]
+
+  // if (variables[variables.length - 1].decPoint !== 0) {
+  //   const fraction = nerdamerResult.substring(1, nerdamerResult.length - 1);
+  //   const numbers = fraction.split('/');
+  //   return Number(numbers[0]) / Number(numbers[1]);
+  // } else {
+  //   return Number(nerdamerResult.substring(1, nerdamerResult.length - 1));
+  // }
 }
 
 export function simplifyEquation(
@@ -87,30 +101,23 @@ export function multiZeroCheck(
 }
 
 export function singleZeroCheck(
-  currentValue: number,
+  currentValue: number[],
   unknownVariable: Variable
 ): boolean {
-
-  return !(unknownVariable.allowZero === false && currentValue === 0);
+for(let i=0; i< currentValue.length; i++){
+  return !(unknownVariable.allowZero === false && currentValue[i] === 0);
+}
 }
 
-export function meetsUnknownVariableSpecification(
-  currentValue: number,
-  unknownVariable: Variable
-): boolean {
-  const numCurrentValue = Number(currentValue);
-  const currentValueDecPoint = calculateDecimalPlaces(numCurrentValue);
-  const hasNoDecPoint =
-    unknownVariable.decPoint === 0 && _.isInteger(numCurrentValue);
-  const hasSameDecPoint =
-    unknownVariable.decPoint > 0 &&
-    currentValueDecPoint === unknownVariable.decPoint;
-  const isWithinRange = _.inRange(
-    numCurrentValue,
-    unknownVariable.min,
-    unknownVariable.max
-  );
-  return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
+export function meetsUnknownVariableSpecification(currentValue: number[], unknownVariable: Variable): boolean {
+  for(let i=0; i<currentValue.length; i++){
+    const numCurrentValue = Number(currentValue[i]);
+    const currentValueDecPoint = calculateDecimalPlaces(numCurrentValue);
+    const hasNoDecPoint = unknownVariable.decPoint === 0 && _.isInteger(numCurrentValue);
+    const hasSameDecPoint = unknownVariable.decPoint > 0 && currentValueDecPoint === unknownVariable.decPoint;
+    const isWithinRange = _.inRange(numCurrentValue, unknownVariable.min, unknownVariable.max);
+    return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
+  }
 }
 
 export function pullRandomValue(arr: any[]): number[] {

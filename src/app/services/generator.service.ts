@@ -64,30 +64,49 @@ export class GeneratorService {
   generatePermutationsFromList(variables: Variable[], numberOfProblems: number, equation: string) {
     const result = [];
     const permutationsList = generatePermutations(variables);
+    console.log("permutationsList: "+ permutationsList);
     const unknownVariable = _.last(variables);
+    console.log("unknownVariable: "+ unknownVariable);
     const simplifiedEquation = simplifyEquation(equation, unknownVariable.name);
+    console.log("simplifiedEquation: "+ simplifiedEquation);
     while (result.length < numberOfProblems && permutationsList.length > 0) {
 
       const permutation = pullRandomValue(permutationsList);
+      console.log("permutation: "+ permutation);
       const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables);
+      console.log("answer: "+ answer);
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
-
+      console.log("isValid: "+ isValid);
       if (isValid) {
         result.push([...permutation, [answer]]);
       }
     }
+    console.log("result: "+ result);
     return result;
   }
+
+  calculateTotalDecimals(variables) {
+    let decimals = 0;
+    for (let i = 0; i < variables.length; i++) {
+      if (variables[i].decPoint > 0) {
+        decimals++;
+      }
+    }
+    return decimals;
+  }
+
   /**
    * There could be a very large number of possible solutions (e.g. many decimal, number of problems, large range)
    * when that happens, we pick a permutations at random
    * but when the possibilities are small or we want a large fraction of them, we pick them from the full list otherwise the collision risk is too high.
    */
   solverDecisionTree(variables: Variable[], numberOfProblems: number, equation: string): any[] {
-    const collisionRisk = getCollisionRisk(variables, numberOfProblems);
-    numberOfProblems = Math.min(numberOfProblems, 500);
-    if (collisionRisk > COLLISION_THRESHOLD) {
-
+    //const collisionRisk = getCollisionRisk(variables, numberOfProblems);
+    let totalDecimals = this.calculateTotalDecimals(variables);
+    //numberOfProblems = Math.min(numberOfProblems, 500);
+    console.log("Total Decimals: " +totalDecimals);
+    if (totalDecimals == 0) {
+      console.log("Total Decimals is 0");
       return this.generatePermutationsFromList(variables, numberOfProblems, equation);
     }
 
