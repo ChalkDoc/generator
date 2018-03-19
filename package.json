@@ -29,6 +29,7 @@
     "font-awesome": "^4.7.0",
     "guppymath": "^1.1.0",
     "lodash": "^4.17.4",
+    "mathjs": "^4.0.1",
     "nerdamer": "^0.7.11",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"

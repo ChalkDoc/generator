@@ -2,6 +2,7 @@ import { Variable } from './../variable';
 import { variable } from '@angular/compiler/src/output/output_ast';
 import * as _ from 'lodash';
 import * as nerdamer from 'nerdamer';
+var math = require('mathjs');
 
 export function createKnownValuesObject(
   randomSet: number[],
@@ -31,8 +32,10 @@ export function solveForUnknownVariable(
 
   for (let i = 0; i< decimalAnswerArray.length; i++) {
     if(decimalAnswerArray[i] !== ''){
-      console.log("decimalAnswerArray["+i+"]: "+decimalAnswerArray[i]);
-      answerArray.push(decimalAnswerArray[i]);
+      const eachSolution = math.eval(decimalAnswerArray[i]);
+      console.log("eachSolution["+i+"]: "+eachSolution);
+
+      answerArray.push(eachSolution);
     }
   }
   return answerArray; //[121, 12]
@@ -109,21 +112,17 @@ for(let i=0; i< currentValue.length; i++){
 }
 }
 
-export function convertToDecimal(input: any): any {
-  if(input.includes("/")){
-    const numberSplit = input.split('/');
-    var result = parseInt(numberSplit[0], 10) / parseInt(numberSplit[1], 10);
-    return result;
-  } else {
-    return input;
-  }
+export function convertToDecimal(input: number): any {
+
 }
 
 //for isValid
-export function meetsUnknownVariableSpecification(currentValue: number[], unknownVariable: Variable): boolean {
+export function meetsUnknownVariableSpecification(currentValue: any[], unknownVariable: Variable): boolean {
+  console.log("entered meetsUnknownVariableSpecification");
   for(let i=0; i<currentValue.length; i++){
-    const numCurrentValue = Number(currentValue[i]);
-    console.log("The format of Number is : "+numCurrentValue);
+    const numCurrentValue = math.eval(currentValue[i]);
+    console.log("The format of Number is : " + numCurrentValue);
+    console.log("convertToDecimal-Input: "+ math.sqrt(-4));
     const numInDecimal = convertToDecimal(numCurrentValue);
     const currentValueDecPoint = calculateDecimalPlaces(numCurrentValue);
     console.log("currentValueDecPoint: "+currentValueDecPoint);
