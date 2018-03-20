@@ -2,7 +2,7 @@ import { Variable } from './../variable';
 import { variable } from '@angular/compiler/src/output/output_ast';
 import * as _ from 'lodash';
 import * as nerdamer from 'nerdamer';
-var math = require('mathjs');
+import * as math from 'mathjs';
 
 export function createKnownValuesObject(
   randomSet: number[],
