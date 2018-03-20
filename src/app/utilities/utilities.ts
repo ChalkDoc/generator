@@ -95,6 +95,7 @@ export function multiZeroCheck(
   permutation: number[],
   variables: Variable[]
 ): boolean {
+  console.log("Enters singleZeroCheck");
   for (var i=0; i < permutation.length; i++){
     if(permutation[i] === 0 && variables[i].allowZero === false){
         return false;
@@ -107,6 +108,7 @@ export function singleZeroCheck(
   currentValue: number[],
   unknownVariable: Variable
 ): boolean {
+  console.log("Enters singleZeroCheck");
   for (var i=0; i < currentValue.length; i++){
     if(currentValue[i] === 0 && unknownVariable.allowZero === false){
         return false;

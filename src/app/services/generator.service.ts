@@ -36,14 +36,16 @@ export class GeneratorService {
       console.log("permutation",permutation);
       const unknownVariable = _.last(variables);
       console.log("unknownVariable ",unknownVariable);
-      const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables);
+      const answer = solveForUnknownVariable(permutation, simplifiedEquation, variables); // returns a string array of 1 or 2 results
       console.log("answer",answer);
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
       console.log("isValid",isValid);
       const isNew = !isVariableInArray(permutation, result);
       console.log("isNew",isNew);
+      //Checking zero compliance for all known variables
       const knownCheckZero = multiZeroCheck(permutation, variables);
       console.log("knownCheckZero: ",knownCheckZero);
+      //Checking zero compliance for all unknown variables
       const unknownCheckZero = singleZeroCheck(answer, unknownVariable);
       console.log("unknownCheckZero: ",unknownCheckZero);
 
@@ -77,7 +79,12 @@ export class GeneratorService {
       console.log("answer: "+ answer);
       const isValid = meetsUnknownVariableSpecification(answer, unknownVariable);
       console.log("isValid: "+ isValid);
-      if (isValid) {
+      const knownCheckZero = multiZeroCheck(permutation, variables);
+      console.log("knownCheckZero: ",knownCheckZero);
+      //Checking zero compliance for all unknown variables
+      const unknownCheckZero = singleZeroCheck(answer, unknownVariable);
+      console.log("unknownCheckZero: ",unknownCheckZero);
+      if (isValid && knownCheckZero && unknownCheckZero) {
         result.push([...permutation, [answer]]);
       }
     }
