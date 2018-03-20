@@ -22,11 +22,11 @@ export function solveForUnknownVariable(
   const variablesObject = createKnownValuesObject(randomSet, variables);
   console.log("variablesObject",variablesObject); //variablesObject: {"a", "b", "x", "y"}
 
-  const answer = nerdamer(simplifiedEquation, variablesObject, 'numer');
+  const answer = nerdamer(simplifiedEquation, variablesObject);
   console.log("answer"+ answer);
 
   const nerdamerResult = nerdamer(answer).text();
-  console.log("nerdamerResult",nerdamerResult);
+  console.log("nerdamerResult",nerdamerResult); //nerdamerResult [(158114965/141422324)*i,(-158114965/141422324)*i]
 
   let decimalAnswerArray: string[] = nerdamerResult.split(/[\[,\]]/);
 
@@ -107,9 +107,12 @@ export function singleZeroCheck(
   currentValue: number[],
   unknownVariable: Variable
 ): boolean {
-for(let i=0; i< currentValue.length; i++){
-  return !(unknownVariable.allowZero === false && currentValue[i] === 0);
-}
+  for (var i=0; i < currentValue.length; i++){
+    if(currentValue[i] === 0 && unknownVariable.allowZero === false){
+        return false;
+    }
+  };
+  return true;
 }
 
 export function convertToDecimal(input: number): any {
@@ -120,15 +123,21 @@ export function convertToDecimal(input: number): any {
 export function meetsUnknownVariableSpecification(currentValue: any[], unknownVariable: Variable): boolean {
   console.log("entered meetsUnknownVariableSpecification");
   for(let i=0; i<currentValue.length; i++){
-    const numCurrentValue = math.eval(currentValue[i]);
+    const numCurrentValue = currentValue[i];
     console.log("The format of Number is : " + numCurrentValue);
-    console.log("convertToDecimal-Input: "+ math.sqrt(-4));
-    const numInDecimal = convertToDecimal(numCurrentValue);
+    //const numInDecimal = convertToDecimal(numCurrentValue);
+
+    //1st check: if the decimal points of user parameters and answer matches
+
     const currentValueDecPoint = calculateDecimalPlaces(numCurrentValue);
     console.log("currentValueDecPoint: "+currentValueDecPoint);
+
     const hasNoDecPoint = unknownVariable.decPoint === 0 && _.isInteger(numCurrentValue);
+    console.log("hasNoDecPoint: "+hasNoDecPoint)
     const hasSameDecPoint = unknownVariable.decPoint > 0 && currentValueDecPoint > 0;
+    console.log("hasSameDecPoint: "+hasSameDecPoint)
     const isWithinRange = _.inRange(numCurrentValue, unknownVariable.min, unknownVariable.max);
+    console.log("isWithinRange: "+isWithinRange)
     return (hasNoDecPoint || hasSameDecPoint) && isWithinRange;
   }
 }
